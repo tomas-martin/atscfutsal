@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andes Talleres Futsal — Indumentaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:       #09111f;
+      --navy-mid:   #0f1929;
+      --navy-light: #182238;
+      --navy-card:  #131e30;
+      --blue:       #1d3d9a;
+      --blue-dim:   #152d73;
+      --red:        #c0192a;
+      --white:      #eef2ff;
+      --muted:      #8a96b8;
+      --muted-dim:  #4f5a76;
+      --border:     rgba(255,255,255,0.07);
+      --border-h:   rgba(255,255,255,0.15);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(9,17,31,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* LOGO izquierda */
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .shield { width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
+    .logo-copy { line-height: 1; }
+    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
+
+    /* HAMBURGUESA derecha */
+    .burger {
+      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 3px; cursor: pointer; transition: border-color .2s;
+      flex-shrink: 0;
+    }
+    .burger:hover { border-color: var(--border-h); }
+    .burger span {
+      display: block; height: 1.5px; background: var(--muted);
+      border-radius: 2px; transition: all .3s;
+    }
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--white); }
+    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--white); }
+
+    /* OVERLAY */
+    .nav-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* DRAWER NAV derecha */
+    .nav-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 280px; z-index: 400;
+      background: var(--navy-mid);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform .32s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+
+    .nav-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-drawer-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-drawer-logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
+    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--white); }
+
+    .nav-drawer-close {
+      background: transparent; border: none; cursor: pointer;
+      color: var(--muted); padding: 4px; transition: color .2s;
+    }
+    .nav-drawer-close:hover { color: var(--white); }
+    .nav-drawer-close svg { width: 18px; height: 18px; display: block; }
+
+    .nav-links {
+      display: flex; flex-direction: column;
+      padding: 1.5rem 0;
+      flex: 1;
+    }
+    .nav-links a {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600;
+      color: var(--muted); text-decoration: none;
+      padding: 14px 1.5rem;
+      border-left: 2px solid transparent;
+      transition: all .2s;
+    }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.03); border-left-color: var(--border-h); }
+    .nav-links a.active { color: var(--white); border-left-color: var(--red); }
+    .nav-links a .nav-icon { width: 16px; height: 16px; opacity: .5; flex-shrink: 0; }
+    .nav-links a.active .nav-icon { opacity: 1; }
+
+    .nav-drawer-footer {
+      padding: 1.2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim);
+    }
+
+    /* ── HERO ── */
+    .hero { position: relative; padding: 6rem 2.5rem 4.5rem; text-align: center; overflow: hidden; }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(29,61,154,.3) 0%, transparent 60%); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .pill {
+      display: inline-block; font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 700;
+      color: var(--red); background: rgba(192,25,42,.12); border: 1px solid rgba(192,25,42,.3);
+      padding: 4px 16px; border-radius: 2px; margin-bottom: 1.2rem;
+    }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.8rem, 9vw, 7.5rem); letter-spacing: .06em; line-height: .92; color: var(--white); }
+    .hero h1 em { color: var(--red); font-style: normal; }
+    .hero-sub { margin-top: 1.1rem; font-size: 1rem; color: var(--muted); letter-spacing: .03em; }
+
+    /* ── CATALOG ── */
+    .catalog { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.5rem; }
+
+    /* ── CARD ── */
+    .card { background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform .25s, border-color .25s, box-shadow .25s; position: relative; }
+    .card:hover { transform: translateY(-5px); border-color: var(--border-h); box-shadow: 0 20px 40px rgba(0,0,0,.4); }
+    .card.sold-out { opacity: .5; pointer-events: none; }
+    .card-img { width: 100%; aspect-ratio: 5/4; background: var(--navy-light); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .card:hover .card-img img { transform: scale(1.04); }
+    .img-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--muted-dim); }
+    .img-placeholder span { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; }
+    .badge { position: absolute; top: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; padding: 3px 10px; border-radius: 2px; }
+    .badge-new  { left: 10px; background: var(--red); color: #fff; }
+    .badge-low  { right: 10px; background: rgba(186,117,23,.9); color: #fff; }
+    .badge-out  { right: 10px; background: rgba(0,0,0,.7); color: var(--muted); border: 1px solid var(--border); }
+    .stock-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); }
+    .stock-bar { height: 100%; transition: width .3s; }
+    .card-body { padding: 1rem 1.1rem 1.2rem; }
+    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
+    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.22rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
+    .card-desc { font-size: .82rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: .75rem; }
+    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: .04em; color: var(--white); }
+    .card-price small { font-family: 'Barlow', sans-serif; font-size: .72rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
+    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+    .stock-info strong { color: var(--white); display: block; font-size: .95rem; }
+    .sizes { display: flex; gap: 5px; margin-bottom: .9rem; flex-wrap: wrap; }
+    .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
+    .size-chip.available { border-color: rgba(29,61,154,.5); color: #7fa3e8; }
+    .size-chip.out { opacity: .35; text-decoration: line-through; }
+
+    /* EMPTY / SKELETON */
+    .empty { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--muted); }
+    .empty p { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: .1em; }
+    .skeleton { background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: pulse 1.4s ease-in-out infinite; }
+    .skeleton-img { width: 100%; aspect-ratio: 5/4; background: var(--navy-light); }
+    .skeleton-body { padding: 1rem 1.1rem; }
+    .skeleton-line { height: 10px; background: var(--navy-light); border-radius: 3px; margin-bottom: 10px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      header { padding: 0 1.2rem; }
+      .logo-copy .tag { display: none; }
+      .hero { padding: 4rem 1.2rem 3rem; }
+      .catalog { padding: 1.5rem 1.2rem 4rem; }
+      footer { padding: 1.5rem 1.2rem; }
+      .nav-drawer { width: 100%; border-left: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="#">
+      <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo Andes Talleres" />
+      <div class="logo-copy">
+        <span class="name">Andes Talleres</span>
+        <span class="tag">Futsal · Indumentaria</span>
+      </div>
+    </a>
+    <button class="burger" id="burger-btn" onclick="toggleNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- OVERLAY -->
+  <div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+
+  <!-- NAV DRAWER -->
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="nav-drawer-header">
+      <div class="nav-drawer-logo">
+        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <span>Andes Talleres</span>
+      </div>
+      <button class="nav-drawer-close" onclick="closeNav()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="active">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/>
+        </svg>
+        Inicio
+      </a>
+      <a href="catalogo.html">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/>
+          <rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>
+        </svg>
+        Catálogo
+      </a>
+      <a href="contacto.html">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/>
+        </svg>
+        Contacto
+      </a>
+    </nav>
+
+    <div class="nav-drawer-footer">
+      © 2026 Andes Talleres Sport Club
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="pill">Temporada 2026</div>
+      <h1>Nuestra<br><em>Indumentaria</em></h1>
+      <p class="hero-sub">Indumentaria oficial de Andes Talleres Futsal</p>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <main class="catalog">
+    <div class="grid" id="grid">
+      <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:70%"></div><div class="skeleton-line" style="width:55%"></div></div></div>
+      <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:35%"></div><div class="skeleton-line" style="width:65%"></div><div class="skeleton-line" style="width:50%"></div></div></div>
+      <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:42%"></div><div class="skeleton-line" style="width:75%"></div><div class="skeleton-line" style="width:48%"></div></div></div>
+      <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:38%"></div><div class="skeleton-line" style="width:68%"></div><div class="skeleton-line" style="width:52%"></div></div></div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Andes Talleres Sport Club · Mendoza, Argentina</p>
+    <span class="hashtags">#SomosTalleres &nbsp; #SomosFamilia</span>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+
+    // ── MENÚ NAV ──
+    function toggleNav() {
+      const open = document.getElementById('nav-drawer').classList.toggle('open');
+      document.getElementById('nav-overlay').classList.toggle('open', open);
+      document.getElementById('burger-btn').classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeNav() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('nav-overlay').classList.remove('open');
+      document.getElementById('burger-btn').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // Cerrar con ESC
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+    // ── SUPABASE ──
+    async function fetchFromSupabase() {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/productos?select=*&order=id`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      if (!res.ok) throw new Error('Error al cargar productos');
+      return res.json();
+    }
+
+    // ── APP ──
+    let allProducts = [];
+
+    function stockColor(total, max) {
+      const pct = max ? total / max : 0;
+      if (pct <= 0)  return '#c0192a';
+      if (pct < .25) return '#ba7517';
+      if (pct < .6)  return '#2a6bb5';
+      return '#1d9e75';
+    }
+
+    function renderCard(p) {
+      const pct     = p.stock_max ? (p.stock_total / p.stock_max) * 100 : 0;
+      const soldOut = p.stock_total <= 0;
+      const low     = !soldOut && p.stock_total <= 5;
+
+      let badge = '';
+      if (soldOut)      badge = `<span class="badge badge-out">Sin stock</span>`;
+      else if (p.nuevo) badge = `<span class="badge badge-new">Nuevo</span>`;
+      else if (low)     badge = `<span class="badge badge-low">¡Últimas!</span>`;
+
+      const imgContent = p.imagen_url
+        ? `<img src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" />`
+        : `<div class="img-placeholder">
+             <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Andes Talleres" style="width:70px;height:70px;object-fit:contain;opacity:.3;" />
+             <span>Sin foto aún</span>
+           </div>`;
+
+      const sizesHTML = p.tallas && p.tallas.length
+        ? `<div class="sizes">${p.tallas.map(t =>
+            `<span class="size-chip ${t.stock > 0 ? 'available' : 'out'}">${t.talla}</span>`
+          ).join('')}</div>`
+        : '';
+
+      const precio = p.precio
+        ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
+        : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
+
+      return `
+        <article class="card${soldOut ? ' sold-out' : ''}" data-category="${p.categoria}">
+          <div class="card-img">
+            ${imgContent}${badge}
+            <div class="stock-bar-wrap">
+              <div class="stock-bar" style="width:${pct}%;background:${stockColor(p.stock_total, p.stock_max)}"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-cat">${p.categoria}</div>
+            <div class="card-name">${p.nombre}</div>
+            <div class="card-desc">${p.descripcion || ''}</div>
+            ${sizesHTML}
+            <div class="card-footer">
+              ${precio}
+              <div class="stock-info"><strong>${soldOut ? '0' : p.stock_total}</strong>disponibles</div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    async function init() {
+      try {
+        allProducts = await fetchFromSupabase();
+      } catch (e) {
+        console.error('Error cargando productos:', e);
+        allProducts = [];
+      }
+      const grid = document.getElementById('grid');
+      grid.innerHTML = allProducts.length
+        ? allProducts.map(renderCard).join('')
+        : `<div class="empty"><p>No hay productos disponibles.</p></div>`;
+    }
+
+    init();
+  </script>
+</body>
+</html>

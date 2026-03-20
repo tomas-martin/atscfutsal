@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:       #09111f;
+      --navy-mid:   #0f1929;
+      --navy-light: #182238;
+      --navy-card:  #131e30;
+      --blue:       #1d3d9a;
+      --blue-dim:   #152d73;
+      --red:        #c0192a;
+      --white:      #eef2ff;
+      --muted:      #8a96b8;
+      --muted-dim:  #4f5a76;
+      --border:     rgba(255,255,255,0.07);
+      --border-h:   rgba(255,255,255,0.15);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(9,17,31,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .shield { width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
+    .logo-copy { line-height: 1; }
+    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
+
+    .burger {
+      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 3px; cursor: pointer; transition: border-color .2s;
+    }
+    .burger:hover { border-color: var(--border-h); }
+    .burger span { display: block; height: 1.5px; background: var(--muted); border-radius: 2px; transition: all .3s; }
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--white); }
+    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--white); }
+
+    /* NAV OVERLAY + DRAWER */
+    .nav-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 400;
+      background: var(--navy-mid); border-left: 1px solid var(--border);
+      transform: translateX(100%); transition: transform .32s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .nav-drawer-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-drawer-logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
+    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--white); }
+    .nav-drawer-close { background: transparent; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s; }
+    .nav-drawer-close:hover { color: var(--white); }
+    .nav-drawer-close svg { width: 18px; height: 18px; display: block; }
+    .nav-links { display: flex; flex-direction: column; padding: 1.5rem 0; flex: 1; }
+    .nav-links a {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600;
+      color: var(--muted); text-decoration: none;
+      padding: 14px 1.5rem; border-left: 2px solid transparent; transition: all .2s;
+    }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.03); border-left-color: var(--border-h); }
+    .nav-links a.active { color: var(--white); border-left-color: var(--red); }
+    .nav-links a .nav-icon { width: 16px; height: 16px; opacity: .5; flex-shrink: 0; }
+    .nav-links a.active .nav-icon { opacity: 1; }
+    .nav-drawer-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim); }
+
+    /* ── PAGE TITLE ── */
+    .page-title {
+      padding: 2.5rem 2.5rem 0;
+      max-width: 1600px; margin: 0 auto;
+    }
+    .page-title h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: .06em; color: var(--white); line-height: 1;
+    }
+    .page-title h1 em { color: var(--red); font-style: normal; }
+    .page-title p { font-size: .9rem; color: var(--muted); margin-top: .4rem; }
+
+    /* ── LAYOUT PRINCIPAL ── */
+    .catalog-layout {
+      display: flex;
+      gap: 0;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem 5rem;
+      align-items: flex-start;
+    }
+
+    /* ── SIDEBAR FILTROS ── */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 80px;
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-right: 2rem;
+    }
+
+    .sidebar-header {
+      padding: .9rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sidebar-header span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--muted-dim); font-weight: 700;
+    }
+    .clear-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--red); background: transparent; border: none;
+      cursor: pointer; transition: opacity .2s; padding: 0;
+    }
+    .clear-btn:hover { opacity: .7; }
+    .clear-btn.hidden { visibility: hidden; }
+
+    .filter-section { border-bottom: 1px solid var(--border); padding: 1rem 1.2rem; }
+    .filter-section:last-child { border-bottom: none; }
+
+    .filter-section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted); font-weight: 700;
+      margin-bottom: .75rem;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none;
+    }
+    .filter-section-title svg { width: 12px; height: 12px; transition: transform .2s; }
+    .filter-section-title.collapsed svg { transform: rotate(-90deg); }
+    .filter-section-body { overflow: hidden; transition: max-height .25s ease; }
+    .filter-section-body.collapsed { max-height: 0 !important; }
+
+    /* Opciones de categoría */
+    .cat-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 0; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted); transition: color .15s;
+      border: none; background: transparent; width: 100%; text-align: left;
+    }
+    .cat-option:hover { color: var(--white); }
+    .cat-option.active { color: var(--white); }
+    .cat-option .cat-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      border: 1.5px solid var(--muted-dim); transition: all .15s;
+    }
+    .cat-option.active .cat-dot { background: var(--red); border-color: var(--red); }
+    .cat-option .cat-count {
+      font-size: .68rem; color: var(--muted-dim);
+      background: rgba(255,255,255,.05);
+      padding: 1px 6px; border-radius: 10px; margin-left: auto; margin-right: 8px;
+    }
+
+    /* Chips de talle */
+    .talle-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+    .talle-chip {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; letter-spacing: .06em; font-weight: 600;
+      padding: 4px 9px; border: 1px solid var(--border);
+      border-radius: 2px; cursor: pointer; color: var(--muted);
+      background: transparent; transition: all .15s;
+    }
+    .talle-chip:hover { border-color: var(--border-h); color: var(--white); }
+    .talle-chip.active { background: rgba(29,61,154,.25); border-color: var(--blue); color: #7fa3e8; }
+
+    /* Toggle stock */
+    .stock-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; padding: 2px 0;
+    }
+    .stock-toggle span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .toggle-track {
+      width: 34px; height: 18px; border-radius: 9px;
+      background: var(--navy-light); border: 1px solid var(--border);
+      position: relative; transition: background .2s, border-color .2s; flex-shrink: 0;
+    }
+    .toggle-track.on { background: rgba(29,61,154,.5); border-color: var(--blue); }
+    .toggle-thumb {
+      position: absolute; top: 2px; left: 2px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--muted-dim); transition: all .2s;
+    }
+    .toggle-track.on .toggle-thumb { left: 18px; background: #7fa3e8; }
+
+    /* ── CONTENT AREA ── */
+    .content { flex: 1; min-width: 0; }
+
+    .content-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap; gap: .75rem;
+    }
+    .results-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .8rem; letter-spacing: .1em; color: var(--muted-dim);
+    }
+    .results-count strong { color: var(--white); font-size: 1rem; }
+
+    /* Tags de filtros activos */
+    .active-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-tag {
+      display: flex; align-items: center; gap: 5px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+      background: rgba(29,61,154,.15); border: 1px solid rgba(29,61,154,.3);
+      color: #7fa3e8; padding: 3px 10px; border-radius: 2px;
+      cursor: pointer; transition: all .15s;
+    }
+    .filter-tag:hover { background: rgba(192,25,42,.15); border-color: rgba(192,25,42,.3); color: var(--red); }
+    .filter-tag svg { width: 10px; height: 10px; }
+
+    /* ── GRID PRODUCTOS ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px;
+      overflow: hidden; cursor: pointer;
+      transition: transform .25s, border-color .25s, box-shadow .25s; position: relative;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--border-h); box-shadow: 0 20px 40px rgba(0,0,0,.4); }
+    .card.sold-out { opacity: .5; pointer-events: none; }
+    .card-img { width: 100%; aspect-ratio: 5/4; background: var(--navy-light); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .card:hover .card-img img { transform: scale(1.04); }
+    .img-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--muted-dim); }
+    .img-placeholder span { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; }
+    .badge { position: absolute; top: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; padding: 3px 10px; border-radius: 2px; }
+    .badge-new { left: 10px; background: var(--red); color: #fff; }
+    .badge-low { right: 10px; background: rgba(186,117,23,.9); color: #fff; }
+    .badge-out { right: 10px; background: rgba(0,0,0,.7); color: var(--muted); border: 1px solid var(--border); }
+    .stock-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); }
+    .stock-bar { height: 100%; transition: width .3s; }
+    .card-body { padding: 1rem 1.1rem 1.2rem; }
+    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
+    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
+    .card-desc { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: .75rem; }
+    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .04em; color: var(--white); }
+    .card-price small { font-family: 'Barlow', sans-serif; font-size: .72rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
+    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+    .stock-info strong { color: var(--white); display: block; font-size: .92rem; }
+    .sizes { display: flex; gap: 5px; margin-bottom: .9rem; flex-wrap: wrap; }
+    .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
+    .size-chip.available { border-color: rgba(29,61,154,.5); color: #7fa3e8; }
+    .size-chip.out { opacity: .35; text-decoration: line-through; }
+
+    /* EMPTY / SKELETON */
+    .empty { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--muted); }
+    .empty p { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: .1em; margin-bottom: .5rem; }
+    .empty small { font-size: .82rem; color: var(--muted-dim); }
+    .skeleton { background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: pulse 1.4s ease-in-out infinite; }
+    .skeleton-img { width: 100%; aspect-ratio: 5/4; background: var(--navy-light); }
+    .skeleton-body { padding: 1rem 1.1rem; }
+    .skeleton-line { height: 10px; background: var(--navy-light); border-radius: 3px; margin-bottom: 10px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
+
+    /* ── MOBILE FILTER BTN ── */
+    .mobile-filter-btn {
+      display: none;
+      align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600;
+      color: var(--muted); background: transparent;
+      border: 1px solid var(--border); padding: 7px 16px; border-radius: 2px;
+      cursor: pointer; transition: all .2s;
+    }
+    .mobile-filter-btn:hover { border-color: var(--border-h); color: var(--white); }
+    .mobile-filter-btn svg { width: 13px; height: 13px; }
+
+    /* SIDEBAR MOBILE OVERLAY */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; z-index: 150; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        z-index: 160; margin: 0;
+        width: 280px; border-radius: 0;
+        transform: translateX(-100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
+        overflow-y: auto;
+      }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar-overlay { display: block; }
+      .mobile-filter-btn { display: flex; }
+      .catalog-layout { padding: 1.5rem 1.2rem 4rem; }
+      .page-title { padding: 1.5rem 1.2rem 0; }
+    }
+    @media (max-width: 640px) {
+      header { padding: 0 1.2rem; }
+      .logo-copy .tag { display: none; }
+      footer { padding: 1.5rem 1.2rem; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .9rem; }
+      .nav-drawer { width: 100%; border-left: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <a class="logo" href="index.html">
+      <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo Andes Talleres" />
+      <div class="logo-copy">
+        <span class="name">Andes Talleres</span>
+        <span class="tag">Futsal · Indumentaria</span>
+      </div>
+    </a>
+    <button class="burger" id="burger-btn" onclick="toggleNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- NAV OVERLAY + DRAWER -->
+  <div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="nav-drawer-header">
+      <div class="nav-drawer-logo">
+        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <span>Andes Talleres</span>
+      </div>
+      <button class="nav-drawer-close" onclick="closeNav()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/></svg>
+        Inicio
+      </a>
+      <a href="catalogo.html" class="active">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        Catálogo
+      </a>
+      <a href="#">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/></svg>
+        Contacto
+      </a>
+    </nav>
+    <div class="nav-drawer-footer">© 2026 Andes Talleres Sport Club</div>
+  </div>
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- ── PAGE TITLE ── -->
+  <div class="page-title">
+    <h1>Catálogo <em>Oficial</em></h1>
+    <p>Toda la indumentaria de Andes Talleres Futsal</p>
+  </div>
+
+  <!-- ── LAYOUT ── -->
+  <div class="catalog-layout">
+
+    <!-- SIDEBAR FILTROS -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>Filtros</span>
+        <button class="clear-btn hidden" id="clear-btn" onclick="clearFilters()">Limpiar</button>
+      </div>
+
+      <!-- CATEGORÍA -->
+      <div class="filter-section">
+        <div class="filter-section-title" onclick="toggleSection(this)">
+          Categoría
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,3 5,7 8,3"/></svg>
+        </div>
+        <div class="filter-section-body" id="section-cat">
+          <button class="cat-option active" data-cat="all" onclick="setCat(this)">
+            <span>Todo</span>
+            <span class="cat-count" id="count-all">0</span>
+            <span class="cat-dot"></span>
+          </button>
+          <button class="cat-option" data-cat="remera" onclick="setCat(this)">
+            <span>Remeras</span>
+            <span class="cat-count" id="count-remera">0</span>
+            <span class="cat-dot"></span>
+          </button>
+          <button class="cat-option" data-cat="short" onclick="setCat(this)">
+            <span>Shorts</span>
+            <span class="cat-count" id="count-short">0</span>
+            <span class="cat-dot"></span>
+          </button>
+          <button class="cat-option" data-cat="buzo" onclick="setCat(this)">
+            <span>Camperas</span>
+            <span class="cat-count" id="count-buzo">0</span>
+            <span class="cat-dot"></span>
+          </button>
+          <button class="cat-option" data-cat="kit" onclick="setCat(this)">
+            <span>Kits</span>
+            <span class="cat-count" id="count-kit">0</span>
+            <span class="cat-dot"></span>
+          </button>
+          <button class="cat-option" data-cat="accesorio" onclick="setCat(this)">
+            <span>Accesorios</span>
+            <span class="cat-count" id="count-accesorio">0</span>
+            <span class="cat-dot"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TALLE -->
+      <div class="filter-section">
+        <div class="filter-section-title" onclick="toggleSection(this)">
+          Talle
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,3 5,7 8,3"/></svg>
+        </div>
+        <div class="filter-section-body" id="section-talle">
+          <div class="talle-grid" id="talle-grid"></div>
+        </div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="filter-section">
+        <div class="filter-section-title" onclick="toggleSection(this)">
+          Disponibilidad
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,3 5,7 8,3"/></svg>
+        </div>
+        <div class="filter-section-body" id="section-stock">
+          <div class="stock-toggle" onclick="toggleStock()">
+            <span>Solo con stock</span>
+            <div class="toggle-track" id="stock-toggle">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="content-header">
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <button class="mobile-filter-btn" onclick="openSidebar()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+            Filtros
+          </button>
+          <span class="results-count"><strong id="count-visible">—</strong> productos</span>
+        </div>
+        <div class="active-filters" id="active-filters"></div>
+      </div>
+
+      <div class="grid" id="grid">
+        <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:70%"></div><div class="skeleton-line" style="width:55%"></div></div></div>
+        <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:35%"></div><div class="skeleton-line" style="width:65%"></div><div class="skeleton-line" style="width:50%"></div></div></div>
+        <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:42%"></div><div class="skeleton-line" style="width:75%"></div><div class="skeleton-line" style="width:48%"></div></div></div>
+        <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:38%"></div><div class="skeleton-line" style="width:68%"></div><div class="skeleton-line" style="width:52%"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Andes Talleres Sport Club · Mendoza, Argentina</p>
+    <span class="hashtags">#SomosTalleres &nbsp; #SomosFamilia</span>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+    const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
+
+    // ── NAV ──
+    function toggleNav() {
+      const open = document.getElementById('nav-drawer').classList.toggle('open');
+      document.getElementById('nav-overlay').classList.toggle('open', open);
+      document.getElementById('burger-btn').classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeNav() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('nav-overlay').classList.remove('open');
+      document.getElementById('burger-btn').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── SIDEBAR MOBILE ──
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('mobile-open');
+      document.getElementById('sidebar-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── COLLAPSIBLE SECTIONS ──
+    function toggleSection(title) {
+      title.classList.toggle('collapsed');
+      const body = title.nextElementSibling;
+      body.classList.toggle('collapsed');
+      if (!body.classList.contains('collapsed')) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        requestAnimationFrame(() => body.style.maxHeight = '0');
+      }
+    }
+    // Inicializar max-height de secciones abiertas
+    document.querySelectorAll('.filter-section-body').forEach(b => {
+      b.style.maxHeight = b.scrollHeight + 999 + 'px';
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeNav(); closeSidebar(); } });
+
+    // ── ESTADO FILTROS ──
+    let allProducts = [];
+    let activeCat   = 'all';
+    let activeTalles = new Set();
+    let soloStock   = false;
+
+    // ── SUPABASE ──
+    async function fetchFromSupabase() {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/productos?select=*&order=id`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      if (!res.ok) throw new Error('Error');
+      return res.json();
+    }
+
+    // ── HELPERS ──
+    function stockColor(total, max) {
+      const pct = max ? total / max : 0;
+      if (pct <= 0)  return '#c0192a';
+      if (pct < .25) return '#ba7517';
+      if (pct < .6)  return '#2a6bb5';
+      return '#1d9e75';
+    }
+
+    // ── RENDER CARD ──
+    function renderCard(p) {
+      const pct     = p.stock_max ? (p.stock_total / p.stock_max) * 100 : 0;
+      const soldOut = p.stock_total <= 0;
+      const low     = !soldOut && p.stock_total <= 5;
+
+      let badge = '';
+      if (soldOut)      badge = `<span class="badge badge-out">Sin stock</span>`;
+      else if (p.nuevo) badge = `<span class="badge badge-new">Nuevo</span>`;
+      else if (low)     badge = `<span class="badge badge-low">¡Últimas!</span>`;
+
+      const imgContent = p.imagen_url
+        ? `<img src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" />`
+        : `<div class="img-placeholder">
+             <img src="${ESCUDO}" alt="Andes Talleres" style="width:70px;height:70px;object-fit:contain;opacity:.3;" />
+             <span>Sin foto aún</span>
+           </div>`;
+
+      const sizesHTML = p.tallas && p.tallas.length
+        ? `<div class="sizes">${p.tallas.map(t =>
+            `<span class="size-chip ${t.stock > 0 ? 'available' : 'out'}">${t.talla}</span>`
+          ).join('')}</div>`
+        : '';
+
+      const precio = p.precio
+        ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
+        : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
+
+      // onclick → en el futuro lleva a producto.html?id=X
+      return `
+        <article class="card${soldOut ? ' sold-out' : ''}" onclick="window.location='producto.html?id=${p.id}'">
+          <div class="card-img">
+            ${imgContent}${badge}
+            <div class="stock-bar-wrap">
+              <div class="stock-bar" style="width:${pct}%;background:${stockColor(p.stock_total, p.stock_max)}"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-cat">${p.categoria}</div>
+            <div class="card-name">${p.nombre}</div>
+            <div class="card-desc">${p.descripcion || ''}</div>
+            ${sizesHTML}
+            <div class="card-footer">
+              ${precio}
+              <div class="stock-info"><strong>${soldOut ? '0' : p.stock_total}</strong>disponibles</div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    // ── FILTRAR ──
+    function getFiltered() {
+      return allProducts.filter(p => {
+        if (activeCat !== 'all' && p.categoria !== activeCat) return false;
+        if (soloStock && p.stock_total <= 0) return false;
+        if (activeTalles.size > 0) {
+          const tallesProducto = (p.tallas || []).filter(t => t.stock > 0).map(t => t.talla);
+          if (![...activeTalles].some(t => tallesProducto.includes(t))) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderGrid() {
+      const visible = getFiltered();
+      const grid = document.getElementById('grid');
+      grid.innerHTML = visible.length
+        ? visible.map(renderCard).join('')
+        : `<div class="empty">
+             <p>No hay productos con estos filtros.</p>
+             <small>Probá cambiando la categoría o el talle.</small>
+           </div>`;
+      document.getElementById('count-visible').textContent = visible.length;
+      renderActiveTags();
+      updateClearBtn();
+    }
+
+    // ── TAGS ACTIVOS ──
+    function renderActiveTags() {
+      const container = document.getElementById('active-filters');
+      const tags = [];
+
+      if (activeCat !== 'all') {
+        const labels = { remera:'Remeras', short:'Shorts', buzo:'Camperas', kit:'Kits', accesorio:'Accesorios' };
+        tags.push({ label: labels[activeCat] || activeCat, remove: () => { activeCat = 'all'; document.querySelectorAll('.cat-option').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all')); renderGrid(); } });
+      }
+      activeTalles.forEach(t => {
+        tags.push({ label: `Talle ${t}`, remove: () => { activeTalles.delete(t); document.querySelectorAll(`.talle-chip[data-talle="${t}"]`).forEach(c => c.classList.remove('active')); renderGrid(); } });
+      });
+      if (soloStock) {
+        tags.push({ label: 'Con stock', remove: () => { soloStock = false; document.getElementById('stock-toggle').classList.remove('on'); renderGrid(); } });
+      }
+
+      container.innerHTML = tags.map((t, i) => `
+        <span class="filter-tag" onclick="removeTags[${i}]()">
+          ${t.label}
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
+        </span>`).join('');
+
+      window.removeTags = tags.map(t => t.remove);
+    }
+
+    function updateClearBtn() {
+      const hasFilter = activeCat !== 'all' || activeTalles.size > 0 || soloStock;
+      document.getElementById('clear-btn').classList.toggle('hidden', !hasFilter);
+    }
+
+    function clearFilters() {
+      activeCat = 'all';
+      activeTalles.clear();
+      soloStock = false;
+      document.querySelectorAll('.cat-option').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
+      document.querySelectorAll('.talle-chip').forEach(c => c.classList.remove('active'));
+      document.getElementById('stock-toggle').classList.remove('on');
+      renderGrid();
+    }
+
+    // ── CONTEOS POR CATEGORÍA ──
+    function updateCounts() {
+      const cats = ['all','remera','short','buzo','kit','accesorio'];
+      cats.forEach(cat => {
+        const el = document.getElementById(`count-${cat}`);
+        if (el) el.textContent = cat === 'all' ? allProducts.length : allProducts.filter(p => p.categoria === cat).length;
+      });
+    }
+
+    // ── ACCIONES ──
+    function setCat(btn) {
+      activeCat = btn.dataset.cat;
+      document.querySelectorAll('.cat-option').forEach(b => b.classList.toggle('active', b === btn));
+      renderGrid();
+    }
+
+    function toggleStock() {
+      soloStock = !soloStock;
+      document.getElementById('stock-toggle').classList.toggle('on', soloStock);
+      renderGrid();
+    }
+
+    // ── CHIPS DE TALLE ──
+    function buildTalleChips() {
+      const tallesSet = new Set();
+      allProducts.forEach(p => (p.tallas || []).forEach(t => tallesSet.add(t.talla)));
+      const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
+      const sorted = [...tallesSet].sort((a, b) => {
+        const ia = orden.indexOf(a), ib = orden.indexOf(b);
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      });
+      document.getElementById('talle-grid').innerHTML = sorted.map(t =>
+        `<button class="talle-chip" data-talle="${t}" onclick="toggleTalle(this,'${t}')">${t}</button>`
+      ).join('');
+      // Actualizar max-height de la sección ahora que tiene contenido
+      const body = document.getElementById('section-talle');
+      body.style.maxHeight = body.scrollHeight + 999 + 'px';
+    }
+
+    function toggleTalle(chip, talle) {
+      if (activeTalles.has(talle)) {
+        activeTalles.delete(talle);
+        chip.classList.remove('active');
+      } else {
+        activeTalles.add(talle);
+        chip.classList.add('active');
+      }
+      renderGrid();
+    }
+
+    // ── INIT ──
+    async function init() {
+      try {
+        allProducts = await fetchFromSupabase();
+      } catch (e) {
+        console.error('Error cargando productos:', e);
+        allProducts = [];
+      }
+      updateCounts();
+      buildTalleChips();
+      renderGrid();
+    }
+
+    init();
+  </script>
+</body>
+</html>
