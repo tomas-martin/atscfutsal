@@ -364,11 +364,13 @@
              <span>Sin foto aún</span>
            </div>`;
 
-      const sizesHTML = p.tallas && p.tallas.length
-        ? `<div class="sizes">${p.tallas.map(t =>
-            `<span class="size-chip ${t.stock > 0 ? 'available' : 'out'}">${t.talla}</span>`
-          ).join('')}</div>`
-        : '';
+      const TALLES_ORDEN = ['XS','S','M','L','XL','XXL'];
+      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
+      const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
+            const stock = tallesMap[t] ?? -1;
+            if (stock === -1) return `<span class="size-chip out" title="Sin stock">${t}</span>`;
+            return `<span class="size-chip ${stock > 0 ? 'available' : 'out'}" title="${stock > 0 ? stock+' disponibles' : 'Sin stock'}">${t}</span>`;
+          }).join('')}</div>`;
 
       const precio = p.precio
         ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
