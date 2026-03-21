@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:      #09111f;
+      --navy-mid:  #0f1929;
+      --navy-light:#182238;
+      --navy-card: #131e30;
+      --blue:      #1d3d9a;
+      --blue-dim:  #152d73;
+      --red:       #c0192a;
+      --white:     #eef2ff;
+      --muted:     #8a96b8;
+      --muted-dim: #4f5a76;
+      --border:    rgba(255,255,255,0.07);
+      --border-h:  rgba(255,255,255,0.15);
+      --green:     #1d9e75;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+
+    /* ── HEADER ── */
+    header {
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(9,17,31,0.95);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .shield { width: 36px; height: 36px; object-fit: contain; border-radius: 3px; }
+    .header-title { line-height: 1; }
+    .header-title .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .header-title .sub { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
+    .admin-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700;
+      background: rgba(192,25,42,.15); border: 1px solid rgba(192,25,42,.3);
+      color: var(--red); padding: 3px 10px; border-radius: 2px;
+    }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .user-email { font-size: .8rem; color: var(--muted); }
+    .btn-logout {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+      background: transparent; border: 1px solid var(--border); color: var(--muted);
+      padding: 6px 14px; border-radius: 2px; cursor: pointer; transition: all .2s;
+    }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+    .back-link {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .back-link:hover { color: var(--white); }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .login-card {
+      background: var(--navy-mid); border: 1px solid var(--border);
+      border-radius: 6px; padding: 2.5rem; width: 100%; max-width: 400px;
+    }
+    .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+    .login-logo img { width: 44px; height: 44px; object-fit: contain; border-radius: 3px; }
+    .login-logo-text .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .login-logo-text .sub { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; }
+    .login-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .06em; color: var(--white); margin-bottom: .3rem; }
+    .login-sub { font-size: .85rem; color: var(--muted); margin-bottom: 2rem; }
+    .field { margin-bottom: 1.2rem; }
+    .field label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700;
+      color: var(--muted-dim); display: block; margin-bottom: .4rem;
+    }
+    .field input {
+      width: 100%; background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 3px; padding: 10px 14px; color: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: .92rem;
+      transition: border-color .2s; outline: none;
+    }
+    .field input:focus { border-color: var(--blue); }
+    .field input::placeholder { color: var(--muted-dim); }
+    .btn-login {
+      width: 100%; padding: 13px;
+      background: var(--blue); color: #fff; border: none; border-radius: 3px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+      cursor: pointer; transition: background .2s; margin-top: .5rem;
+    }
+    .btn-login:hover { background: #2a4fc4; }
+    .btn-login:disabled { background: var(--muted-dim); cursor: not-allowed; }
+    .login-error {
+      font-size: .82rem; color: var(--red); margin-top: .8rem; text-align: center;
+      min-height: 1.2rem;
+    }
+
+    /* ── ADMIN PANEL ── */
+    #admin-panel { display: none; }
+    .panel-content { max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem 5rem; }
+
+    .panel-header { margin-bottom: 2rem; }
+    .panel-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .06em; color: var(--white); }
+    .panel-header h1 em { color: var(--red); font-style: normal; }
+    .panel-header p { font-size: .88rem; color: var(--muted); margin-top: .3rem; }
+
+    /* toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+      padding: 12px 20px; border-radius: 3px;
+      transform: translateY(100px); opacity: 0;
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: rgba(29,158,117,.9); color: #fff; border: 1px solid rgba(29,158,117,.5); }
+    .toast.error   { background: rgba(192,25,42,.9);  color: #fff; border: 1px solid rgba(192,25,42,.5); }
+
+    /* product row */
+    .product-row {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px;
+      margin-bottom: 1rem; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .product-row:hover { border-color: var(--border-h); }
+
+    .product-row-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem; cursor: pointer;
+      user-select: none;
+    }
+    .product-thumb {
+      width: 56px; height: 56px; border-radius: 3px; overflow: hidden;
+      background: var(--navy-light); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .product-thumb .thumb-placeholder { width: 32px; height: 32px; object-fit: contain; opacity: .3; }
+
+    .product-meta { flex: 1; min-width: 0; }
+    .product-meta .cat {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--red); font-weight: 700; margin-bottom: 2px;
+    }
+    .product-meta .nombre {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--white);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .product-stock-total {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .78rem; letter-spacing: .08em; color: var(--muted); text-align: right;
+      flex-shrink: 0;
+    }
+    .product-stock-total strong { color: var(--white); font-size: 1.1rem; display: block; }
+
+    .chevron {
+      width: 16px; height: 16px; flex-shrink: 0; color: var(--muted-dim);
+      transition: transform .25s;
+    }
+    .product-row.open .chevron { transform: rotate(180deg); }
+
+    /* talle editor */
+    .talle-editor {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 1.2rem 1.4rem;
+      display: none;
+    }
+    .product-row.open .talle-editor { display: block; }
+
+    .talle-editor-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted-dim); font-weight: 700; margin-bottom: 1rem;
+    }
+
+    .talle-rows { display: flex; flex-direction: column; gap: .6rem; }
+
+    .talle-row {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--navy-light); border-radius: 3px; padding: .6rem 1rem;
+    }
+    .talle-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .9rem; letter-spacing: .08em; font-weight: 700;
+      color: var(--white); width: 48px; flex-shrink: 0;
+    }
+    .talle-row input[type="number"] {
+      width: 90px; background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 3px; padding: 7px 10px; color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 600;
+      text-align: center; outline: none; transition: border-color .2s;
+      -moz-appearance: textfield;
+    }
+    .talle-row input[type="number"]::-webkit-outer-spin-button,
+    .talle-row input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .talle-row input[type="number"]:focus { border-color: var(--blue); }
+    .talle-stock-label {
+      font-size: .8rem; color: var(--muted); flex: 1;
+    }
+    .stock-indicator {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .si-ok  { background: var(--green); }
+    .si-low { background: #ba7517; }
+    .si-out { background: var(--red); }
+
+    .btn-save-talle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
+      background: var(--blue); color: #fff; border: none;
+      padding: 7px 16px; border-radius: 2px; cursor: pointer; transition: all .2s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-save-talle:hover { background: #2a4fc4; }
+    .btn-save-talle:disabled { background: var(--muted-dim); cursor: not-allowed; }
+    .btn-save-talle.saved { background: var(--green); }
+
+    /* guardar todo */
+    .save-all-bar {
+      position: sticky; bottom: 0;
+      background: rgba(9,17,31,.95); border-top: 1px solid var(--border);
+      padding: 1rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+    }
+    .save-all-info { font-size: .85rem; color: var(--muted); }
+    .save-all-info strong { color: var(--white); }
+    .btn-save-all {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+      background: var(--green); color: #fff; border: none;
+      padding: 10px 28px; border-radius: 3px; cursor: pointer; transition: all .2s;
+    }
+    .btn-save-all:hover { opacity: .9; }
+    .btn-save-all:disabled { background: var(--muted-dim); cursor: not-allowed; }
+
+    /* skeleton */
+    .skeleton { background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: pulse 1.4s ease-in-out infinite; margin-bottom: 1rem; height: 80px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    @media (max-width: 640px) {
+      header { padding: 0 1.2rem; }
+      .user-email { display: none; }
+      .panel-content { padding: 1.5rem 1.2rem 5rem; }
+      .save-all-bar { padding: 1rem 1.2rem; }
+      .talle-row input[type="number"] { width: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <div class="login-logo-text">
+          <span class="name">Andes Talleres</span>
+          <span class="sub">Futsal · Admin</span>
+        </div>
+      </div>
+      <div class="login-title">Panel de <em style="color:var(--red);font-style:normal">Admin</em></div>
+      <p class="login-sub">Ingresá con tu cuenta de administrador para gestionar el inventario.</p>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="admin@ejemplo.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="btn-login" id="btn-login" onclick="doLogin()">Ingresar</button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel">
+    <header>
+      <a class="header-left" href="index.html">
+        <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <div class="header-title">
+          <span class="name">Andes Talleres</span>
+          <span class="sub">Futsal · Indumentaria</span>
+        </div>
+      </a>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <span class="admin-badge">Admin</span>
+        <a href="index.html" class="back-link">← Volver al sitio</a>
+      </div>
+      <div class="header-right">
+        <span class="user-email" id="user-email"></span>
+        <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <div class="panel-content">
+      <div class="panel-header">
+        <h1>Gestión de <em>Inventario</em></h1>
+        <p>Editá el stock disponible por talle de cada producto. Los cambios se aplican en tiempo real.</p>
+      </div>
+      <div id="products-list">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+
+    <div class="save-all-bar">
+      <span class="save-all-info">
+        <strong id="pending-count">0</strong> cambio(s) sin guardar
+      </span>
+      <button class="btn-save-all" id="btn-save-all" onclick="saveAll()" disabled>
+        Guardar todo
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+    const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
+
+    let accessToken = null;
+    let allProducts = [];
+    // pendingChanges: { [productoId]: { [talle]: nuevoStock } }
+    let pendingChanges = {};
+
+    // ── SUPABASE HELPERS ──
+    async function sbFetch(path, opts = {}) {
+      const headers = {
+        'apikey': SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
+        ...(opts.headers || {})
+      };
+      return fetch(SUPABASE_URL + path, { ...opts, headers });
+    }
+
+    // ── LOGIN ──
+    document.getElementById('login-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    async function doLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login');
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Ingresando...';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error_description || data.msg || 'Credenciales incorrectas');
+
+        accessToken = data.access_token;
+        document.getElementById('user-email').textContent = data.user.email;
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadProducts();
+      } catch (e) {
+        errEl.textContent = e.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Ingresar';
+      }
+    }
+
+    async function doLogout() {
+      await sbFetch('/auth/v1/logout', { method: 'POST' });
+      accessToken = null;
+      allProducts = [];
+      pendingChanges = {};
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('admin-panel').style.display = 'none';
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-error').textContent = '';
+    }
+
+    // ── LOAD PRODUCTS ──
+    async function loadProducts() {
+      const res = await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
+      allProducts = await res.json();
+      renderProducts();
+    }
+
+    // ── RENDER ──
+    function renderProducts() {
+      const container = document.getElementById('products-list');
+      if (!allProducts.length) {
+        container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:3rem">No hay productos.</p>';
+        return;
+      }
+      container.innerHTML = allProducts.map(p => renderRow(p)).join('');
+    }
+
+    function stockIndicator(stock) {
+      if (stock <= 0)  return '<span class="stock-indicator si-out"></span>';
+      if (stock <= 5)  return '<span class="stock-indicator si-low"></span>';
+      return '<span class="stock-indicator si-ok"></span>';
+    }
+
+    function renderRow(p) {
+      const thumbHTML = p.imagen_url
+        ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
+        : `<img class="thumb-placeholder" src="${ESCUDO}" alt="placeholder" />`;
+
+      const talles = (p.tallas || []);
+      const talleRowsHTML = talles.length
+        ? talles.map(t => `
+            <div class="talle-row" id="row-${p.id}-${t.talla}">
+              <span class="talle-name">${t.talla}</span>
+              ${stockIndicator(t.stock)}
+              <input
+                type="number" min="0" max="9999"
+                value="${t.stock}"
+                data-producto="${p.id}"
+                data-talle="${t.talla}"
+                data-original="${t.stock}"
+                onchange="markChange(this)"
+                oninput="markChange(this)"
+              />
+              <span class="talle-stock-label">${t.stock > 0 ? t.stock + ' disponibles' : 'Sin stock'}</span>
+            </div>`).join('')
+        : '<p style="color:var(--muted-dim);font-size:.82rem;">Sin talles registrados</p>';
+
+      return `
+        <div class="product-row" id="product-${p.id}">
+          <div class="product-row-header" onclick="toggleRow(${p.id})">
+            <div class="product-thumb">${thumbHTML}</div>
+            <div class="product-meta">
+              <div class="cat">${p.categoria}</div>
+              <div class="nombre">${p.nombre}</div>
+            </div>
+            <div class="product-stock-total">
+              <strong>${p.stock_total}</strong>
+              en stock
+            </div>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <polyline points="4,6 8,10 12,6"/>
+            </svg>
+          </div>
+          <div class="talle-editor">
+            <div class="talle-editor-title">Stock por talle</div>
+            <div class="talle-rows">${talleRowsHTML}</div>
+          </div>
+        </div>`;
+    }
+
+    // ── TOGGLE ROW ──
+    function toggleRow(id) {
+      const row = document.getElementById(`product-${id}`);
+      row.classList.toggle('open');
+    }
+
+    // ── MARK CHANGE ──
+    function markChange(input) {
+      const id     = input.dataset.producto;
+      const talle  = input.dataset.talle;
+      const newVal = parseInt(input.value) || 0;
+      const orig   = parseInt(input.dataset.original);
+
+      if (!pendingChanges[id]) pendingChanges[id] = {};
+
+      if (newVal !== orig) {
+        pendingChanges[id][talle] = newVal;
+        input.style.borderColor = '#ba7517';
+      } else {
+        delete pendingChanges[id][talle];
+        if (!Object.keys(pendingChanges[id]).length) delete pendingChanges[id];
+        input.style.borderColor = '';
+      }
+
+      updatePendingCount();
+    }
+
+    function updatePendingCount() {
+      let total = 0;
+      Object.values(pendingChanges).forEach(t => total += Object.keys(t).length);
+      document.getElementById('pending-count').textContent = total;
+      document.getElementById('btn-save-all').disabled = total === 0;
+    }
+
+    // ── SAVE ALL ──
+    async function saveAll() {
+      const btn = document.getElementById('btn-save-all');
+      btn.disabled = true;
+      btn.textContent = 'Guardando...';
+
+      const productIds = Object.keys(pendingChanges);
+      let errors = 0;
+
+      for (const id of productIds) {
+        const product = allProducts.find(p => p.id == id);
+        if (!product) continue;
+
+        // Construir nuevo array de talles
+        const newTallas = (product.tallas || []).map(t => {
+          const change = pendingChanges[id]?.[t.talla];
+          return { talle: t.talla, stock: change !== undefined ? change : t.stock };
+        });
+
+        // Recalcular stock total
+        const newTotal = newTallas.reduce((sum, t) => sum + t.stock, 0);
+
+        try {
+          const res = await sbFetch(`/rest/v1/productos?id=eq.${id}`, {
+            method: 'PATCH',
+            headers: { 'Prefer': 'return=representation' },
+            body: JSON.stringify({ tallas: newTallas, stock_total: newTotal })
+          });
+
+          if (!res.ok) {
+            errors++;
+            continue;
+          }
+
+          // Actualizar en memoria
+          product.tallas = newTallas;
+          product.stock_total = newTotal;
+
+          // Actualizar UI del producto
+          updateProductUI(product);
+
+          // Limpiar pending de este producto
+          delete pendingChanges[id];
+
+          // Limpiar estilos de inputs
+          newTallas.forEach(t => {
+            const input = document.querySelector(`input[data-producto="${id}"][data-talle="${t.talle}"]`);
+            if (input) {
+              input.dataset.original = t.stock;
+              input.style.borderColor = '';
+            }
+          });
+
+        } catch (e) {
+          errors++;
+        }
+      }
+
+      updatePendingCount();
+      btn.textContent = 'Guardar todo';
+
+      if (errors === 0) {
+        showToast('¡Stock actualizado correctamente!', 'success');
+      } else {
+        showToast(`${errors} error(es) al guardar. Intentá de nuevo.`, 'error');
+        btn.disabled = false;
+      }
+    }
+
+    function updateProductUI(p) {
+      const row = document.getElementById(`product-${p.id}`);
+      if (!row) return;
+
+      // Actualizar stock total mostrado
+      const totalEl = row.querySelector('.product-stock-total strong');
+      if (totalEl) totalEl.textContent = p.stock_total;
+
+      // Actualizar indicadores y labels de cada talle
+      (p.tallas || []).forEach(t => {
+        const talleRow = document.getElementById(`row-${p.id}-${t.talle}`);
+        if (!talleRow) return;
+        const dot = talleRow.querySelector('.stock-indicator');
+        if (dot) {
+          dot.className = 'stock-indicator ' + (t.stock <= 0 ? 'si-out' : t.stock <= 5 ? 'si-low' : 'si-ok');
+        }
+        const label = talleRow.querySelector('.talle-stock-label');
+        if (label) label.textContent = t.stock > 0 ? t.stock + ' disponibles' : 'Sin stock';
+      });
+    }
+
+    // ── TOAST ──
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      setTimeout(() => { t.className = `toast ${type}`; }, 3000);
+    }
+
+    // Presionar Enter en login
+    document.getElementById('login-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-password').focus();
+    });
+  </script>
+</body>
+</html>
