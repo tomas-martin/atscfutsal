@@ -278,16 +278,16 @@
     .stock-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); }
     .stock-bar { height: 100%; transition: width .3s; }
     .card-body { padding: 1rem 1.1rem 1.2rem; }
-    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
-    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
-    .card-desc { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
+    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 4px; }
+    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 8px; }
+    .card-desc { font-size: .92rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: .75rem; }
-    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .04em; color: var(--white); }
-    .card-price small { font-family: 'Barlow', sans-serif; font-size: .72rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
-    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
-    .stock-info strong { color: var(--white); display: block; font-size: .92rem; }
+    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: .04em; color: var(--white); }
+    .card-price small { font-family: 'Barlow', sans-serif; font-size: .82rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
+    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+    .stock-info strong { color: var(--white); display: block; font-size: 1.1rem; }
     .sizes { display: flex; gap: 5px; margin-bottom: .9rem; flex-wrap: wrap; }
-    .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
+    .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .08em; padding: 3px 10px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
     .size-chip.available { border-color: rgba(29,61,154,.5); color: #7fa3e8; }
     .size-chip.out { opacity: .35; text-decoration: line-through; }
 
@@ -609,13 +609,15 @@
              <span>Sin foto aún</span>
            </div>`;
 
-            const TALLES_ORDEN = ['XS','S','M','L','XL','XXL'];
+      const TALLES_ORDEN = ['XS','S','M','L','XL','XXL'];
       const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
-      const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
-            const stock = tallesMap[t] ?? -1;
-            if (stock === -1) return `<span class="size-chip out" title="Sin stock">${t}</span>`;
+      const tallesExisten = (p.tallas || []).map(t => t.talla);
+      const sizesHTML = tallesExisten.length
+        ? `<div class="sizes">${TALLES_ORDEN.filter(t => tallesExisten.includes(t)).map(t => {
+            const stock = tallesMap[t] ?? 0;
             return `<span class="size-chip ${stock > 0 ? 'available' : 'out'}" title="${stock > 0 ? stock+' disponibles' : 'Sin stock'}">${t}</span>`;
-          }).join('')}</div>`;
+          }).join('')}</div>`
+        : '';
 
       const precio = p.precio
         ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
