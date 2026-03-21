@@ -46,8 +46,18 @@
     .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
 
     /* HAMBURGUESA derecha */
+
+    /* NAV DESKTOP */
+    .nav-desktop { display: flex; align-items: center; gap: 2rem; }
+    .nav-desktop a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .nav-desktop a:hover { color: var(--white); }
+    .nav-desktop a.active { color: var(--white); border-bottom: 2px solid var(--red); padding-bottom: 2px; }
     .burger {
-      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
       width: 40px; height: 40px; padding: 8px;
       background: transparent; border: 1px solid var(--border);
       border-radius: 3px; cursor: pointer; transition: border-color .2s;
@@ -194,8 +204,10 @@
     footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
 
     /* RESPONSIVE */
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       header { padding: 0 1.2rem; }
+      .nav-desktop { display: none; }
+      .burger { display: flex; }
       .logo-copy .tag { display: none; }
       .hero { padding: 4rem 1.2rem 3rem; }
       .catalog { padding: 1.5rem 1.2rem 4rem; }
@@ -215,6 +227,11 @@
         <span class="tag">Futsal · Indumentaria</span>
       </div>
     </a>
+    <nav class="nav-desktop">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
     <button class="burger" id="burger-btn" onclick="toggleNav()" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
