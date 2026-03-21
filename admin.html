@@ -427,16 +427,15 @@
       return '<span class="stock-indicator si-ok"></span>';
     }
 
-    const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
-
     function renderRow(p) {
       const thumbHTML = p.imagen_url
         ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
         : `<img class="thumb-placeholder" src="${ESCUDO}" alt="placeholder" />`;
 
-      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
-      const talleRowsHTML = TALLES_FIJOS.map(function(talle) {
-        var stock = talle in tallesMap ? tallesMap[talle] : 0;
+      const TALLES_RENDER = ['XS','S','M','L','XL','XXL'];
+      const tallesMapRender = Object.fromEntries((p.tallas || []).map(t => [t.talla || t.talle, t.stock]));
+      const talleRowsHTML = TALLES_RENDER.map(talle => {
+        const stock = talle in tallesMapRender ? tallesMapRender[talle] : 0;
         return '<div class="talle-row" id="row-' + p.id + '-' + talle + '">' +
           '<span class="talle-name">' + talle + '</span>' +
           stockIndicator(stock) +
@@ -518,11 +517,13 @@
         if (!product) continue;
 
         // Construir array completo con todos los talles fijos
-        const tallesActuales = Object.fromEntries((product.tallas || []).map(t => [t.talla, t.stock]));
-        const newTallas = TALLES_FIJOS.map(function(talle) {
-          var cambio = pendingChanges[id] && pendingChanges[id][talle] !== undefined;
-          var stock = cambio ? pendingChanges[id][talle] : (talle in tallesActuales ? tallesActuales[talle] : 0);
-          return { talle: talle, stock: stock };
+        const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
+        const tallesActuales = Object.fromEntries((product.tallas || []).map(t => [t.talla || t.talle, t.stock]));
+        const newTallas = TALLES_FIJOS.map(talle => {
+          const stockCambiado = (pendingChanges[id] && pendingChanges[id][talle] !== undefined)
+            ? pendingChanges[id][talle]
+            : (talle in tallesActuales ? tallesActuales[talle] : 0);
+          return { talla: talle, stock: stockCambiado };
         });
 
         // Recalcular stock total
