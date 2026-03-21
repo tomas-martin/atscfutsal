@@ -427,29 +427,33 @@
       return '<span class="stock-indicator si-ok"></span>';
     }
 
+    const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
+
     function renderRow(p) {
       const thumbHTML = p.imagen_url
         ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
         : `<img class="thumb-placeholder" src="${ESCUDO}" alt="placeholder" />`;
 
-      const talles = (p.tallas || []);
-      const talleRowsHTML = talles.length
-        ? talles.map(t => `
-            <div class="talle-row" id="row-${p.id}-${t.talla}">
-              <span class="talle-name">${t.talla}</span>
-              ${stockIndicator(t.stock)}
+      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
+
+      const talleRowsHTML = TALLES_FIJOS.map(talle => {
+        const stock = talle in tallesMap ? tallesMap[talle] : 0;
+        return `
+            <div class="talle-row" id="row-${p.id}-${talle}">
+              <span class="talle-name">${talle}</span>
+              ${stockIndicator(stock)}
               <input
                 type="number" min="0" max="9999"
-                value="${t.stock}"
+                value="${stock}"
                 data-producto="${p.id}"
-                data-talle="${t.talla}"
-                data-original="${t.stock}"
+                data-talle="${talle}"
+                data-original="${stock}"
                 onchange="markChange(this)"
                 oninput="markChange(this)"
               />
-              <span class="talle-stock-label">${t.stock > 0 ? t.stock + ' disponibles' : 'Sin stock'}</span>
-            </div>`).join('')
-        : '<p style="color:var(--muted-dim);font-size:.82rem;">Sin talles registrados</p>';
+              <span class="talle-stock-label">${stock > 0 ? stock + ' disponibles' : 'Sin stock'}</span>
+            </div>`;
+      }).join('');
 
       return `
         <div class="product-row" id="product-${p.id}">
@@ -521,10 +525,12 @@
         const product = allProducts.find(p => p.id == id);
         if (!product) continue;
 
-        // Construir nuevo array de talles
-        const newTallas = (product.tallas || []).map(t => {
-          const change = pendingChanges[id]?.[t.talla];
-          return { talle: t.talla, stock: change !== undefined ? change : t.stock };
+        // Construir array completo con todos los talles fijos
+        const tallesMap = Object.fromEntries((product.tallas || []).map(t => [t.talla, t.stock]));
+        const newTallas = TALLES_FIJOS.map(talle => {
+          const change = pendingChanges[id]?.[talle];
+          const original = talle in tallesMap ? tallesMap[talle] : 0;
+          return { talle: talle, stock: change !== undefined ? change : original };
         });
 
         // Recalcular stock total
