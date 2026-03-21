@@ -522,17 +522,20 @@
            </div>`;
 
       const talles = (p.tallas || []);
-      const tallesHTML = talles.length
-        ? talles.map(t => `
-            <button
-              class="talle-btn${t.stock <= 0 ? ' agotado' : ''}"
-              onclick="selectTalle(this, '${t.talla}', ${t.stock})"
-              ${t.stock <= 0 ? 'disabled' : ''}
+      const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
+      const tallesMap = Object.fromEntries(talles.map(t => [t.talla, t.stock]));
+      const tallesHTML = `${TALLES_FIJOS.map(t => {
+            const stock = tallesMap.hasOwnProperty(t) ? tallesMap[t] : -1;
+            const agotado = stock <= 0;
+            return `<button
+              class="talle-btn${agotado ? ' agotado' : ''}"
+              onclick="${!agotado ? `selectTalle(this, '${t}', ${stock})` : ''}"
+              ${agotado ? 'disabled' : ''}
             >
-              ${t.talla}
-              <span class="stock-num">${t.stock > 0 ? `${t.stock} ud.` : 'agotado'}</span>
-            </button>`).join('')
-        : `<p style="color:var(--muted-dim);font-size:.85rem;">Sin información de talles</p>`;
+              ${t}
+              <span class="stock-num">${stock > 0 ? stock + ' ud.' : 'sin stock'}</span>
+            </button>`;
+          }).join('')}`;
 
       const precioHTML = p.precio
         ? `<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`
