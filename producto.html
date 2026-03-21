@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:       #09111f;
+      --navy-mid:   #0f1929;
+      --navy-light: #182238;
+      --navy-card:  #131e30;
+      --blue:       #1d3d9a;
+      --blue-dim:   #152d73;
+      --red:        #c0192a;
+      --white:      #eef2ff;
+      --muted:      #8a96b8;
+      --muted-dim:  #4f5a76;
+      --border:     rgba(255,255,255,0.07);
+      --border-h:   rgba(255,255,255,0.15);
+      --green-wa:   #25D366;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(9,17,31,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .shield { width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
+    .logo-copy { line-height: 1; }
+    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
+    .burger {
+      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; padding: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 3px; cursor: pointer; transition: border-color .2s; flex-shrink: 0;
+    }
+    .burger:hover { border-color: var(--border-h); }
+    .burger span { display: block; height: 1.5px; background: var(--muted); border-radius: 2px; transition: all .3s; }
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--white); }
+    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--white); }
+
+    /* NAV DRAWER */
+    .nav-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 400;
+      background: var(--navy-mid); border-left: 1px solid var(--border);
+      transform: translateX(100%); transition: transform .32s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .nav-drawer-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-drawer-logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
+    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--white); }
+    .nav-drawer-close { background: transparent; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s; }
+    .nav-drawer-close:hover { color: var(--white); }
+    .nav-drawer-close svg { width: 18px; height: 18px; display: block; }
+    .nav-links { display: flex; flex-direction: column; padding: 1.5rem 0; flex: 1; }
+    .nav-links a {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600;
+      color: var(--muted); text-decoration: none;
+      padding: 14px 1.5rem; border-left: 2px solid transparent; transition: all .2s;
+    }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.03); border-left-color: var(--border-h); }
+    .nav-links a.active { color: var(--white); border-left-color: var(--red); }
+    .nav-links a .nav-icon { width: 16px; height: 16px; opacity: .5; flex-shrink: 0; }
+    .nav-links a.active .nav-icon { opacity: 1; }
+    .nav-drawer-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim); }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1.2rem 2.5rem .5rem;
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-dim);
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb svg { width: 10px; height: 10px; opacity: .4; }
+
+    /* ── PRODUCTO LAYOUT ── */
+    .product-page {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1.5rem 2.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ── GALERÍA IMAGEN ── */
+    .product-gallery { position: sticky; top: 84px; }
+
+    .main-img {
+      width: 100%; aspect-ratio: 4/3;
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .main-img img { width: 100%; height: 100%; object-fit: cover; }
+    .main-img .placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 14px; color: var(--muted-dim);
+    }
+    .main-img .placeholder img { width: 100px; height: 100px; object-fit: contain; opacity: .25; }
+    .main-img .placeholder span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    }
+
+    /* badge en imagen */
+    .img-badge {
+      position: absolute; top: 14px; left: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700;
+      padding: 4px 12px; border-radius: 2px;
+    }
+    .img-badge.nuevo { background: var(--red); color: #fff; }
+    .img-badge.ultimas { background: rgba(186,117,23,.9); color: #fff; }
+    .img-badge.agotado { background: rgba(0,0,0,.7); color: var(--muted); border: 1px solid var(--border); }
+
+    /* ── INFO PRODUCTO ── */
+    .product-info { display: flex; flex-direction: column; gap: 0; }
+
+    .product-cat {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--red); font-weight: 700; margin-bottom: .5rem;
+    }
+
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      letter-spacing: .05em; line-height: 1;
+      color: var(--white); margin-bottom: 1rem;
+    }
+
+    .product-price {
+      display: flex; align-items: baseline; gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem; letter-spacing: .04em; color: var(--white);
+    }
+    .price-currency {
+      font-family: 'Barlow', sans-serif;
+      font-size: .9rem; color: var(--muted); font-weight: 500;
+    }
+    .price-consultar {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem; letter-spacing: .1em; color: var(--muted);
+    }
+
+    .divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
+
+    /* descripción */
+    .product-desc {
+      font-size: .92rem; color: var(--muted); line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    /* stock total */
+    .stock-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+      padding: 5px 12px; border-radius: 2px; margin-bottom: 1.5rem;
+    }
+    .stock-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .stock-badge.disponible { background: rgba(15,110,86,.15); border: 1px solid rgba(15,110,86,.3); color: #1d9e75; }
+    .stock-badge.disponible .dot { background: #1d9e75; }
+    .stock-badge.pocas { background: rgba(186,117,23,.12); border: 1px solid rgba(186,117,23,.3); color: #ba7517; }
+    .stock-badge.pocas .dot { background: #ba7517; }
+    .stock-badge.agotado { background: rgba(192,25,42,.12); border: 1px solid rgba(192,25,42,.3); color: var(--red); }
+    .stock-badge.agotado .dot { background: var(--red); }
+
+    /* talles */
+    .talle-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted-dim); font-weight: 700; margin-bottom: .75rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .talle-label span { color: var(--muted); font-weight: 400; letter-spacing: 0; text-transform: none; font-size: .8rem; }
+
+    .talle-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.8rem; }
+
+    .talle-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; letter-spacing: .06em; font-weight: 700;
+      min-width: 52px; padding: 9px 12px; text-align: center;
+      border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+      border-radius: 3px; cursor: pointer; transition: all .2s;
+      position: relative;
+    }
+    .talle-btn:hover:not(.agotado) { border-color: var(--border-h); color: var(--white); }
+    .talle-btn.selected { border-color: var(--white); background: rgba(255,255,255,.08); color: var(--white); }
+    .talle-btn.agotado {
+      opacity: .3; cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    .talle-btn .stock-num {
+      display: block;
+      font-size: .58rem; letter-spacing: .04em; font-weight: 400;
+      color: var(--muted-dim); margin-top: 2px; text-decoration: none;
+    }
+    .talle-btn.selected .stock-num { color: var(--muted); }
+
+    /* talle seleccionado info */
+    .talle-selected-info {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .78rem; letter-spacing: .08em; color: var(--muted);
+      margin-bottom: 1.5rem; min-height: 1.2rem;
+    }
+    .talle-selected-info strong { color: var(--white); }
+
+    /* botones */
+    .btn-wa {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 16px;
+      background: var(--green-wa); color: #fff;
+      border: none; border-radius: 4px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s;
+      margin-bottom: 10px;
+    }
+    .btn-wa:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-wa:active { transform: translateY(0); }
+    .btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-wa.disabled { background: var(--navy-light); color: var(--muted-dim); cursor: not-allowed; pointer-events: none; border: 1px solid var(--border); }
+
+    .btn-back {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 4px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-back:hover { border-color: var(--border-h); color: var(--white); }
+    .btn-back svg { width: 14px; height: 14px; }
+
+    .wa-note {
+      font-size: .75rem; color: var(--muted-dim); text-align: center;
+      margin-top: .6rem; letter-spacing: .03em;
+    }
+
+    /* ── SKELETON ── */
+    .skeleton-page {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1.5rem 2.5rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    }
+    .skeleton-block { background: var(--navy-light); border-radius: 6px; animation: pulse 1.4s ease-in-out infinite; }
+    .skeleton-img-block { aspect-ratio: 4/3; }
+    .skeleton-line { height: 14px; border-radius: 3px; margin-bottom: 14px; background: var(--navy-light); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* ── ERROR ── */
+    .error-page {
+      max-width: 500px; margin: 6rem auto; text-align: center; padding: 0 2rem;
+    }
+    .error-page h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white); margin-bottom: .5rem; }
+    .error-page p { color: var(--muted); margin-bottom: 1.5rem; font-size: .9rem; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .product-page { grid-template-columns: 1fr; gap: 2rem; }
+      .product-gallery { position: static; }
+      .skeleton-page { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      header { padding: 0 1.2rem; }
+      .logo-copy .tag { display: none; }
+      .breadcrumb { padding: 1rem 1.2rem .4rem; }
+      .product-page { padding: 1rem 1.2rem 4rem; }
+      .nav-drawer { width: 100%; border-left: none; }
+      footer { padding: 1.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="logo" href="index.html">
+      <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo Andes Talleres" />
+      <div class="logo-copy">
+        <span class="name">Andes Talleres</span>
+        <span class="tag">Futsal · Indumentaria</span>
+      </div>
+    </a>
+    <button class="burger" id="burger-btn" onclick="toggleNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="nav-drawer-header">
+      <div class="nav-drawer-logo">
+        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <span>Andes Talleres</span>
+      </div>
+      <button class="nav-drawer-close" onclick="closeNav()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/></svg>
+        Inicio
+      </a>
+      <a href="catalogo.html" class="active">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        Catálogo
+      </a>
+      <a href="contacto.html">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/></svg>
+        Contacto
+      </a>
+    </nav>
+    <div class="nav-drawer-footer">© 2026 Andes Talleres Sport Club</div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a>
+    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,2 7,5 3,8"/></svg>
+    <a href="catalogo.html">Catálogo</a>
+    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,2 7,5 3,8"/></svg>
+    <span id="breadcrumb-name" style="color:var(--white)">Cargando...</span>
+  </div>
+
+  <!-- CONTENIDO DINÁMICO -->
+  <div id="page-content">
+    <!-- Skeleton de carga -->
+    <div class="skeleton-page" id="skeleton">
+      <div class="skeleton-block skeleton-img-block"></div>
+      <div>
+        <div class="skeleton-line" style="width:30%;height:10px;margin-bottom:16px"></div>
+        <div class="skeleton-line" style="width:70%;height:28px;margin-bottom:8px"></div>
+        <div class="skeleton-line" style="width:50%;height:28px;margin-bottom:24px"></div>
+        <div class="skeleton-line" style="width:25%;height:20px;margin-bottom:24px"></div>
+        <div class="skeleton-line" style="width:100%;height:1px;margin-bottom:24px"></div>
+        <div class="skeleton-line" style="width:100%;height:10px"></div>
+        <div class="skeleton-line" style="width:90%;height:10px"></div>
+        <div class="skeleton-line" style="width:80%;height:10px;margin-bottom:24px"></div>
+        <div style="display:flex;gap:8px;margin-bottom:24px">
+          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
+          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
+          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
+          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
+        </div>
+        <div class="skeleton-block" style="height:54px;border-radius:4px;margin-bottom:10px"></div>
+        <div class="skeleton-block" style="height:46px;border-radius:4px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Andes Talleres Sport Club · Mendoza, Argentina</p>
+    <span class="hashtags">#SomosTalleres &nbsp; #SomosFamilia</span>
+  </footer>
+
+  <script>
+    // ══════════════════════════════════════════════════
+    // CONFIGURACIÓN — cambiá el número cuando lo tengas
+    // Formato: código país + número sin espacios ni +
+    // Ejemplo Argentina: 5493412345678
+    // ══════════════════════════════════════════════════
+    const WA_NUMBER = '5493410000000';
+
+    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+    const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
+
+    // ── NAV ──
+    function toggleNav() {
+      const open = document.getElementById('nav-drawer').classList.toggle('open');
+      document.getElementById('nav-overlay').classList.toggle('open', open);
+      document.getElementById('burger-btn').classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeNav() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('nav-overlay').classList.remove('open');
+      document.getElementById('burger-btn').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+    // ── ESTADO ──
+    let producto = null;
+    let talleSeleccionado = null;
+
+    // ── FETCH PRODUCTO ──
+    async function fetchProducto(id) {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/productos?id=eq.${id}&select=*`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      if (!res.ok) throw new Error('Error');
+      const data = await res.json();
+      if (!data.length) throw new Error('No encontrado');
+      return data[0];
+    }
+
+    // ── STOCK BADGE ──
+    function getStockBadge(total) {
+      if (total <= 0)  return { cls: 'agotado',    txt: 'Sin stock' };
+      if (total <= 5)  return { cls: 'pocas',      txt: `${total} unidades disponibles` };
+      return               { cls: 'disponible',  txt: `${total} unidades disponibles` };
+    }
+
+    // ── IMG BADGE ──
+    function getImgBadge(p) {
+      if (p.stock_total <= 0) return `<span class="img-badge agotado">Sin stock</span>`;
+      if (p.nuevo)            return `<span class="img-badge nuevo">Nuevo</span>`;
+      if (p.stock_total <= 5) return `<span class="img-badge ultimas">¡Últimas!</span>`;
+      return '';
+    }
+
+    // ── SELECCIONAR TALLE ──
+    function selectTalle(btn, talle, stock) {
+      if (stock <= 0) return;
+      talleSeleccionado = { talle, stock };
+      document.querySelectorAll('.talle-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const info = document.getElementById('talle-info');
+      info.innerHTML = `Talle <strong>${talle}</strong> seleccionado — <strong>${stock}</strong> unidad${stock !== 1 ? 'es' : ''} disponible${stock !== 1 ? 's' : ''}`;
+      actualizarBtnWA();
+    }
+
+    // ── WHATSAPP ──
+    function actualizarBtnWA() {
+      const btn = document.getElementById('btn-wa');
+      if (!talleSeleccionado) {
+        btn.classList.add('disabled');
+        btn.href = '#';
+        return;
+      }
+      const precio = producto.precio
+        ? `$${producto.precio.toLocaleString('es-AR')}`
+        : 'a consultar';
+      const msg = encodeURIComponent(
+        `Hola! Me interesa este producto de Andes Talleres Futsal:\n\n` +
+        `*${producto.nombre}*\n` +
+        `Talle: ${talleSeleccionado.talle}\n` +
+        `Precio: ${precio}\n\n` +
+        `¿Está disponible?`
+      );
+      btn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+      btn.classList.remove('disabled');
+    }
+
+    // ── RENDER ──
+    function renderProducto(p) {
+      producto = p;
+      document.title = `${p.nombre} — Andes Talleres Futsal`;
+      document.getElementById('breadcrumb-name').textContent = p.nombre;
+
+      const sb = getStockBadge(p.stock_total);
+
+      const imgHTML = p.imagen_url
+        ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
+        : `<div class="placeholder">
+             <img src="${ESCUDO}" alt="Andes Talleres" />
+             <span>Sin foto aún</span>
+           </div>`;
+
+      const talles = (p.tallas || []);
+      const tallesHTML = talles.length
+        ? talles.map(t => `
+            <button
+              class="talle-btn${t.stock <= 0 ? ' agotado' : ''}"
+              onclick="selectTalle(this, '${t.talla}', ${t.stock})"
+              ${t.stock <= 0 ? 'disabled' : ''}
+            >
+              ${t.talla}
+              <span class="stock-num">${t.stock > 0 ? `${t.stock} ud.` : 'agotado'}</span>
+            </button>`).join('')
+        : `<p style="color:var(--muted-dim);font-size:.85rem;">Sin información de talles</p>`;
+
+      const precioHTML = p.precio
+        ? `<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`
+        : `<span class="price-consultar">Precio a consultar</span>`;
+
+      document.getElementById('page-content').innerHTML = `
+        <div class="product-page">
+          <!-- GALERÍA -->
+          <div class="product-gallery">
+            <div class="main-img">
+              ${imgHTML}
+              ${getImgBadge(p)}
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="product-info">
+            <div class="product-cat">${p.categoria}</div>
+            <h1 class="product-name">${p.nombre}</h1>
+
+            <div class="product-price">${precioHTML}</div>
+
+            <span class="stock-badge ${sb.cls}">
+              <span class="dot"></span>
+              ${sb.txt}
+            </span>
+
+            <div class="divider"></div>
+
+            ${p.descripcion ? `<p class="product-desc">${p.descripcion}</p>` : ''}
+
+            <div class="talle-label">
+              Elegí tu talle
+              <span>Cantidad por talle</span>
+            </div>
+            <div class="talle-grid">${tallesHTML}</div>
+
+            <div class="talle-selected-info" id="talle-info">
+              Seleccioná un talle para continuar
+            </div>
+
+            <a id="btn-wa" href="#" class="btn-wa disabled" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Consultar por WhatsApp
+            </a>
+
+            <a href="catalogo.html" class="btn-back">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
+              Volver al catálogo
+            </a>
+
+            <p class="wa-note">Al hacer click se abrirá WhatsApp con los datos del producto precargados</p>
+          </div>
+        </div>`;
+    }
+
+    function renderError() {
+      document.getElementById('page-content').innerHTML = `
+        <div class="error-page">
+          <h2>Producto no encontrado</h2>
+          <p>Este producto no existe o fue eliminado del catálogo.</p>
+          <a href="catalogo.html" class="btn-back" style="display:inline-flex;width:auto;padding:12px 24px;">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
+            Volver al catálogo
+          </a>
+        </div>`;
+    }
+
+    // ── INIT ──
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) { renderError(); return; }
+      try {
+        const p = await fetchProducto(id);
+        renderProducto(p);
+      } catch (e) {
+        console.error(e);
+        renderError();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
