@@ -380,6 +380,8 @@
         if (!res.ok) throw new Error(data.error_description || data.msg || 'Credenciales incorrectas');
 
         accessToken = data.access_token;
+        localStorage.setItem('atsc_token', data.access_token);
+        localStorage.setItem('atsc_email', data.user.email);
         document.getElementById('user-email').textContent = data.user.email;
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
@@ -397,6 +399,8 @@
       accessToken = null;
       allProducts = [];
       pendingChanges = {};
+      localStorage.removeItem('atsc_token');
+      localStorage.removeItem('atsc_email');
       document.getElementById('login-screen').style.display = 'flex';
       document.getElementById('admin-panel').style.display = 'none';
       document.getElementById('login-email').value = '';
@@ -609,6 +613,30 @@
     document.getElementById('login-email').addEventListener('keydown', e => {
       if (e.key === 'Enter') document.getElementById('login-password').focus();
     });
+
+    // Auto-login si hay sesión guardada
+    (async function checkSession() {
+      const savedToken = localStorage.getItem('atsc_token');
+      const savedEmail = localStorage.getItem('atsc_email');
+      if (!savedToken) return;
+
+      // Verificar que el token sigue siendo válido
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${savedToken}` }
+      });
+
+      if (res.ok) {
+        accessToken = savedToken;
+        document.getElementById('user-email').textContent = savedEmail || '';
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadProducts();
+      } else {
+        // Token expirado, limpiar
+        localStorage.removeItem('atsc_token');
+        localStorage.removeItem('atsc_email');
+      }
+    })();
   </script>
 </body>
 </html>
