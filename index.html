@@ -387,7 +387,8 @@
         : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
 
       return `
-        <article class="card${soldOut ? ' sold-out' : ''}" data-category="${p.categoria}" onclick="irProducto('${p.id}')">
+        <article class="card${soldOut ? ' sold-out' : ''}" data-category="${p.categoria}" onclick="irProducto(this)"
+data-id="${p.id}">
           <div class="card-img">
             ${imgContent}${badge}
             <div class="stock-bar-wrap">
@@ -419,11 +420,13 @@
         ? allProducts.map(renderCard).join('')
         : `<div class="empty"><p>No hay productos disponibles.</p></div>`;
     }
-    function irProducto(id) {
-  console.log("ID recibido:", id);
+    function irProducto(el) {
+  const id = el.getAttribute("data-id");
 
-  if (!id || id === "undefined" || id === "null") {
-    alert("Error: producto sin ID");
+  console.log("ID clickeado:", id);
+
+  if (!id || id === "undefined") {
+    alert("Error: ID inválido");
     return;
   }
 
