@@ -634,7 +634,7 @@
 
       // onclick → en el futuro lleva a producto.html?id=X
       return `
-        <article class="card${soldOut ? ' sold-out' : ''}" onclick="irProducto(${p.id})">
+        <article class="card${soldOut ? ' sold-out' : ''}" onclick="irProducto('${p.id}')">
           <div class="card-img">
             ${imgContent}${badge}
             <div class="stock-bar-wrap">
@@ -784,9 +784,10 @@
       renderGrid();
     }
     function irProducto(id) {
-  if (!id || id === "undefined" || id === null) {
-    alert("Error: este producto no tiene ID");
-    console.log("ID inválido:", id);
+  console.log("ID recibido:", id);
+
+  if (!id || id === "undefined" || id === "null") {
+    alert("Error: producto sin ID");
     return;
   }
 
