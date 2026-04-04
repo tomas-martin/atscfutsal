@@ -21,7 +21,9 @@ serve(async (req) => {
     const SERVICE_ROLE_KEY = Deno.env.get('SERVICE_ROLE_KEY');
     const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
 
-    // 1. Insertar pedido en Supabase con estado "iniciado"
+    console.log("TOKEN MP:", MP_ACCESS_TOKEN);
+
+    // 1. Insertar pedido en Supabase
     const pedidoRes = await fetch(`${SUPABASE_URL}/rest/v1/pedidos`, {
       method: 'POST',
       headers: {
@@ -37,7 +39,9 @@ serve(async (req) => {
         estado: 'iniciado',
       }),
     });
-    const [pedido] = await pedidoRes.json();
+
+    const pedidoData = await pedidoRes.json();
+    const pedido = pedidoData[0];
 
     // 2. Crear preferencia en Mercado Pago
     const preferencia = {
@@ -73,9 +77,24 @@ serve(async (req) => {
       },
       body: JSON.stringify(preferencia),
     });
-    const mpData = await mpRes.json();
 
-    // 3. Actualizar pedido con preference_id de MP
+    const mpData = await mpRes.json();
+    console.log("MP RESPONSE:", mpData);
+
+    // 🚨 VALIDACIÓN CLAVE (esto evita el undefined)
+    if (!mpData.init_point && !mpData.sandbox_init_point) {
+      console.error("ERROR EN MERCADO PAGO:", mpData);
+
+      return new Response(JSON.stringify({
+        error: "Error creando preferencia en Mercado Pago",
+        detalle: mpData
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // 3. Actualizar pedido
     await fetch(`${SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido.id}`, {
       method: 'PATCH',
       headers: {
@@ -86,6 +105,7 @@ serve(async (req) => {
       body: JSON.stringify({ mp_status: mpData.id }),
     });
 
+    // 4. Respuesta correcta
     return new Response(JSON.stringify({
       init_point: mpData.init_point,
       sandbox_init_point: mpData.sandbox_init_point,
@@ -95,6 +115,8 @@ serve(async (req) => {
     });
 
   } catch (error) {
+    console.error("ERROR GENERAL:", error);
+
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
