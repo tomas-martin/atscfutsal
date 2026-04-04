@@ -634,7 +634,7 @@
 
       // onclick → en el futuro lleva a producto.html?id=X
       return `
-        <article class="card${soldOut ? ' sold-out' : ''}" onclick="window.location='producto.html?id=${p.id}'">
+        <article class="card${soldOut ? ' sold-out' : ''}" onclick="irProducto(${p.id})">
           <div class="card-img">
             ${imgContent}${badge}
             <div class="stock-bar-wrap">
@@ -783,6 +783,15 @@
       buildTalleChips();
       renderGrid();
     }
+    function irProducto(id) {
+  if (!id || id === "undefined" || id === null) {
+    alert("Error: este producto no tiene ID");
+    console.log("ID inválido:", id);
+    return;
+  }
+
+  window.location.href = "producto.html?id=" + id;
+}
 
     init();
   </script>
