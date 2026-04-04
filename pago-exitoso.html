@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Seña confirmada! — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #09111f; --navy-mid: #0f1929; --navy-light: #182238;
+      --blue: #1d3d9a; --blue-dim: #152d73; --red: #c0192a;
+      --white: #eef2ff; --muted: #8a96b8; --muted-dim: #4f5a76;
+      --border: rgba(255,255,255,0.07); --green: #1d9e75;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+
+    .card {
+      background: var(--navy-mid); border: 1px solid rgba(29,158,117,.3);
+      border-radius: 8px; padding: 3rem 2.5rem; max-width: 480px; width: 100%; text-align: center;
+    }
+    .icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(29,158,117,.15); border: 2px solid var(--green);
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+    }
+    .icon svg { width: 36px; height: 36px; color: var(--green); }
+    .title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: .05em; color: var(--white); margin-bottom: .5rem; }
+    .title em { color: var(--green); font-style: normal; }
+    .desc { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .desc strong { color: var(--white); }
+
+    .info-box {
+      background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1rem 1.2rem; margin-bottom: 2rem; text-align: left;
+    }
+    .info-row { display: flex; justify-content: space-between; padding: .4rem 0; font-size: .85rem; }
+    .info-row span:first-child { color: var(--muted-dim); font-family: 'Barlow Condensed', sans-serif; letter-spacing: .08em; text-transform: uppercase; font-size: .72rem; }
+    .info-row span:last-child { color: var(--white); font-weight: 600; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+      background: var(--blue); color: #fff; text-decoration: none;
+      padding: 13px 28px; border-radius: 3px; transition: background .2s;
+    }
+    .btn:hover { background: #2a4fc4; }
+    .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; }
+    .logo img { width: 36px; height: 36px; object-fit: contain; }
+    .logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .07em; color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+      <span>Andes Talleres</span>
+    </div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <div class="title">¡Seña <em>Confirmada!</em></div>
+    <p class="desc">
+      Tu seña fue procesada exitosamente. El producto quedó <strong>reservado a tu nombre</strong>.<br><br>
+      Nos vamos a contactar por WhatsApp para coordinar la entrega y el pago del resto.
+    </p>
+    <div class="info-box" id="info-box">
+      <div class="info-row"><span>N° de pedido</span><span id="pedido-id">—</span></div>
+      <div class="info-row"><span>Estado</span><span style="color:var(--green)">✓ Seña pagada</span></div>
+    </div>
+    <a href="catalogo.html" class="btn">Ver más productos</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const pedidoId = params.get('pedido');
+    if (pedidoId) document.getElementById('pedido-id').textContent = '#' + pedidoId;
+  </script>
+</body>
+</html>

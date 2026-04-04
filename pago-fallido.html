@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pago fallido — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #09111f; --navy-mid: #0f1929; --navy-light: #182238;
+      --blue: #1d3d9a; --red: #c0192a; --white: #eef2ff;
+      --muted: #8a96b8; --muted-dim: #4f5a76; --border: rgba(255,255,255,0.07);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+    .card { background: var(--navy-mid); border: 1px solid rgba(192,25,42,.3); border-radius: 8px; padding: 3rem 2.5rem; max-width: 480px; width: 100%; text-align: center; }
+    .icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(192,25,42,.12); border: 2px solid var(--red); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .icon svg { width: 36px; height: 36px; color: var(--red); }
+    .title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: .05em; color: var(--white); margin-bottom: .5rem; }
+    .title em { color: var(--red); font-style: normal; }
+    .desc { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .desc strong { color: var(--white); }
+    .btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: .88rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700; background: var(--blue); color: #fff; text-decoration: none; padding: 13px 28px; border-radius: 3px; transition: background .2s; }
+    .btn:hover { background: #2a4fc4; }
+    .btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .btn.secondary:hover { border-color: rgba(255,255,255,.15); color: var(--white); background: transparent; }
+    .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; }
+    .logo img { width: 36px; height: 36px; object-fit: contain; }
+    .logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .07em; color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+      <span>Andes Talleres</span>
+    </div>
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+      </svg>
+    </div>
+    <div class="title">Pago <em>Fallido</em></div>
+    <p class="desc">
+      No se pudo procesar tu pago. Esto puede pasar por fondos insuficientes, datos incorrectos o un problema temporal.<br><br>
+      <strong>No se realizó ningún cobro.</strong> Podés intentarlo de nuevo.
+    </p>
+    <div class="btns">
+      <a href="javascript:history.back()" class="btn">Intentar de nuevo</a>
+      <a href="catalogo.html" class="btn secondary">Volver al catálogo</a>
+    </div>
+  </div>
+</body>
+</html>

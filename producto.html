@@ -322,6 +322,80 @@
       .nav-drawer { width: 100%; border-left: none; }
       footer { padding: 1.5rem 1.2rem; }
     }
+
+    /* ── FORMULARIO SEÑA ── */
+    .sena-section {
+      margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;
+    }
+    .sena-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; letter-spacing: .05em; color: var(--white);
+      margin-bottom: .3rem;
+    }
+    .sena-desc {
+      font-size: .82rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.5;
+    }
+    .sena-desc strong { color: var(--white); }
+
+    .sena-form { display: flex; flex-direction: column; gap: .85rem; }
+    .sena-field label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted-dim); font-weight: 700; display: block; margin-bottom: .35rem;
+    }
+    .sena-field input {
+      width: 100%; background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 3px; padding: 10px 14px; color: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: .92rem;
+      transition: border-color .2s; outline: none;
+    }
+    .sena-field input:focus { border-color: var(--blue); }
+    .sena-field input::placeholder { color: var(--muted-dim); }
+    .sena-field input.error { border-color: var(--red); }
+
+    .sena-resumen {
+      background: var(--navy-light); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1rem 1.2rem;
+      display: flex; flex-direction: column; gap: .4rem;
+    }
+    .sena-resumen-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .82rem; color: var(--muted);
+    }
+    .sena-resumen-row.total {
+      border-top: 1px solid var(--border); padding-top: .5rem; margin-top: .2rem;
+      font-size: 1rem; color: var(--white); font-weight: 700;
+    }
+    .sena-resumen-row span:last-child { color: var(--white); font-weight: 600; }
+    .sena-resumen-row.total span:last-child { color: #25D366; font-size: 1.1rem; }
+
+    .btn-sena {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 16px;
+      background: #009ee3; color: #fff;
+      border: none; border-radius: 4px; cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
+      text-decoration: none; transition: opacity .2s, transform .15s;
+      margin-top: .5rem;
+    }
+    .btn-sena:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-sena:disabled { background: var(--muted-dim); cursor: not-allowed; transform: none; }
+    .btn-sena svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .sena-note {
+      font-size: .73rem; color: var(--muted-dim); text-align: center;
+      margin-top: .5rem; line-height: 1.5;
+    }
+
+    /* spinner */
+    .spinner {
+      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -493,6 +567,7 @@
       const info = document.getElementById('talle-info');
       info.innerHTML = `Talle <strong>${talle}</strong> seleccionado — <strong>${stock}</strong> unidad${stock !== 1 ? 'es' : ''} disponible${stock !== 1 ? 's' : ''}`;
       actualizarBtnWA();
+      if (producto && producto.precio) mostrarSena();
     }
 
     // ── WHATSAPP ──
@@ -595,7 +670,61 @@
               Consultar por WhatsApp
             </a>
 
-            <a href="catalogo.html" class="btn-back">
+            <!-- SECCIÓN SEÑA -->
+            <div class="sena-section" id="sena-section" style="display:none">
+              <div class="sena-title">Señar este producto</div>
+              <p class="sena-desc">
+                Pagá el <strong>50% ahora</strong> como seña para reservar tu talle.
+                El resto lo abonás cuando retirás en el club.
+              </p>
+
+              <div class="sena-resumen" id="sena-resumen">
+                <div class="sena-resumen-row">
+                  <span>Producto</span>
+                  <span id="sr-producto">—</span>
+                </div>
+                <div class="sena-resumen-row">
+                  <span>Talle</span>
+                  <span id="sr-talle">—</span>
+                </div>
+                <div class="sena-resumen-row">
+                  <span>Precio total</span>
+                  <span id="sr-total">—</span>
+                </div>
+                <div class="sena-resumen-row total">
+                  <span>Seña a pagar (50%)</span>
+                  <span id="sr-sena">—</span>
+                </div>
+              </div>
+
+              <div class="sena-form" id="sena-form">
+                <div class="sena-field">
+                  <label>Nombre completo</label>
+                  <input type="text" id="sena-nombre" placeholder="Juan Pérez" />
+                </div>
+                <div class="sena-field">
+                  <label>Email</label>
+                  <input type="email" id="sena-email" placeholder="juan@email.com" />
+                </div>
+                <div class="sena-field">
+                  <label>Teléfono (WhatsApp)</label>
+                  <input type="tel" id="sena-tel" placeholder="3411234567" />
+                </div>
+
+                <button class="btn-sena" id="btn-sena" onclick="pagarSena()">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                  </svg>
+                  Pagar seña con Mercado Pago
+                </button>
+                <p class="sena-note">
+                  Serás redirigido a Mercado Pago para completar el pago de forma segura.<br>
+                  Una vez confirmado, el stock queda reservado a tu nombre.
+                </p>
+              </div>
+            </div>
+
+            <a href="catalogo.html" class="btn-back" style="margin-top:.5rem">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
               Volver al catálogo
             </a>
@@ -615,6 +744,67 @@
             Volver al catálogo
           </a>
         </div>`;
+    }
+
+    // ── SEÑA ──
+    function mostrarSena() {
+      if (!talleSeleccionado || !producto || !producto.precio) return;
+      const sena = Math.ceil(producto.precio * 0.5);
+      document.getElementById('sr-producto').textContent = producto.nombre;
+      document.getElementById('sr-talle').textContent = talleSeleccionado.talle;
+      document.getElementById('sr-total').textContent = '$' + producto.precio.toLocaleString('es-AR');
+      document.getElementById('sr-sena').textContent = '$' + sena.toLocaleString('es-AR');
+      document.getElementById('sena-section').style.display = 'block';
+    }
+
+    async function pagarSena() {
+      const nombre = document.getElementById('sena-nombre').value.trim();
+      const email  = document.getElementById('sena-email').value.trim();
+      const tel    = document.getElementById('sena-tel').value.trim();
+
+      // Validar
+      let ok = true;
+      ['sena-nombre','sena-email','sena-tel'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+      });
+      if (!ok) return;
+
+      const btn = document.getElementById('btn-sena');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Procesando...';
+
+      try {
+        const res = await fetch('https://qgjocvjmspntldkaghtb.supabase.co/functions/v1/crear-preferencia', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM',
+          },
+          body: JSON.stringify({
+            producto_id: producto.id,
+            producto_nombre: producto.nombre,
+            talle: talleSeleccionado.talle,
+            precio_total: producto.precio,
+            nombre_cliente: nombre,
+            email_cliente: email,
+            telefono_cliente: tel,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // En pruebas usar sandbox_init_point, en producción init_point
+        window.location.href = data.sandbox_init_point || data.init_point;
+
+      } catch (e) {
+        console.error(e);
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> Pagar seña con Mercado Pago';
+        alert('Hubo un error al procesar el pago. Intentá de nuevo.');
+      }
     }
 
     // ── INIT ──
