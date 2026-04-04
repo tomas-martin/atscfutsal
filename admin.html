@@ -7,19 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --navy:      #09111f;
-      --navy-mid:  #0f1929;
-      --navy-light:#182238;
-      --navy-card: #131e30;
-      --blue:      #1d3d9a;
-      --blue-dim:  #152d73;
-      --red:       #c0192a;
-      --white:     #eef2ff;
-      --muted:     #8a96b8;
-      --muted-dim: #4f5a76;
-      --border:    rgba(255,255,255,0.07);
-      --border-h:  rgba(255,255,255,0.15);
-      --green:     #1d9e75;
+      --navy:       #09111f;
+      --navy-mid:   #0f1929;
+      --navy-light: #182238;
+      --navy-card:  #131e30;
+      --blue:       #1d3d9a;
+      --blue-dim:   #152d73;
+      --red:        #c0192a;
+      --white:      #eef2ff;
+      --muted:      #8a96b8;
+      --muted-dim:  #4f5a76;
+      --border:     rgba(255,255,255,0.07);
+      --border-h:   rgba(255,255,255,0.15);
+      --green:      #1d9e75;
+      --yellow:     #ba7517;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
@@ -28,615 +29,832 @@
     ::-webkit-scrollbar-track { background: var(--navy-mid); }
     ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
 
+    /* ══ LOGIN ══ */
+    #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; }
+    .login-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:6px; padding:2.5rem; width:100%; max-width:400px; }
+    .login-logo { display:flex; align-items:center; gap:12px; margin-bottom:2rem; }
+    .login-logo img { width:44px; height:44px; object-fit:contain; border-radius:3px; }
+    .login-logo-text .name { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.07em; color:var(--white); display:block; }
+    .login-logo-text .sub { font-family:'Barlow Condensed',sans-serif; font-size:.62rem; letter-spacing:.28em; text-transform:uppercase; color:var(--red); font-weight:700; }
+    .login-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.06em; margin-bottom:.3rem; }
+    .login-sub { font-size:.85rem; color:var(--muted); margin-bottom:2rem; }
+    .field { margin-bottom:1.2rem; }
+    .field label { font-family:'Barlow Condensed',sans-serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:var(--muted-dim); display:block; margin-bottom:.4rem; }
+    .field input { width:100%; background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:10px 14px; color:var(--white); font-family:'Barlow',sans-serif; font-size:.92rem; outline:none; transition:border-color .2s; }
+    .field input:focus { border-color:var(--blue); }
+    .field input::placeholder { color:var(--muted-dim); }
+    .btn-login { width:100%; padding:13px; background:var(--blue); color:#fff; border:none; border-radius:3px; font-family:'Barlow Condensed',sans-serif; font-size:.9rem; letter-spacing:.15em; text-transform:uppercase; font-weight:700; cursor:pointer; transition:background .2s; }
+    .btn-login:hover { background:#2a4fc4; }
+    .btn-login:disabled { background:var(--muted-dim); cursor:not-allowed; }
+    .login-error { font-size:.82rem; color:var(--red); margin-top:.8rem; text-align:center; min-height:1.2rem; }
+
+    /* ══ LAYOUT ══ */
+    #admin-panel { display:none; min-height:100vh; }
+
     /* ── HEADER ── */
-    header {
-      height: 64px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2.5rem;
-      background: rgba(9,17,31,0.95);
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
+    .admin-header {
+      height:64px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 2rem; background:rgba(9,17,31,.97);
+      border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100;
     }
-    .header-left { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .shield { width: 36px; height: 36px; object-fit: contain; border-radius: 3px; }
-    .header-title { line-height: 1; }
-    .header-title .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .07em; color: var(--white); display: block; }
-    .header-title .sub { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
-    .admin-badge {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700;
-      background: rgba(192,25,42,.15); border: 1px solid rgba(192,25,42,.3);
-      color: var(--red); padding: 3px 10px; border-radius: 2px;
-    }
-    .header-right { display: flex; align-items: center; gap: 1rem; }
-    .user-email { font-size: .8rem; color: var(--muted); }
-    .btn-logout {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
-      background: transparent; border: 1px solid var(--border); color: var(--muted);
-      padding: 6px 14px; border-radius: 2px; cursor: pointer; transition: all .2s;
-    }
-    .btn-logout:hover { border-color: var(--red); color: var(--red); }
-    .back-link {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
-      color: var(--muted); text-decoration: none; transition: color .2s;
-    }
-    .back-link:hover { color: var(--white); }
+    .header-left { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .header-left img { width:34px; height:34px; object-fit:contain; }
+    .header-brand .name { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.07em; color:var(--white); display:block; }
+    .header-brand .sub { font-family:'Barlow Condensed',sans-serif; font-size:.58rem; letter-spacing:.25em; text-transform:uppercase; color:var(--red); font-weight:700; }
+    .admin-badge { font-family:'Barlow Condensed',sans-serif; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700; background:rgba(192,25,42,.15); border:1px solid rgba(192,25,42,.3); color:var(--red); padding:3px 10px; border-radius:2px; }
+    .header-right { display:flex; align-items:center; gap:1rem; }
+    .user-email { font-size:.78rem; color:var(--muted); }
+    .btn-logout { font-family:'Barlow Condensed',sans-serif; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600; background:transparent; border:1px solid var(--border); color:var(--muted); padding:5px 12px; border-radius:2px; cursor:pointer; transition:all .2s; }
+    .btn-logout:hover { border-color:var(--red); color:var(--red); }
 
-    /* ── LOGIN ── */
-    #login-screen {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: 2rem;
-    }
-    .login-card {
-      background: var(--navy-mid); border: 1px solid var(--border);
-      border-radius: 6px; padding: 2.5rem; width: 100%; max-width: 400px;
-    }
-    .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
-    .login-logo img { width: 44px; height: 44px; object-fit: contain; border-radius: 3px; }
-    .login-logo-text .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: .07em; color: var(--white); display: block; }
-    .login-logo-text .sub { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; }
-    .login-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .06em; color: var(--white); margin-bottom: .3rem; }
-    .login-sub { font-size: .85rem; color: var(--muted); margin-bottom: 2rem; }
-    .field { margin-bottom: 1.2rem; }
-    .field label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700;
-      color: var(--muted-dim); display: block; margin-bottom: .4rem;
-    }
-    .field input {
-      width: 100%; background: var(--navy-light); border: 1px solid var(--border);
-      border-radius: 3px; padding: 10px 14px; color: var(--white);
-      font-family: 'Barlow', sans-serif; font-size: .92rem;
-      transition: border-color .2s; outline: none;
-    }
-    .field input:focus { border-color: var(--blue); }
-    .field input::placeholder { color: var(--muted-dim); }
-    .btn-login {
-      width: 100%; padding: 13px;
-      background: var(--blue); color: #fff; border: none; border-radius: 3px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .9rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
-      cursor: pointer; transition: background .2s; margin-top: .5rem;
-    }
-    .btn-login:hover { background: #2a4fc4; }
-    .btn-login:disabled { background: var(--muted-dim); cursor: not-allowed; }
-    .login-error {
-      font-size: .82rem; color: var(--red); margin-top: .8rem; text-align: center;
-      min-height: 1.2rem;
-    }
+    /* ── SIDEBAR + CONTENIDO ── */
+    .admin-body { display:flex; }
 
-    /* ── ADMIN PANEL ── */
-    #admin-panel { display: none; }
-    .panel-content { max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem 5rem; }
+    .sidebar {
+      width:220px; flex-shrink:0;
+      background:var(--navy-mid); border-right:1px solid var(--border);
+      min-height:calc(100vh - 64px); position:sticky; top:64px;
+      display:flex; flex-direction:column;
+    }
+    .nav-section { padding:1.2rem 0 .5rem; }
+    .nav-section-label {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.62rem; letter-spacing:.25em; text-transform:uppercase;
+      color:var(--muted-dim); font-weight:700;
+      padding:0 1.2rem; margin-bottom:.4rem;
+    }
+    .nav-item {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 1.2rem; cursor:pointer;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.9rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+      color:var(--muted); border-left:2px solid transparent;
+      transition:all .2s; user-select:none;
+    }
+    .nav-item:hover { color:var(--white); background:rgba(255,255,255,.03); }
+    .nav-item.active { color:var(--white); border-left-color:var(--red); background:rgba(255,255,255,.04); }
+    .nav-item svg { width:15px; height:15px; flex-shrink:0; opacity:.6; }
+    .nav-item.active svg { opacity:1; }
+    .nav-badge {
+      margin-left:auto; font-size:.65rem; font-weight:700;
+      background:var(--red); color:#fff; padding:1px 7px; border-radius:10px;
+      font-family:'Barlow Condensed',sans-serif; letter-spacing:.04em;
+    }
+    .nav-divider { height:1px; background:var(--border); margin:.5rem 0; }
 
-    .panel-header { margin-bottom: 2rem; }
-    .panel-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .06em; color: var(--white); }
-    .panel-header h1 em { color: var(--red); font-style: normal; }
-    .panel-header p { font-size: .88rem; color: var(--muted); margin-top: .3rem; }
+    .sidebar-footer { margin-top:auto; padding:1.2rem; border-top:1px solid var(--border); }
+    .sidebar-footer a { font-family:'Barlow Condensed',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-dim); text-decoration:none; transition:color .2s; }
+    .sidebar-footer a:hover { color:var(--white); }
 
-    /* toast */
-    .toast {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
-      padding: 12px 20px; border-radius: 3px;
-      transform: translateY(100px); opacity: 0;
-      transition: all .3s cubic-bezier(.4,0,.2,1);
-      pointer-events: none;
-    }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success { background: rgba(29,158,117,.9); color: #fff; border: 1px solid rgba(29,158,117,.5); }
-    .toast.error   { background: rgba(192,25,42,.9);  color: #fff; border: 1px solid rgba(192,25,42,.5); }
+    /* ── MAIN CONTENT ── */
+    .main-content { flex:1; min-width:0; padding:2rem; }
 
-    /* product row */
-    .product-row {
-      background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px;
-      margin-bottom: 1rem; overflow: hidden;
-      transition: border-color .2s;
-    }
-    .product-row:hover { border-color: var(--border-h); }
+    /* ── TABS ── */
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
 
-    .product-row-header {
-      display: flex; align-items: center; gap: 1rem;
-      padding: 1rem 1.2rem; cursor: pointer;
-      user-select: none;
+    /* ── STATS CARDS ── */
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card {
+      background:var(--navy-card); border:1px solid var(--border); border-radius:4px;
+      padding:1.2rem 1.4rem;
     }
-    .product-thumb {
-      width: 56px; height: 56px; border-radius: 3px; overflow: hidden;
-      background: var(--navy-light); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .product-thumb .thumb-placeholder { width: 32px; height: 32px; object-fit: contain; opacity: .3; }
+    .stat-label { font-family:'Barlow Condensed',sans-serif; font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted-dim); font-weight:700; margin-bottom:.4rem; }
+    .stat-value { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.04em; line-height:1; }
+    .stat-value.green { color:var(--green); }
+    .stat-value.yellow { color:var(--yellow); }
+    .stat-value.red { color:var(--red); }
+    .stat-value.blue { color:#7fa3e8; }
+    .stat-sub { font-family:'Barlow Condensed',sans-serif; font-size:.72rem; color:var(--muted-dim); margin-top:.25rem; }
 
-    .product-meta { flex: 1; min-width: 0; }
-    .product-meta .cat {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--red); font-weight: 700; margin-bottom: 2px;
-    }
-    .product-meta .nombre {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem; font-weight: 700; color: var(--white);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom:1.5rem; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .page-header h2 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.05em; }
+    .page-header h2 em { color:var(--red); font-style:normal; }
+    .page-header p { font-size:.83rem; color:var(--muted); margin-top:.2rem; }
 
-    .product-stock-total {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .78rem; letter-spacing: .08em; color: var(--muted); text-align: right;
-      flex-shrink: 0;
+    /* ── TOOLBAR ── */
+    .toolbar { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .search-box {
+      display:flex; align-items:center; gap:8px;
+      background:var(--navy-card); border:1px solid var(--border);
+      border-radius:3px; padding:7px 12px; flex:1; min-width:200px; max-width:320px;
     }
-    .product-stock-total strong { color: var(--white); font-size: 1.1rem; display: block; }
+    .search-box svg { width:14px; height:14px; color:var(--muted-dim); flex-shrink:0; }
+    .search-box input { background:transparent; border:none; outline:none; color:var(--white); font-family:'Barlow',sans-serif; font-size:.88rem; width:100%; }
+    .search-box input::placeholder { color:var(--muted-dim); }
+    .filter-select {
+      background:var(--navy-card); border:1px solid var(--border); border-radius:3px;
+      padding:7px 12px; color:var(--white); font-family:'Barlow Condensed',sans-serif;
+      font-size:.82rem; letter-spacing:.06em; outline:none; cursor:pointer;
+    }
+    .filter-select option { background:var(--navy-mid); }
+    .btn-refresh {
+      font-family:'Barlow Condensed',sans-serif; font-size:.75rem; letter-spacing:.12em;
+      text-transform:uppercase; font-weight:600; background:transparent;
+      border:1px solid var(--border); color:var(--muted); padding:7px 14px;
+      border-radius:2px; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:6px;
+    }
+    .btn-refresh:hover { border-color:var(--border-h); color:var(--white); }
+    .btn-refresh svg { width:13px; height:13px; }
 
-    .chevron {
-      width: 16px; height: 16px; flex-shrink: 0; color: var(--muted-dim);
-      transition: transform .25s;
+    /* ── TABLE ── */
+    .table-wrap { background:var(--navy-card); border:1px solid var(--border); border-radius:4px; overflow:hidden; }
+    table { width:100%; border-collapse:collapse; }
+    thead tr { border-bottom:1px solid var(--border); }
+    thead th {
+      font-family:'Barlow Condensed',sans-serif; font-size:.65rem; letter-spacing:.22em;
+      text-transform:uppercase; color:var(--muted-dim); font-weight:700;
+      padding:.75rem 1rem; text-align:left;
     }
-    .product-row.open .chevron { transform: rotate(180deg); }
+    tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:rgba(255,255,255,.025); }
+    tbody td { padding:.85rem 1rem; font-size:.85rem; color:var(--white); }
+    td.muted { color:var(--muted); font-size:.8rem; }
 
-    /* talle editor */
-    .talle-editor {
-      border-top: 1px solid var(--border);
-      padding: 1.2rem 1.2rem 1.4rem;
-      display: none;
+    /* status pills */
+    .pill-status {
+      font-family:'Barlow Condensed',sans-serif; font-size:.65rem; letter-spacing:.15em;
+      text-transform:uppercase; font-weight:700; padding:3px 10px; border-radius:2px; white-space:nowrap;
     }
-    .product-row.open .talle-editor { display: block; }
+    .pill-aprobado  { background:rgba(29,158,117,.15); border:1px solid rgba(29,158,117,.3); color:var(--green); }
+    .pill-pendiente { background:rgba(186,117,23,.15);  border:1px solid rgba(186,117,23,.3);  color:var(--yellow); }
+    .pill-rechazado { background:rgba(192,25,42,.15);   border:1px solid rgba(192,25,42,.3);   color:var(--red); }
+    .pill-iniciado  { background:rgba(139,150,184,.1);  border:1px solid rgba(139,150,184,.2); color:var(--muted); }
 
-    .talle-editor-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--muted-dim); font-weight: 700; margin-bottom: 1rem;
+    /* btn row actions */
+    .btn-action {
+      font-family:'Barlow Condensed',sans-serif; font-size:.68rem; letter-spacing:.1em;
+      text-transform:uppercase; font-weight:600; background:transparent;
+      border:1px solid var(--border); color:var(--muted); padding:4px 10px;
+      border-radius:2px; cursor:pointer; transition:all .2s;
     }
+    .btn-action:hover { border-color:var(--border-h); color:var(--white); }
+    .btn-action.danger:hover { border-color:var(--red); color:var(--red); }
+    .btn-action.success { border-color:rgba(29,158,117,.4); color:var(--green); }
+    .btn-action.success:hover { background:rgba(29,158,117,.1); }
 
-    .talle-rows { display: flex; flex-direction: column; gap: .6rem; }
-
-    .talle-row {
-      display: flex; align-items: center; gap: 1rem;
-      background: var(--navy-light); border-radius: 3px; padding: .6rem 1rem;
-    }
-    .talle-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .9rem; letter-spacing: .08em; font-weight: 700;
-      color: var(--white); width: 48px; flex-shrink: 0;
-    }
-    .talle-row input[type="number"] {
-      width: 90px; background: var(--navy-card); border: 1px solid var(--border);
-      border-radius: 3px; padding: 7px 10px; color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 600;
-      text-align: center; outline: none; transition: border-color .2s;
-      -moz-appearance: textfield;
-    }
-    .talle-row input[type="number"]::-webkit-outer-spin-button,
-    .talle-row input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .talle-row input[type="number"]:focus { border-color: var(--blue); }
-    .talle-stock-label {
-      font-size: .8rem; color: var(--muted); flex: 1;
-    }
-    .stock-indicator {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-    .si-ok  { background: var(--green); }
-    .si-low { background: #ba7517; }
-    .si-out { background: var(--red); }
-
-    .btn-save-talle {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
-      background: var(--blue); color: #fff; border: none;
-      padding: 7px 16px; border-radius: 2px; cursor: pointer; transition: all .2s;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .btn-save-talle:hover { background: #2a4fc4; }
-    .btn-save-talle:disabled { background: var(--muted-dim); cursor: not-allowed; }
-    .btn-save-talle.saved { background: var(--green); }
-
-    /* guardar todo */
-    .save-all-bar {
-      position: sticky; bottom: 0;
-      background: rgba(9,17,31,.95); border-top: 1px solid var(--border);
-      padding: 1rem 2.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem;
-    }
-    .save-all-info { font-size: .85rem; color: var(--muted); }
-    .save-all-info strong { color: var(--white); }
-    .btn-save-all {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .88rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
-      background: var(--green); color: #fff; border: none;
-      padding: 10px 28px; border-radius: 3px; cursor: pointer; transition: all .2s;
-    }
-    .btn-save-all:hover { opacity: .9; }
-    .btn-save-all:disabled { background: var(--muted-dim); cursor: not-allowed; }
+    /* empty state */
+    .empty-table { text-align:center; padding:4rem 2rem; color:var(--muted); }
+    .empty-table p { font-family:'Barlow Condensed',sans-serif; font-size:1rem; letter-spacing:.1em; }
+    .empty-table small { font-size:.8rem; color:var(--muted-dim); }
 
     /* skeleton */
-    .skeleton { background: var(--navy-card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; animation: pulse 1.4s ease-in-out infinite; margin-bottom: 1rem; height: 80px; }
+    .skeleton-row td { padding:.85rem 1rem; }
+    .skeleton-cell { height:14px; background:var(--navy-light); border-radius:3px; animation:pulse 1.4s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
 
-    @media (max-width: 640px) {
-      header { padding: 0 1.2rem; }
-      .user-email { display: none; }
-      .panel-content { padding: 1.5rem 1.2rem 5rem; }
-      .save-all-bar { padding: 1rem 1.2rem; }
-      .talle-row input[type="number"] { width: 70px; }
+    /* ── STOCK EDITOR (igual que antes pero integrado) ── */
+    .product-row { background:var(--navy-card); border:1px solid var(--border); border-radius:4px; margin-bottom:.8rem; overflow:hidden; transition:border-color .2s; }
+    .product-row:hover { border-color:var(--border-h); }
+    .product-row-header { display:flex; align-items:center; gap:1rem; padding:.9rem 1.2rem; cursor:pointer; user-select:none; }
+    .product-thumb { width:48px; height:48px; border-radius:3px; overflow:hidden; background:var(--navy-light); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .product-thumb img { width:100%; height:100%; object-fit:cover; }
+    .product-thumb .ph { width:28px; height:28px; object-fit:contain; opacity:.3; }
+    .product-meta { flex:1; min-width:0; }
+    .product-meta .cat { font-family:'Barlow Condensed',sans-serif; font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:2px; }
+    .product-meta .nombre { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .product-stock-total { font-family:'Barlow Condensed',sans-serif; font-size:.75rem; color:var(--muted); text-align:right; flex-shrink:0; }
+    .product-stock-total strong { color:var(--white); font-size:1.05rem; display:block; }
+    .chevron { width:14px; height:14px; flex-shrink:0; color:var(--muted-dim); transition:transform .25s; }
+    .product-row.open .chevron { transform:rotate(180deg); }
+    .talle-editor { border-top:1px solid var(--border); padding:1rem 1.2rem 1.2rem; display:none; }
+    .product-row.open .talle-editor { display:block; }
+    .talle-editor-title { font-family:'Barlow Condensed',sans-serif; font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted-dim); font-weight:700; margin-bottom:.75rem; }
+    .talle-rows { display:flex; flex-direction:column; gap:.5rem; }
+    .talle-row { display:flex; align-items:center; gap:1rem; background:var(--navy-light); border-radius:3px; padding:.5rem .9rem; }
+    .talle-name { font-family:'Barlow Condensed',sans-serif; font-size:.88rem; letter-spacing:.08em; font-weight:700; width:44px; flex-shrink:0; }
+    .talle-row input[type="number"] { width:80px; background:var(--navy-card); border:1px solid var(--border); border-radius:3px; padding:6px 8px; color:var(--white); font-family:'Barlow Condensed',sans-serif; font-size:.95rem; font-weight:600; text-align:center; outline:none; transition:border-color .2s; -moz-appearance:textfield; }
+    .talle-row input[type="number"]::-webkit-outer-spin-button, .talle-row input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
+    .talle-row input[type="number"]:focus { border-color:var(--blue); }
+    .talle-stock-label { font-size:.78rem; color:var(--muted); flex:1; }
+    .stock-indicator { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .si-ok  { background:var(--green); }
+    .si-low { background:var(--yellow); }
+    .si-out { background:var(--red); }
+
+    /* ── SAVE BAR ── */
+    .save-all-bar { position:sticky; bottom:0; background:rgba(9,17,31,.97); border-top:1px solid var(--border); padding:.9rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .save-all-info { font-size:.83rem; color:var(--muted); }
+    .save-all-info strong { color:var(--white); }
+    .btn-save-all { font-family:'Barlow Condensed',sans-serif; font-size:.85rem; letter-spacing:.15em; text-transform:uppercase; font-weight:700; background:var(--green); color:#fff; border:none; padding:9px 24px; border-radius:3px; cursor:pointer; transition:all .2s; }
+    .btn-save-all:hover { opacity:.9; }
+    .btn-save-all:disabled { background:var(--muted-dim); cursor:not-allowed; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--navy-mid); border:1px solid var(--border); border-radius:6px; width:100%; max-width:520px; padding:2rem; }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+    .modal-title { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.05em; }
+    .modal-close { background:transparent; border:none; cursor:pointer; color:var(--muted); transition:color .2s; padding:4px; }
+    .modal-close:hover { color:var(--white); }
+    .modal-close svg { width:18px; height:18px; display:block; }
+    .modal-body { display:flex; flex-direction:column; gap:.75rem; }
+    .detail-row { display:flex; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid var(--border); font-size:.85rem; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-row span:first-child { color:var(--muted-dim); font-family:'Barlow Condensed',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; }
+    .detail-row span:last-child { color:var(--white); font-weight:600; max-width:60%; text-align:right; }
+    .modal-actions { display:flex; gap:.75rem; margin-top:1.5rem; flex-wrap:wrap; }
+    .btn-modal { font-family:'Barlow Condensed',sans-serif; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; padding:9px 18px; border-radius:3px; cursor:pointer; transition:all .2s; border:none; }
+    .btn-modal.green { background:var(--green); color:#fff; }
+    .btn-modal.green:hover { opacity:.9; }
+    .btn-modal.secondary { background:transparent; border:1px solid var(--border); color:var(--muted); }
+    .btn-modal.secondary:hover { border-color:var(--border-h); color:var(--white); }
+    .btn-modal.danger { background:rgba(192,25,42,.15); border:1px solid rgba(192,25,42,.3); color:var(--red); }
+    .btn-modal.danger:hover { background:rgba(192,25,42,.25); }
+
+    /* ── TOAST ── */
+    .toast { position:fixed; bottom:2rem; right:2rem; z-index:600; font-family:'Barlow Condensed',sans-serif; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:11px 18px; border-radius:3px; transform:translateY(100px); opacity:0; transition:all .3s cubic-bezier(.4,0,.2,1); pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .toast.success { background:rgba(29,158,117,.9); color:#fff; border:1px solid rgba(29,158,117,.5); }
+    .toast.error   { background:rgba(192,25,42,.9);  color:#fff; border:1px solid rgba(192,25,42,.5); }
+    .toast.info    { background:rgba(29,61,154,.9);  color:#fff; border:1px solid rgba(29,61,154,.5); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .sidebar { display:none; }
+      .admin-header { padding:0 1.2rem; }
+      .main-content { padding:1.2rem; }
+      .stats-grid { grid-template-columns:1fr 1fr; }
+      .user-email { display:none; }
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns:1fr; }
+      table thead { display:none; }
+      tbody tr { display:block; padding:.75rem; border-bottom:1px solid var(--border); }
+      tbody td { display:flex; justify-content:space-between; align-items:center; padding:.25rem 0; font-size:.82rem; border:none; }
+      tbody td::before { content:attr(data-label); font-family:'Barlow Condensed',sans-serif; font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted-dim); font-weight:700; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
-  <div id="login-screen">
-    <div class="login-card">
-      <div class="login-logo">
-        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
-        <div class="login-logo-text">
-          <span class="name">Andes Talleres</span>
-          <span class="sub">Futsal · Admin</span>
-        </div>
+<!-- ══════════════════ LOGIN ══════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+      <div class="login-logo-text">
+        <span class="name">Andes Talleres</span>
+        <span class="sub">Futsal · Admin</span>
       </div>
-      <div class="login-title">Panel de <em style="color:var(--red);font-style:normal">Admin</em></div>
-      <p class="login-sub">Ingresá con tu cuenta de administrador para gestionar el inventario.</p>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="admin@ejemplo.com" autocomplete="email" />
-      </div>
-      <div class="field">
-        <label>Contraseña</label>
-        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
-      </div>
-      <button class="btn-login" id="btn-login" onclick="doLogin()">Ingresar</button>
-      <div class="login-error" id="login-error"></div>
     </div>
+    <div class="login-title">Panel de <span style="color:var(--red)">Admin</span></div>
+    <p class="login-sub">Ingresá con tu cuenta de administrador.</p>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="admin@ejemplo.com" autocomplete="email" />
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Ingresar</button>
+    <div class="login-error" id="login-error"></div>
   </div>
+</div>
 
-  <!-- ADMIN PANEL -->
-  <div id="admin-panel">
-    <header>
-      <a class="header-left" href="index.html">
-        <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
-        <div class="header-title">
-          <span class="name">Andes Talleres</span>
-          <span class="sub">Futsal · Indumentaria</span>
-        </div>
-      </a>
-      <div style="display:flex;align-items:center;gap:.75rem;">
-        <span class="admin-badge">Admin</span>
-        <a href="index.html" class="back-link">← Volver al sitio</a>
+<!-- ══════════════════ ADMIN PANEL ══════════════════ -->
+<div id="admin-panel">
+  <header class="admin-header">
+    <a class="header-left" href="index.html">
+      <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+      <div class="header-brand">
+        <span class="name">Andes Talleres</span>
+        <span class="sub">Futsal · Indumentaria</span>
       </div>
-      <div class="header-right">
-        <span class="user-email" id="user-email"></span>
-        <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
-      </div>
-    </header>
-
-    <div class="panel-content">
-      <div class="panel-header">
-        <h1>Gestión de <em>Inventario</em></h1>
-        <p>Editá el stock disponible por talle de cada producto. Los cambios se aplican en tiempo real.</p>
-      </div>
-      <div id="products-list">
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-      </div>
+    </a>
+    <span class="admin-badge">Admin</span>
+    <div class="header-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
     </div>
+  </header>
 
-    <div class="save-all-bar">
-      <span class="save-all-info">
-        <strong id="pending-count">0</strong> cambio(s) sin guardar
-      </span>
-      <button class="btn-save-all" id="btn-save-all" onclick="saveAll()" disabled>
-        Guardar todo
+  <div class="admin-body">
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="nav-section">
+        <div class="nav-section-label">Panel</div>
+        <div class="nav-item active" onclick="showTab('dashboard')">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+          Dashboard
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-label">Ventas</div>
+        <div class="nav-item" onclick="showTab('pedidos')" id="nav-pedidos">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h10l1 9H2L3 2z"/><circle cx="6" cy="13.5" r=".75"/><circle cx="10" cy="13.5" r=".75"/></svg>
+          Pedidos
+          <span class="nav-badge" id="badge-pendientes" style="display:none">0</span>
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-label">Inventario</div>
+        <div class="nav-item" onclick="showTab('stock')">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3a3 3 0 016 0v1"/></svg>
+          Stock
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="sidebar-footer">
+        <a href="index.html">← Volver al sitio</a>
+      </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <div class="main-content">
+
+      <!-- ═══ TAB: DASHBOARD ═══ -->
+      <div class="tab-panel active" id="tab-dashboard">
+        <div class="page-header">
+          <div>
+            <h2><em>Dashboard</em></h2>
+            <p>Resumen general de la tienda</p>
+          </div>
+          <button class="btn-refresh" onclick="loadAll()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>
+            Actualizar
+          </button>
+        </div>
+
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-label">Ingresos totales</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Señas cobradas</div></div>
+          <div class="stat-card"><div class="stat-label">Pedidos aprobados</div><div class="stat-value blue" id="stat-aprobados">—</div><div class="stat-sub">Señas pagadas</div></div>
+          <div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value yellow" id="stat-pendientes">—</div><div class="stat-sub">Esperando confirmación</div></div>
+          <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="stat-stock">—</div><div class="stat-sub">Unidades en tienda</div></div>
+        </div>
+
+        <!-- Últimos pedidos en dashboard -->
+        <div class="page-header" style="margin-top:1rem">
+          <div><h2>Últimos <em>Pedidos</em></h2><p>Los 10 más recientes</p></div>
+          <button class="btn-refresh" onclick="showTab('pedidos')" style="background:var(--blue);color:#fff;border-color:var(--blue)">Ver todos →</button>
+        </div>
+        <div class="table-wrap" id="dashboard-pedidos-table">
+          <table>
+            <thead><tr><th>Cliente</th><th>Producto</th><th>Talle</th><th>Seña</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="dashboard-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: PEDIDOS ═══ -->
+      <div class="tab-panel" id="tab-pedidos">
+        <div class="page-header">
+          <div><h2>Gestión de <em>Pedidos</em></h2><p>Todos los pedidos y señas realizadas</p></div>
+          <button class="btn-refresh" onclick="loadPedidos()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>
+            Actualizar
+          </button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg>
+            <input type="text" id="pedidos-search" placeholder="Buscar por nombre, email, producto…" oninput="renderPedidos()" />
+          </div>
+          <select class="filter-select" id="pedidos-filter" onchange="renderPedidos()">
+            <option value="">Todos los estados</option>
+            <option value="sena_pagada">✓ Seña pagada</option>
+            <option value="pendiente">⏳ Pendiente</option>
+            <option value="rechazado">✗ Rechazado</option>
+            <option value="iniciado">○ Iniciado</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Talle</th>
+                <th>Seña</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="pedidos-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: STOCK ═══ -->
+      <div class="tab-panel" id="tab-stock">
+        <div class="page-header">
+          <div><h2>Gestión de <em>Stock</em></h2><p>Editá el inventario por talle de cada producto</p></div>
+          <button class="btn-refresh" onclick="loadProducts()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>
+            Actualizar
+          </button>
+        </div>
+        <div id="products-list">
+          <div style="color:var(--muted);text-align:center;padding:3rem">Cargando productos…</div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /admin-body -->
+
+  <!-- SAVE BAR (solo visible en tab stock) -->
+  <div class="save-all-bar" id="save-bar" style="display:none">
+    <span class="save-all-info"><strong id="pending-count">0</strong> cambio(s) sin guardar</span>
+    <button class="btn-save-all" id="btn-save-all" onclick="saveAll()" disabled>Guardar todo</button>
+  </div>
+</div>
+
+<!-- ══════════════════ MODAL DETALLE PEDIDO ══════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Detalle del Pedido</span>
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/></svg>
       </button>
     </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
   </div>
+</div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-  <script>
-    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
-    const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
+<script>
+  const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+  const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
 
-    let accessToken = null;
-    let allProducts = [];
-    // pendingChanges: { [productoId]: { [talle]: nuevoStock } }
-    let pendingChanges = {};
+  let accessToken = null;
+  let allPedidos = [];
+  let allProducts = [];
+  let pendingChanges = {};
+  let activeTab = 'dashboard';
 
-    // ── SUPABASE HELPERS ──
-    async function sbFetch(path, opts = {}) {
-      const headers = {
-        'apikey': SUPABASE_KEY,
-        'Content-Type': 'application/json',
-        ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
-        ...(opts.headers || {})
-      };
-      return fetch(SUPABASE_URL + path, { ...opts, headers });
-    }
+  // ══ SUPABASE HELPER ══
+  async function sbFetch(path, opts = {}) {
+    const headers = {
+      'apikey': SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
+      ...(opts.headers || {})
+    };
+    return fetch(SUPABASE_URL + path, { ...opts, headers });
+  }
 
-    // ── LOGIN ──
-    document.getElementById('login-password').addEventListener('keydown', e => {
-      if (e.key === 'Enter') doLogin();
-    });
+  // ══ LOGIN ══
+  document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-password').focus(); });
+  document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-    async function doLogin() {
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value;
-      const btn = document.getElementById('btn-login');
-      const errEl = document.getElementById('login-error');
-      errEl.textContent = '';
-      btn.disabled = true;
-      btn.textContent = 'Ingresando...';
-
-      try {
-        const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-          method: 'POST',
-          headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error_description || data.msg || 'Credenciales incorrectas');
-
-        accessToken = data.access_token;
-        localStorage.setItem('atsc_token', data.access_token);
-        localStorage.setItem('atsc_email', data.user.email);
-        document.getElementById('user-email').textContent = data.user.email;
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        loadProducts();
-      } catch (e) {
-        errEl.textContent = e.message;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Ingresar';
-      }
-    }
-
-    async function doLogout() {
-      await sbFetch('/auth/v1/logout', { method: 'POST' });
-      accessToken = null;
-      allProducts = [];
-      pendingChanges = {};
-      localStorage.removeItem('atsc_token');
-      localStorage.removeItem('atsc_email');
-      document.getElementById('login-screen').style.display = 'flex';
-      document.getElementById('admin-panel').style.display = 'none';
-      document.getElementById('login-email').value = '';
-      document.getElementById('login-password').value = '';
-      document.getElementById('login-error').textContent = '';
-    }
-
-    // ── LOAD PRODUCTS ──
-    async function loadProducts() {
-      const res = await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
-      allProducts = await res.json();
-      renderProducts();
-    }
-
-    // ── RENDER ──
-    function renderProducts() {
-      const container = document.getElementById('products-list');
-      if (!allProducts.length) {
-        container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:3rem">No hay productos.</p>';
-        return;
-      }
-      container.innerHTML = allProducts.map(p => renderRow(p)).join('');
-    }
-
-    function stockIndicator(stock) {
-      if (stock <= 0)  return '<span class="stock-indicator si-out"></span>';
-      if (stock <= 5)  return '<span class="stock-indicator si-low"></span>';
-      return '<span class="stock-indicator si-ok"></span>';
-    }
-
-    function renderRow(p) {
-      const thumbHTML = p.imagen_url
-        ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
-        : `<img class="thumb-placeholder" src="${ESCUDO}" alt="placeholder" />`;
-
-      const TALLES_RENDER = ['XS','S','M','L','XL','XXL'];
-      const tallesMapRender = Object.fromEntries((p.tallas || []).map(t => [t.talla || t.talle, t.stock]));
-      const talleRowsHTML = TALLES_RENDER.map(talle => {
-        const stock = talle in tallesMapRender ? tallesMapRender[talle] : 0;
-        return '<div class="talle-row" id="row-' + p.id + '-' + talle + '">' +
-          '<span class="talle-name">' + talle + '</span>' +
-          stockIndicator(stock) +
-          '<input type="number" min="0" max="9999" value="' + stock + '" ' +
-          'data-producto="' + p.id + '" data-talle="' + talle + '" data-original="' + stock + '" ' +
-          'onchange="markChange(this)" oninput="markChange(this)" />' +
-          '<span class="talle-stock-label">' + (stock > 0 ? stock + ' disponibles' : 'Sin stock') + '</span>' +
-          '</div>';
-      }).join('');
-
-      return `
-        <div class="product-row" id="product-${p.id}">
-          <div class="product-row-header" onclick="toggleRow(${p.id})">
-            <div class="product-thumb">${thumbHTML}</div>
-            <div class="product-meta">
-              <div class="cat">${p.categoria}</div>
-              <div class="nombre">${p.nombre}</div>
-            </div>
-            <div class="product-stock-total">
-              <strong>${p.stock_total}</strong>
-              en stock
-            </div>
-            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-              <polyline points="4,6 8,10 12,6"/>
-            </svg>
-          </div>
-          <div class="talle-editor">
-            <div class="talle-editor-title">Stock por talle</div>
-            <div class="talle-rows">${talleRowsHTML}</div>
-          </div>
-        </div>`;
-    }
-
-    // ── TOGGLE ROW ──
-    function toggleRow(id) {
-      const row = document.getElementById(`product-${id}`);
-      row.classList.toggle('open');
-    }
-
-    // ── MARK CHANGE ──
-    function markChange(input) {
-      const id     = input.dataset.producto;
-      const talle  = input.dataset.talle;
-      const newVal = parseInt(input.value) || 0;
-      const orig   = parseInt(input.dataset.original);
-
-      if (!pendingChanges[id]) pendingChanges[id] = {};
-
-      if (newVal !== orig) {
-        pendingChanges[id][talle] = newVal;
-        input.style.borderColor = '#ba7517';
-      } else {
-        delete pendingChanges[id][talle];
-        if (!Object.keys(pendingChanges[id]).length) delete pendingChanges[id];
-        input.style.borderColor = '';
-      }
-
-      updatePendingCount();
-    }
-
-    function updatePendingCount() {
-      let total = 0;
-      Object.values(pendingChanges).forEach(t => total += Object.keys(t).length);
-      document.getElementById('pending-count').textContent = total;
-      document.getElementById('btn-save-all').disabled = total === 0;
-    }
-
-    // ── SAVE ALL ──
-    async function saveAll() {
-      const btn = document.getElementById('btn-save-all');
-      btn.disabled = true;
-      btn.textContent = 'Guardando...';
-
-      const productIds = Object.keys(pendingChanges);
-      let errors = 0;
-
-      for (const id of productIds) {
-        const product = allProducts.find(p => p.id == id);
-        if (!product) continue;
-
-        // Construir array completo con todos los talles fijos
-        const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
-        const tallesActuales = Object.fromEntries((product.tallas || []).map(t => [t.talla || t.talle, t.stock]));
-        const newTallas = TALLES_FIJOS.map(talle => {
-          const stockCambiado = (pendingChanges[id] && pendingChanges[id][talle] !== undefined)
-            ? pendingChanges[id][talle]
-            : (talle in tallesActuales ? tallesActuales[talle] : 0);
-          return { talla: talle, stock: stockCambiado };
-        });
-
-        // Recalcular stock total
-        const newTotal = newTallas.reduce((sum, t) => sum + t.stock, 0);
-
-        try {
-          const res = await sbFetch(`/rest/v1/productos?id=eq.${id}`, {
-            method: 'PATCH',
-            headers: { 'Prefer': 'return=representation' },
-            body: JSON.stringify({ tallas: newTallas, stock_total: newTotal })
-          });
-
-          if (!res.ok) {
-            errors++;
-            continue;
-          }
-
-          // Actualizar en memoria
-          product.tallas = newTallas;
-          product.stock_total = newTotal;
-
-          // Actualizar UI del producto
-          updateProductUI(product);
-
-          // Limpiar pending de este producto
-          delete pendingChanges[id];
-
-          // Limpiar estilos de inputs
-          newTallas.forEach(t => {
-            const input = document.querySelector(`input[data-producto="${id}"][data-talle="${t.talle}"]`);
-            if (input) {
-              input.dataset.original = t.stock;
-              input.style.borderColor = '';
-            }
-          });
-
-        } catch (e) {
-          errors++;
-        }
-      }
-
-      updatePendingCount();
-      btn.textContent = 'Guardar todo';
-
-      if (errors === 0) {
-        showToast('¡Stock actualizado correctamente!', 'success');
-      } else {
-        showToast(`${errors} error(es) al guardar. Intentá de nuevo.`, 'error');
-        btn.disabled = false;
-      }
-    }
-
-    function updateProductUI(p) {
-      const row = document.getElementById(`product-${p.id}`);
-      if (!row) return;
-
-      // Actualizar stock total mostrado
-      const totalEl = row.querySelector('.product-stock-total strong');
-      if (totalEl) totalEl.textContent = p.stock_total;
-
-      // Actualizar indicadores y labels de cada talle
-      (p.tallas || []).forEach(t => {
-        const talleRow = document.getElementById(`row-${p.id}-${t.talle}`);
-        if (!talleRow) return;
-        const dot = talleRow.querySelector('.stock-indicator');
-        if (dot) {
-          dot.className = 'stock-indicator ' + (t.stock <= 0 ? 'si-out' : t.stock <= 5 ? 'si-low' : 'si-ok');
-        }
-        const label = talleRow.querySelector('.talle-stock-label');
-        if (label) label.textContent = t.stock > 0 ? t.stock + ' disponibles' : 'Sin stock';
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const btn = document.getElementById('btn-login');
+    const errEl = document.getElementById('login-error');
+    errEl.textContent = '';
+    btn.disabled = true; btn.textContent = 'Ingresando…';
+    try {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error_description || data.msg || 'Credenciales incorrectas');
+      accessToken = data.access_token;
+      localStorage.setItem('atsc_token', data.access_token);
+      localStorage.setItem('atsc_email', data.user.email);
+      document.getElementById('user-email').textContent = data.user.email;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadAll();
+    } catch (e) {
+      errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Ingresar';
     }
+  }
 
-    // ── TOAST ──
-    function showToast(msg, type = 'success') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = `toast ${type} show`;
-      setTimeout(() => { t.className = `toast ${type}`; }, 3000);
-    }
+  async function doLogout() {
+    await sbFetch('/auth/v1/logout', { method: 'POST' });
+    accessToken = null; allPedidos = []; allProducts = []; pendingChanges = {};
+    localStorage.removeItem('atsc_token'); localStorage.removeItem('atsc_email');
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+  }
 
-    // Presionar Enter en login
-    document.getElementById('login-email').addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('login-password').focus();
+  // ══ TABS ══
+  function showTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    event && event.currentTarget && event.currentTarget.classList.add('active');
+    // Activar nav item correcto
+    document.querySelectorAll('.nav-item').forEach(i => {
+      if (i.getAttribute('onclick') && i.getAttribute('onclick').includes(`'${tab}'`)) i.classList.add('active');
     });
+    document.getElementById('save-bar').style.display = tab === 'stock' ? 'flex' : 'none';
+    if (tab === 'pedidos') renderPedidos();
+  }
 
-    // Auto-login si hay sesión guardada
-    (async function checkSession() {
-      const savedToken = localStorage.getItem('atsc_token');
-      const savedEmail = localStorage.getItem('atsc_email');
-      if (!savedToken) return;
+  // ══ LOAD ALL ══
+  async function loadAll() {
+    await Promise.all([loadPedidos(), loadProducts()]);
+    updateDashboard();
+  }
 
-      // Verificar que el token sigue siendo válido
-      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${savedToken}` }
-      });
-
+  // ══ PEDIDOS ══
+  async function loadPedidos() {
+    try {
+      const res = await sbFetch('/rest/v1/pedidos?select=*&order=created_at.desc');
       if (res.ok) {
-        accessToken = savedToken;
-        document.getElementById('user-email').textContent = savedEmail || '';
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        loadProducts();
+        allPedidos = await res.json();
       } else {
-        // Token expirado, limpiar
-        localStorage.removeItem('atsc_token');
-        localStorage.removeItem('atsc_email');
+        // tabla no existe aún
+        allPedidos = [];
       }
-    })();
-  </script>
+    } catch(e) { allPedidos = []; }
+    renderPedidos();
+    updateBadge();
+  }
+
+  function renderPedidos() {
+    const search  = (document.getElementById('pedidos-search')?.value || '').toLowerCase();
+    const filter  = document.getElementById('pedidos-filter')?.value || '';
+    const tbody   = document.getElementById('pedidos-tbody');
+    const dtbody  = document.getElementById('dashboard-tbody');
+
+    let filtered = allPedidos.filter(p => {
+      const matchFilter = !filter || p.estado === filter || p.mp_status === filter;
+      const matchSearch = !search || [p.nombre_cliente, p.email_cliente, p.producto_nombre, p.talle].some(v => v && String(v).toLowerCase().includes(search));
+      return matchFilter && matchSearch;
+    });
+
+    const renderRow = (p, mini = false) => {
+      const fecha = p.created_at ? new Date(p.created_at).toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+      const estadoLabel = { sena_pagada:'Seña pagada', pendiente:'Pendiente', rechazado:'Rechazado', iniciado:'Iniciado' }[p.estado] || p.estado || '—';
+      const estadoCls   = { sena_pagada:'aprobado', pendiente:'pendiente', rechazado:'rechazado', iniciado:'iniciado' }[p.estado] || 'iniciado';
+      const sena = p.precio_sena ? '$' + Number(p.precio_sena).toLocaleString('es-AR') : '—';
+      const total = p.precio_total ? '$' + Number(p.precio_total).toLocaleString('es-AR') : '—';
+      if (mini) return `
+        <tr>
+          <td data-label="Cliente">${p.nombre_cliente || '—'}</td>
+          <td data-label="Producto" class="muted">${p.producto_nombre || '—'}</td>
+          <td data-label="Talle">${p.talle || '—'}</td>
+          <td data-label="Seña">${sena}</td>
+          <td data-label="Estado"><span class="pill-status pill-${estadoCls}">${estadoLabel}</span></td>
+          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
+        </tr>`;
+      return `
+        <tr>
+          <td data-label="#" class="muted">#${p.id}</td>
+          <td data-label="Fecha" class="muted">${fecha}</td>
+          <td data-label="Cliente"><strong>${p.nombre_cliente || '—'}</strong><br><span style="font-size:.75rem;color:var(--muted)">${p.email_cliente || ''}</span></td>
+          <td data-label="Producto" class="muted">${p.producto_nombre || '—'}</td>
+          <td data-label="Talle">${p.talle || '—'}</td>
+          <td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td>
+          <td data-label="Total" class="muted">${total}</td>
+          <td data-label="Estado"><span class="pill-status pill-${estadoCls}">${estadoLabel}</span></td>
+          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
+        </tr>`;
+    };
+
+    if (tbody) tbody.innerHTML = filtered.length ? filtered.map(p => renderRow(p)).join('') : `<tr><td colspan="9"><div class="empty-table"><p>No hay pedidos</p><small>Los pedidos aparecerán aquí cuando los clientes realicen señas.</small></div></td></tr>`;
+    if (dtbody) dtbody.innerHTML = allPedidos.slice(0,10).map(p => renderRow(p, true)).join('') || `<tr><td colspan="6"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;
+  }
+
+  function updateBadge() {
+    const pendientes = allPedidos.filter(p => p.estado === 'pendiente').length;
+    const badge = document.getElementById('badge-pendientes');
+    if (pendientes > 0) { badge.textContent = pendientes; badge.style.display = ''; }
+    else badge.style.display = 'none';
+  }
+
+  // ══ VER PEDIDO (modal) ══
+  function verPedido(id) {
+    const p = allPedidos.find(x => x.id === id);
+    if (!p) return;
+    const fecha = p.created_at ? new Date(p.created_at).toLocaleString('es-AR') : '—';
+    const estadoLabel = { sena_pagada:'✓ Seña pagada', pendiente:'⏳ Pendiente', rechazado:'✗ Rechazado', iniciado:'○ Iniciado' }[p.estado] || p.estado || '—';
+    document.getElementById('modal-title').textContent = `Pedido #${p.id}`;
+    document.getElementById('modal-body').innerHTML = `
+      <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
+      <div class="detail-row"><span>Estado</span><span>${estadoLabel}</span></div>
+      <div class="detail-row"><span>Cliente</span><span>${p.nombre_cliente || '—'}</span></div>
+      <div class="detail-row"><span>Email</span><span>${p.email_cliente || '—'}</span></div>
+      <div class="detail-row"><span>Teléfono</span><span>${p.telefono_cliente || '—'}</span></div>
+      <div class="detail-row"><span>Producto</span><span>${p.producto_nombre || '—'}</span></div>
+      <div class="detail-row"><span>Talle</span><span>${p.talle || '—'}</span></div>
+      <div class="detail-row"><span>Precio total</span><span>$${Number(p.precio_total || 0).toLocaleString('es-AR')}</span></div>
+      <div class="detail-row"><span>Seña pagada</span><span style="color:var(--green);font-size:1.05rem">$${Number(p.precio_sena || 0).toLocaleString('es-AR')}</span></div>
+      <div class="detail-row"><span>Saldo restante</span><span>$${Number((p.precio_total||0)-(p.precio_sena||0)).toLocaleString('es-AR')}</span></div>
+      ${p.mp_payment_id ? `<div class="detail-row"><span>ID pago MP</span><span style="font-size:.78rem;color:var(--muted)">${p.mp_payment_id}</span></div>` : ''}
+    `;
+    // Acciones
+    const waMsg = encodeURIComponent(`Hola ${p.nombre_cliente}, te contactamos desde Andes Talleres Futsal sobre tu pedido #${p.id} (${p.producto_nombre}, talle ${p.talle}). ¿Cuándo te viene bien coordinar la entrega?`);
+    const waTel = (p.telefono_cliente || '').replace(/\D/g,'');
+    document.getElementById('modal-actions').innerHTML = `
+      ${waTel ? `<a class="btn-modal green" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>` : ''}
+      ${p.estado === 'pendiente' ? `<button class="btn-modal success" style="background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);color:var(--green)" onclick="cambiarEstado(${p.id},'sena_pagada')">Marcar como pagado</button>` : ''}
+      ${p.estado !== 'rechazado' && p.estado !== 'sena_pagada' ? `<button class="btn-modal danger" onclick="cambiarEstado(${p.id},'rechazado')">Rechazar</button>` : ''}
+      <button class="btn-modal secondary" onclick="closeModal()">Cerrar</button>
+    `;
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  async function cambiarEstado(id, nuevoEstado) {
+    try {
+      const res = await sbFetch(`/rest/v1/pedidos?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify({ estado: nuevoEstado })
+      });
+      if (!res.ok) throw new Error();
+      const idx = allPedidos.findIndex(p => p.id === id);
+      if (idx !== -1) allPedidos[idx].estado = nuevoEstado;
+      closeModal();
+      renderPedidos();
+      updateDashboard();
+      updateBadge();
+      showToast('Estado actualizado', 'success');
+    } catch {
+      showToast('Error al actualizar', 'error');
+    }
+  }
+
+  function closeModal(e) {
+    if (e && e.target !== document.getElementById('modal-overlay')) return;
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  // ══ DASHBOARD STATS ══
+  function updateDashboard() {
+    const aprobados = allPedidos.filter(p => p.estado === 'sena_pagada');
+    const pendientes = allPedidos.filter(p => p.estado === 'pendiente');
+    const ingresos = aprobados.reduce((s, p) => s + (Number(p.precio_sena) || 0), 0);
+    document.getElementById('stat-ingresos').textContent = '$' + ingresos.toLocaleString('es-AR');
+    document.getElementById('stat-aprobados').textContent = aprobados.length;
+    document.getElementById('stat-pendientes').textContent = pendientes.length;
+    const stockTotal = allProducts.reduce((s, p) => s + (p.stock_total || 0), 0);
+    document.getElementById('stat-stock').textContent = stockTotal;
+    renderPedidos();
+  }
+
+  // ══ PRODUCTS / STOCK ══
+  async function loadProducts() {
+    const res = await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
+    if (res.ok) allProducts = await res.json();
+    renderProducts();
+  }
+
+  function renderProducts() {
+    const container = document.getElementById('products-list');
+    if (!allProducts.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:3rem">No hay productos.</p>'; return; }
+    container.innerHTML = allProducts.map(renderProductRow).join('');
+  }
+
+  function stockIndicator(stock) {
+    if (stock <= 0) return '<span class="stock-indicator si-out"></span>';
+    if (stock <= 5) return '<span class="stock-indicator si-low"></span>';
+    return '<span class="stock-indicator si-ok"></span>';
+  }
+
+  function renderProductRow(p) {
+    const TALLES = ['XS','S','M','L','XL','XXL'];
+    const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla || t.talle, t.stock]));
+    const talleRowsHTML = TALLES.map(talle => {
+      const stock = talle in tallesMap ? tallesMap[talle] : 0;
+      return `<div class="talle-row" id="row-${p.id}-${talle}">
+        <span class="talle-name">${talle}</span>
+        ${stockIndicator(stock)}
+        <input type="number" min="0" max="9999" value="${stock}"
+          data-producto="${p.id}" data-talle="${talle}" data-original="${stock}"
+          onchange="markChange(this)" oninput="markChange(this)" />
+        <span class="talle-stock-label">${stock > 0 ? stock + ' disponibles' : 'Sin stock'}</span>
+      </div>`;
+    }).join('');
+    const thumbHTML = p.imagen_url
+      ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
+      : `<img class="ph" src="${ESCUDO}" alt="placeholder" />`;
+    return `<div class="product-row" id="product-${p.id}">
+      <div class="product-row-header" onclick="toggleRow(${p.id})">
+        <div class="product-thumb">${thumbHTML}</div>
+        <div class="product-meta">
+          <div class="cat">${p.categoria}</div>
+          <div class="nombre">${p.nombre}</div>
+        </div>
+        <div class="product-stock-total"><strong>${p.stock_total}</strong>en stock</div>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+      <div class="talle-editor">
+        <div class="talle-editor-title">Stock por talle</div>
+        <div class="talle-rows">${talleRowsHTML}</div>
+      </div>
+    </div>`;
+  }
+
+  function toggleRow(id) { document.getElementById(`product-${id}`).classList.toggle('open'); }
+
+  function markChange(input) {
+    const id = input.dataset.producto, talle = input.dataset.talle;
+    const newVal = parseInt(input.value) || 0, orig = parseInt(input.dataset.original);
+    if (!pendingChanges[id]) pendingChanges[id] = {};
+    if (newVal !== orig) { pendingChanges[id][talle] = newVal; input.style.borderColor = '#ba7517'; }
+    else { delete pendingChanges[id][talle]; if (!Object.keys(pendingChanges[id]).length) delete pendingChanges[id]; input.style.borderColor = ''; }
+    updatePendingCount();
+  }
+
+  function updatePendingCount() {
+    let total = 0;
+    Object.values(pendingChanges).forEach(t => total += Object.keys(t).length);
+    document.getElementById('pending-count').textContent = total;
+    document.getElementById('btn-save-all').disabled = total === 0;
+  }
+
+  async function saveAll() {
+    const btn = document.getElementById('btn-save-all');
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
+    let errors = 0;
+    for (const id of Object.keys(pendingChanges)) {
+      const product = allProducts.find(p => p.id == id);
+      if (!product) continue;
+      const tallesActuales = Object.fromEntries((product.tallas || []).map(t => [t.talla || t.talle, t.stock]));
+      const newTallas = TALLES_FIJOS.map(talle => ({
+        talla: talle,
+        stock: (pendingChanges[id] && pendingChanges[id][talle] !== undefined) ? pendingChanges[id][talle] : (talle in tallesActuales ? tallesActuales[talle] : 0)
+      }));
+      const newTotal = newTallas.reduce((sum, t) => sum + t.stock, 0);
+      try {
+        const res = await sbFetch(`/rest/v1/productos?id=eq.${id}`, {
+          method: 'PATCH', headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify({ tallas: newTallas, stock_total: newTotal })
+        });
+        if (!res.ok) { errors++; continue; }
+        product.tallas = newTallas; product.stock_total = newTotal;
+        updateProductUI(product);
+        delete pendingChanges[id];
+        newTallas.forEach(t => {
+          const input = document.querySelector(`input[data-producto="${id}"][data-talle="${t.talla}"]`);
+          if (input) { input.dataset.original = t.stock; input.style.borderColor = ''; }
+        });
+      } catch { errors++; }
+    }
+    updatePendingCount();
+    btn.textContent = 'Guardar todo';
+    if (errors === 0) showToast('¡Stock actualizado!', 'success');
+    else { showToast(`${errors} error(es) al guardar`, 'error'); btn.disabled = false; }
+    updateDashboard();
+  }
+
+  function updateProductUI(p) {
+    const row = document.getElementById(`product-${p.id}`);
+    if (!row) return;
+    const totalEl = row.querySelector('.product-stock-total strong');
+    if (totalEl) totalEl.textContent = p.stock_total;
+    (p.tallas || []).forEach(t => {
+      const talleRow = document.getElementById(`row-${p.id}-${t.talla}`);
+      if (!talleRow) return;
+      const dot = talleRow.querySelector('.stock-indicator');
+      if (dot) dot.className = 'stock-indicator ' + (t.stock <= 0 ? 'si-out' : t.stock <= 5 ? 'si-low' : 'si-ok');
+      const label = talleRow.querySelector('.talle-stock-label');
+      if (label) label.textContent = t.stock > 0 ? t.stock + ' disponibles' : 'Sin stock';
+    });
+  }
+
+  // ══ TOAST ══
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = `toast ${type} show`;
+    setTimeout(() => { t.className = `toast ${type}`; }, 3000);
+  }
+
+  // ══ AUTO-LOGIN ══
+  (async function checkSession() {
+    const savedToken = localStorage.getItem('atsc_token');
+    const savedEmail = localStorage.getItem('atsc_email');
+    if (!savedToken) return;
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${savedToken}` }
+    });
+    if (res.ok) {
+      accessToken = savedToken;
+      document.getElementById('user-email').textContent = savedEmail || '';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadAll();
+    } else {
+      localStorage.removeItem('atsc_token'); localStorage.removeItem('atsc_email');
+    }
+  })();
+</script>
 </body>
 </html>
