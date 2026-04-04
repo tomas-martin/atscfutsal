@@ -811,7 +811,10 @@
     async function init() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
-      if (!id) { renderError(); return; }
+      if (!id || id === "undefined" || id === "null") {
+  renderError();
+  return;
+}
       try {
         const p = await fetchProducto(id);
         renderProducto(p);
