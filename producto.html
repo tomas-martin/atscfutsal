@@ -803,7 +803,7 @@
         if (data.error) throw new Error(data.error);
 
         // En pruebas usar sandbox_init_point, en producción init_point
-        window.location.href = data.sandbox_init_point || data.init_point;
+        window.location.href = data.init_point;
 
       } catch (e) {
         console.error(e);
