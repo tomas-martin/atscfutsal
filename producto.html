@@ -782,21 +782,22 @@
 
       try {
         const res = await fetch('https://qgjocvjmspntldkaghtb.supabase.co/functions/v1/crear-preferencia', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM',
-          },
-          body: JSON.stringify({
-            producto_id: producto.id,
-            producto_nombre: producto.nombre,
-            talle: talleSeleccionado.talle,
-            precio_total: producto.precio,
-            nombre_cliente: nombre,
-            email_cliente: email,
-            telefono_cliente: tel,
-          }),
-        });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`
+  },
+  body: JSON.stringify({
+    producto_id: producto.id,
+    producto_nombre: producto.nombre,
+    talle: talleSeleccionado.talle,
+    precio_total: producto.precio,
+    nombre_cliente: nombre,
+    email_cliente: email,
+    telefono_cliente: tel,
+  }),
+});
 
         const data = await res.json();
         if (data.error) throw new Error(data.error);
