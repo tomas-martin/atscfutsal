@@ -811,12 +811,17 @@
     async function init() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
+
+console.log("ID desde URL:", id);
+console.log("URL completa:", window.location.href);
       if (!id || id === "undefined" || id === "null") {
   renderError();
   return;
 }
       try {
         const p = await fetchProducto(id);
+        const data = await res.json();
+console.log("DATA SUPABASE:", data);
         renderProducto(p);
       } catch (e) {
         console.error(e);
