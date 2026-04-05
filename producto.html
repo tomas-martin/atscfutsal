@@ -623,30 +623,6 @@
       btn.classList.add('selected');
       const info = document.getElementById('talle-info');
       info.innerHTML = `Talle <strong>${talle}</strong> seleccionado — <strong>${stock}</strong> unidad${stock !== 1 ? 'es' : ''} disponible${stock !== 1 ? 's' : ''}`;
-      actualizarBtnWA();
-    }
-
-    // ── WHATSAPP ──
-    function actualizarBtnWA() {
-      const btn = document.getElementById('btn-wa');
-      if (!talleSeleccionado) {
-        btn.classList.add('disabled');
-        btn.href = '#';
-        return;
-      }
-      const precio = producto.precio
-        ? `$${producto.precio.toLocaleString('es-AR')}`
-        : 'a consultar';
-      const msg = encodeURIComponent(
-        `Hola! Me interesa este producto de Andes Talleres Futsal:\n\n` +
-        `*${producto.nombre}*\n` +
-        `Talle: ${talleSeleccionado.talle}\n` +
-        `Precio: ${precio}\n\n` +
-        `¿Está disponible?`
-      );
-      btn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
-      btn.classList.remove('disabled');
-      // Mostrar sección transferencia
       mostrarTransferencia();
     }
 
@@ -658,7 +634,9 @@
       document.getElementById('tr-talle').textContent = talleSeleccionado.talle;
       document.getElementById('tr-total').textContent = '$' + producto.precio.toLocaleString('es-AR');
       document.getElementById('tr-sena').textContent = '$' + sena.toLocaleString('es-AR');
-      document.getElementById('trans-section').style.display = 'block';
+      const sec = document.getElementById('trans-section');
+      sec.style.display = 'block';
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function copiar(texto, btn) {
@@ -686,7 +664,6 @@
       const tel    = document.getElementById('trans-tel').value.trim();
       const file   = document.getElementById('trans-comprobante').files[0];
 
-      // Validar campos
       let ok = true;
       ['trans-nombre','trans-email','trans-tel'].forEach(id => {
         const el = document.getElementById(id);
@@ -704,16 +681,30 @@
       btn.innerHTML = '<span class="spinner"></span> Enviando...';
 
       try {
-        // Convertir imagen a base64
-        const base64 = await new Promise((res, rej) => {
-          const r = new FileReader();
-          r.onload = () => res(r.result.split(',')[1]);
-          r.onerror = rej;
-          r.readAsDataURL(file);
-        });
+        // 1. Subir comprobante a Supabase Storage
+        const ext = file.name.split('.').pop();
+        const fileName = `comprobante_${Date.now()}.${ext}`;
+        const uploadRes = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/comprobantes/${fileName}`,
+          {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': file.type,
+              'x-upsert': 'true',
+            },
+            body: file,
+          }
+        );
+        if (!uploadRes.ok) {
+          const errData = await uploadRes.json();
+          throw new Error('Error al subir comprobante: ' + JSON.stringify(errData));
+        }
+        const comprobanteUrl = `${SUPABASE_URL}/storage/v1/object/public/comprobantes/${fileName}`;
 
+        // 2. Insertar pedido en Supabase
         const sena = Math.ceil(producto.precio * 0.5);
-
         const res = await fetch(SUPABASE_URL + '/rest/v1/pedidos', {
           method: 'POST',
           headers: {
@@ -723,18 +714,16 @@
             'Prefer': 'return=representation',
           },
           body: JSON.stringify({
-            producto_id:      producto.id,
-            producto_nombre:  producto.nombre,
-            talle:            talleSeleccionado.talle,
-            precio_total:     producto.precio,
-            precio_sena:      sena,
-            nombre_cliente:   nombre,
-            email_cliente:    email,
-            telefono_cliente: tel,
-            comprobante_b64:  base64,
-            comprobante_nombre: file.name,
-            comprobante_tipo:   file.type,
-            estado:           'pendiente',
+            producto_id:       producto.id,
+            producto_nombre:   producto.nombre,
+            talle:             talleSeleccionado.talle,
+            precio_total:      producto.precio,
+            precio_sena:       sena,
+            nombre_cliente:    nombre,
+            email_cliente:     email,
+            telefono_cliente:  tel,
+            comprobante_url:   comprobanteUrl,
+            estado:            'pendiente',
           }),
         });
 
@@ -743,14 +732,14 @@
           throw new Error(JSON.stringify(err));
         }
 
-        // Ir a página de éxito
-        window.location.href = 'pago-exitoso.html';
+        const [pedido] = await res.json();
+        window.location.href = 'pago-exitoso.html?pedido=' + (pedido?.id || '');
 
       } catch (e) {
         console.error(e);
         btn.disabled = false;
         btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar pedido';
-        alert('Hubo un error al enviar el pedido. Intentá de nuevo.');
+        alert('Hubo un error al enviar el pedido: ' + e.message);
       }
     }
 
@@ -824,13 +813,6 @@
             <div class="talle-selected-info" id="talle-info">
               Seleccioná un talle para continuar
             </div>
-
-            <a id="btn-wa" href="#" class="btn-wa disabled" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Consultar por WhatsApp
-            </a>
 
             <!-- SECCIÓN TRANSFERENCIA -->
             <div class="transferencia-section" id="trans-section">

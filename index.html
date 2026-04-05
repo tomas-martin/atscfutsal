@@ -133,6 +133,46 @@
       font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim);
     }
 
+    /* ── BANNER PREVENTA ── */
+    .preventa-banner {
+      background: linear-gradient(135deg, rgba(192,25,42,.12) 0%, rgba(29,61,154,.15) 100%);
+      border-bottom: 1px solid rgba(192,25,42,.25);
+      padding: .75rem 2.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      flex-wrap: wrap; text-align: center;
+    }
+    .preventa-banner .pb-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
+      font-weight: 700; color: var(--red);
+    }
+    .preventa-banner .pb-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .88rem; letter-spacing: .06em; color: var(--muted);
+    }
+    .preventa-banner .pb-text strong { color: var(--white); }
+    .countdown {
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .cd-unit {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 3px; padding: 4px 10px; min-width: 44px;
+    }
+    .cd-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: .06em; line-height: 1; color: var(--white);
+    }
+    .cd-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted-dim); margin-top: 1px;
+    }
+    .cd-sep {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem;
+      color: var(--muted-dim); margin-bottom: 8px;
+    }
+
     /* ── HERO ── */
     .hero { position: relative; padding: 4.5rem 2.5rem 3.5rem; text-align: center; overflow: hidden; }
     .hero::after {
@@ -281,12 +321,27 @@
     </div>
   </div>
 
+  <!-- BANNER PREVENTA -->
+  <div class="preventa-banner">
+    <span class="pb-label">🔥 Preventa</span>
+    <span class="pb-text">Reservá tu <strong>indumentaria de invierno 2026</strong> con el 50% de seña. Cierra el 6 de junio.</span>
+    <div class="countdown" id="countdown">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-label">días</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-label">hs</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-label">min</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-label">seg</span></div>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero">
     <div class="hero-inner">
-      <div class="pill">Temporada 2026</div>
-      <h1>Nuestra<br><em>Indumentaria</em></h1>
-      <p class="hero-sub">Indumentaria oficial de Andes Talleres Futsal</p>
+      <div class="pill">Preventa Invierno 2026</div>
+      <h1>Colección<br><em>Invierno</em></h1>
+      <p class="hero-sub">Reservá tu indumentaria antes del 6 de junio · Stock limitado</p>
     </div>
   </section>
 
@@ -432,6 +487,27 @@ data-id="${p.id}">
 
   window.location.href = "producto.html?id=" + id;
 }
+
+    // ── COUNTDOWN ──
+    function updateCountdown() {
+      const fin = new Date('2026-06-06T23:59:59-03:00');
+      const now = new Date();
+      const diff = fin - now;
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = '<span style="font-family:\'Barlow Condensed\',sans-serif;font-size:.85rem;color:var(--red);font-weight:700;letter-spacing:.1em">PREVENTA CERRADA</span>';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+      document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+      document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+      document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
     init();
   </script>
