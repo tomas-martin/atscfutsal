@@ -57,25 +57,36 @@ serve(async (req) => {
     });
 
     // 🟢 Construir items correctamente
-    const items = (productos || []).map((p: any) => {
-      const cant = Number(p.cantidad) || 1;
-      const precioBase = Number(p.precio) || 0;
+    if (!productos || productos.length === 0) {
+  return new Response(JSON.stringify({
+    error: "Carrito vacío"
+  }), {
+    status: 400,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+}
 
-      const precioUnit = tipo_pago === 'total'
-        ? precioBase
-        : Math.ceil(precioBase * 0.5);
+const items = productos.map((p: any) => {
+  const cant = Number(p.cantidad) || 1;
+  const precioBase = Number(p.precio);
 
-      return {
-        id: String(p.producto_id || crypto.randomUUID()),
-        title: `${p.producto_nombre} — Talle ${p.talle}`,
-        description: tipo_pago === 'sena'
-          ? `Seña 50% · Precio unit. total: $${precioBase}`
-          : `Pago completo`,
-        quantity: cant,
-        currency_id: 'ARS',
-        unit_price: precioUnit,
-      };
-    });
+  if (!precioBase || precioBase <= 0) {
+    throw new Error("Precio inválido en producto");
+  }
+
+  return {
+    id: String(p.producto_id || crypto.randomUUID()),
+    title: `${p.producto_nombre || 'Producto'} — Talle ${p.talle || ''}`,
+    description: tipo_pago === 'sena'
+      ? `Seña 50%`
+      : `Pago completo`,
+    quantity: cant,
+    currency_id: 'ARS',
+    unit_price: tipo_pago === 'total'
+      ? precioBase
+      : Math.ceil(precioBase * 0.5),
+  };
+});
 
     const preferencia = {
       items,
