@@ -21,6 +21,7 @@
       --border-h:   rgba(255,255,255,0.15);
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size: 17px; }
     html { scroll-behavior: smooth; }
     body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 6px; }
@@ -48,7 +49,7 @@
     .nav-desktop { display: flex; align-items: center; gap: 2rem; }
     .nav-desktop a {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .82rem; letter-spacing: .15em; text-transform: uppercase;
+      font-size: .95rem; letter-spacing: .15em; text-transform: uppercase;
       color: var(--muted); text-decoration: none; transition: color .2s;
     }
     .nav-desktop a:hover { color: var(--white); }
@@ -172,7 +173,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 6px 0; cursor: pointer;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+      font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
       color: var(--muted); transition: color .15s;
       border: none; background: transparent; width: 100%; text-align: left;
     }
@@ -234,9 +235,9 @@
     }
     .results-count {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .8rem; letter-spacing: .1em; color: var(--muted-dim);
+      font-size: .92rem; letter-spacing: .1em; color: var(--muted-dim);
     }
-    .results-count strong { color: var(--white); font-size: 1rem; }
+    .results-count strong { color: var(--white); font-size: 1.1rem; }
 
     /* Tags de filtros activos */
     .active-filters { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -278,13 +279,13 @@
     .stock-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); }
     .stock-bar { height: 100%; transition: width .3s; }
     .card-body { padding: 1rem 1.1rem 1.2rem; }
-    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
-    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
-    .card-desc { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
+    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
+    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
+    .card-desc { font-size: 1rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: .75rem; }
     .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .04em; color: var(--white); }
-    .card-price small { font-family: 'Barlow', sans-serif; font-size: .72rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
-    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+    .card-price small { font-family: 'Barlow', sans-serif; font-size: .85rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
+    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .88rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
     .stock-info strong { color: var(--white); display: block; font-size: .92rem; }
     .sizes { display: flex; gap: 5px; margin-bottom: .9rem; flex-wrap: wrap; }
     .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
@@ -303,7 +304,7 @@
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer p { font-size: .95rem; color: var(--muted-dim); letter-spacing: .04em; }
     footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
 
     /* ── MOBILE FILTER BTN ── */
@@ -634,8 +635,7 @@
 
       // onclick → en el futuro lleva a producto.html?id=X
       return `
-        <article class="card${soldOut ? ' sold-out' : ''}" onclick="irProducto(this)"
-data-id="${p.id}">
+        <article class="card${soldOut ? ' sold-out' : ''}" onclick="window.location='producto.html?id=${p.id}'">
           <div class="card-img">
             ${imgContent}${badge}
             <div class="stock-bar-wrap">
@@ -784,18 +784,6 @@ data-id="${p.id}">
       buildTalleChips();
       renderGrid();
     }
-    function irProducto(el) {
-  const id = el.getAttribute("data-id");
-
-  console.log("ID clickeado:", id);
-
-  if (!id || id === "undefined") {
-    alert("Error: ID inválido");
-    return;
-  }
-
-  window.location.href = "producto.html?id=" + id;
-}
 
     init();
   </script>

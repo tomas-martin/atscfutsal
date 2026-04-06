@@ -22,6 +22,7 @@
       --green-wa:   #25D366;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size: 17px; }
     html { scroll-behavior: smooth; }
     body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 6px; }
@@ -44,7 +45,7 @@
     .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
     .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
     .nav-desktop { display: flex; align-items: center; gap: 2rem; }
-    .nav-desktop a { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-desktop a { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
     .nav-desktop a:hover { color: var(--white); }
     .nav-desktop a.active { color: var(--white); border-bottom: 2px solid var(--red); padding-bottom: 2px; }
     .burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: transparent; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: border-color .2s; flex-shrink: 0; }
@@ -97,7 +98,7 @@
     .si-fb { background: #1877f2; }
     .social-text { line-height: 1.2; }
     .social-text .sn { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; display: block; }
-    .social-text .sh { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); display: block; }
+    .social-text .sh { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--white); display: block; }
 
     /* Dirección y horarios */
     .address-block { display: flex; flex-direction: column; gap: 1rem; }
@@ -106,7 +107,7 @@
     .address-icon svg { width: 16px; height: 16px; color: var(--red); }
     .address-info { flex: 1; }
     .address-info .ai-label { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; margin-bottom: 3px; }
-    .address-info .ai-value { font-size: .92rem; color: var(--white); line-height: 1.5; }
+    .address-info .ai-value { font-size: 1.05rem; color: var(--white); line-height: 1.5; }
     .map-link { display: inline-flex; align-items: center; gap: 5px; font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--blue); text-decoration: none; margin-top: .4rem; transition: color .2s; }
     .map-link:hover { color: #7fa3e8; }
     .map-link svg { width: 11px; height: 11px; }
@@ -117,10 +118,10 @@
     .horario-row { display: flex; align-items: center; justify-content: space-between; padding: .5rem 0; border-bottom: 1px solid var(--border); }
     .horario-row:last-child { border-bottom: none; }
     .horario-row.hoy { background: rgba(29,61,154,.1); margin: 0 -.4rem; padding: .5rem .4rem; border-radius: 3px; border-bottom: none; }
-    .horario-dia { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .horario-dia { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px; }
     .horario-row.hoy .horario-dia { color: var(--white); }
     .hoy-badge { font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700; background: var(--red); color: #fff; padding: 2px 6px; border-radius: 2px; }
-    .horario-hrs { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; color: var(--white); font-weight: 600; }
+    .horario-hrs { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; color: var(--white); font-weight: 600; }
 
     /* Mapa */
     .map-card { grid-column: 1 / -1; background: var(--navy-card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
@@ -133,7 +134,7 @@
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer p { font-size: .95rem; color: var(--muted-dim); letter-spacing: .04em; }
     footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
 
     @media (max-width: 768px) {

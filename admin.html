@@ -13,7 +13,7 @@
       --border-h:rgba(255,255,255,0.15);--green:#1d9e75;--yellow:#ba7517;
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--navy);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;font-size:16px;}
+    body{background:var(--navy);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;font-size:17px;}
     ::-webkit-scrollbar{width:6px;}
     ::-webkit-scrollbar-track{background:var(--navy-mid);}
     ::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:3px;}
@@ -28,14 +28,14 @@
     .login-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;margin-bottom:.4rem;}
     .login-sub{font-size:1rem;color:var(--muted);margin-bottom:2rem;line-height:1.5;}
     .field{margin-bottom:1.3rem;}
-    .field label{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
+    .field label{font-family:'Barlow Condensed',sans-serif;font-size:.92rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
     .field input{width:100%;background:var(--navy-light);border:1px solid var(--border);border-radius:4px;padding:13px 16px;color:var(--white);font-family:'Barlow',sans-serif;font-size:1rem;outline:none;transition:border-color .2s;}
     .field input:focus{border-color:var(--blue);}
     .field input::placeholder{color:var(--muted-dim);}
     .btn-login{width:100%;padding:15px;background:var(--blue);color:#fff;border:none;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:background .2s;margin-top:.5rem;}
     .btn-login:hover{background:#2a4fc4;}
     .btn-login:disabled{background:var(--muted-dim);cursor:not-allowed;}
-    .login-error{font-size:.92rem;color:var(--red);margin-top:1rem;text-align:center;min-height:1.4rem;}
+    .login-error{font-size:1rem;color:var(--red);margin-top:1rem;text-align:center;min-height:1.4rem;}
 
     /* PANEL */
     #admin-panel{display:none;}
@@ -86,7 +86,7 @@
     .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
     .stat-card{background:var(--navy-card);border:1px solid var(--border);border-radius:6px;padding:1.3rem 1.5rem;}
     .stat-label{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;margin-bottom:.5rem;}
-    .stat-value{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.04em;line-height:1;}
+    .stat-value{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.04em;line-height:1;}
     .stat-value.green{color:var(--green);}.stat-value.yellow{color:var(--yellow);}.stat-value.blue{color:#7fa3e8;}
     .stat-sub{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted-dim);margin-top:.3rem;}
 
@@ -100,7 +100,7 @@
     .toolbar{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1.2rem;}
     .search-box{display:flex;align-items:center;gap:8px;background:var(--navy-card);border:1px solid var(--border);border-radius:3px;padding:9px 14px;flex:1;min-width:200px;max-width:340px;}
     .search-box svg{width:15px;height:15px;color:var(--muted-dim);flex-shrink:0;}
-    .search-box input{background:transparent;border:none;outline:none;color:var(--white);font-family:'Barlow',sans-serif;font-size:.95rem;width:100%;}
+    .search-box input{background:transparent;border:none;outline:none;color:var(--white);font-family:'Barlow',sans-serif;font-size:1.05rem;width:100%;}
     .search-box input::placeholder{color:var(--muted-dim);}
     .btn-refresh{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:9px 16px;border-radius:3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
     .btn-refresh:hover{border-color:var(--border-h);color:var(--white);}
@@ -114,8 +114,8 @@
     tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
     tbody tr:last-child{border-bottom:none;}
     tbody tr:hover{background:rgba(255,255,255,.025);}
-    tbody td{padding:.95rem 1rem;font-size:.92rem;color:var(--white);}
-    td.muted{color:var(--muted);font-size:.88rem;}
+    tbody td{padding:.95rem 1rem;font-size:1rem;color:var(--white);}
+    td.muted{color:var(--muted);font-size:.95rem;}
 
     /* PILLS */
     .pill{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:3px;white-space:nowrap;}
@@ -155,7 +155,7 @@
     .talle-row input[type="number"]{width:88px;background:var(--navy-card);border:1px solid var(--border);border-radius:3px;padding:8px 10px;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:600;text-align:center;outline:none;transition:border-color .2s;-moz-appearance:textfield;}
     .talle-row input[type="number"]::-webkit-outer-spin-button,.talle-row input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
     .talle-row input[type="number"]:focus{border-color:var(--blue);}
-    .talle-stock-label{font-size:.88rem;color:var(--muted);flex:1;}
+    .talle-stock-label{font-size:1rem;color:var(--muted);flex:1;}
     .stock-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
     .si-ok{background:var(--green);}.si-low{background:var(--yellow);}.si-out{background:var(--red);}
 
@@ -190,8 +190,8 @@
     .modal-close{background:transparent;border:none;cursor:pointer;color:var(--muted);transition:color .2s;padding:4px;}
     .modal-close:hover{color:var(--white);}
     .modal-close svg{width:20px;height:20px;display:block;}
-    .modal-body{padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:.6rem;}
-    .detail-row{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.95rem;gap:1rem;}
+    .modal-body{padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:.6rem;font-size:1rem;}
+    .detail-row{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:1.05rem;gap:1rem;}
     .detail-row:last-child{border-bottom:none;}
     .detail-row span:first-child{color:var(--muted-dim);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;}
     .detail-row span:last-child{color:var(--white);font-weight:600;text-align:right;word-break:break-all;}
@@ -489,8 +489,7 @@
   function updateDashboard(){
     const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
     const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-    // Sumar monto_recibido si existe, sino precio_sena
-    const ingresos=confirmadas.reduce((s,p)=>s+(Number(p.monto_recibido||p.precio_sena)||0),0);
+    const ingresos=confirmadas.reduce((s,p)=>s+(Number(p.precio_sena)||0),0);
     document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
     document.getElementById('stat-confirmadas').textContent=confirmadas.length;
     document.getElementById('stat-pendientes').textContent=pendientes.length;
@@ -511,22 +510,16 @@
     const p=allPedidos.find(x=>x.id===id);if(!p)return;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR'):'—';
     const saldo=(p.precio_total&&p.precio_sena)?'$'+(p.precio_total-p.precio_sena).toLocaleString('es-AR'):'—';
-    const montoConfirmado=p.monto_recibido?'$'+Number(p.monto_recibido).toLocaleString('es-AR'):null;
-
-    // Comprobante desde URL (Supabase Storage)
-    let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante adjunto</span>';
-    if(p.comprobante_url){
-      const esImg=/\.(jpg|jpeg|png|gif|webp)$/i.test(p.comprobante_url);
-      const esPdf=/\.pdf$/i.test(p.comprobante_url);
-      if(esImg){
-        comprobanteHTML=`<a href="${p.comprobante_url}" target="_blank"><img class="comprobante-img" src="${p.comprobante_url}" alt="Comprobante" title="Click para ampliar" /></a>`;
-      } else if(esPdf){
-        comprobanteHTML=`<a class="comprobante-pdf" href="${p.comprobante_url}" target="_blank">📄 Ver PDF del comprobante</a>`;
-      } else {
-        comprobanteHTML=`<a href="${p.comprobante_url}" target="_blank" style="color:var(--blue);font-size:.88rem">Ver comprobante →</a>`;
+    let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante</span>';
+    if(p.comprobante_b64){
+      if(p.comprobante_tipo&&p.comprobante_tipo.includes('pdf')){
+        const blob=b64toBlob(p.comprobante_b64,p.comprobante_tipo);
+        const url=URL.createObjectURL(blob);
+        comprobanteHTML=`<a class="comprobante-pdf" href="${url}" target="_blank">📄 Ver PDF — ${p.comprobante_nombre||'comprobante.pdf'}</a>`;
+      }else{
+        comprobanteHTML=`<img class="comprobante-img" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" title="Click para ampliar" />`;
       }
     }
-
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
     document.getElementById('modal-body').innerHTML=`
       <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
@@ -537,30 +530,15 @@
       <div class="detail-row"><span>Producto</span><span>${p.producto_nombre||'—'}</span></div>
       <div class="detail-row"><span>Talle</span><span>${p.talle||'—'}</span></div>
       <div class="detail-row"><span>Precio total</span><span>$${Number(p.precio_total||0).toLocaleString('es-AR')}</span></div>
-      <div class="detail-row"><span>Seña esperada (50%)</span><span style="color:var(--muted)">$${Number(p.precio_sena||0).toLocaleString('es-AR')}</span></div>
-      <div class="detail-row"><span>Monto recibido</span><span style="color:var(--green);font-size:1.05rem">${montoConfirmado||'<em style="color:var(--muted-dim);font-size:.85rem;font-style:normal">Sin confirmar</em>'}</span></div>
+      <div class="detail-row"><span>Seña recibida</span><span style="color:var(--green);font-size:1.05rem">$${Number(p.precio_sena||0).toLocaleString('es-AR')}</span></div>
       <div class="detail-row"><span>Saldo a cobrar</span><span style="color:var(--yellow)">${saldo}</span></div>
-      <div class="detail-row" style="flex-direction:column;gap:.6rem;align-items:flex-start">
-        <span>Comprobante</span>
-        ${comprobanteHTML}
-      </div>
-      <div class="detail-row" style="flex-direction:column;gap:.5rem;align-items:flex-start">
-        <span>Confirmar monto recibido</span>
-        <div style="display:flex;gap:.5rem;width:100%;align-items:center">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;color:var(--muted-dim)">$</span>
-          <input type="number" id="input-monto" placeholder="${p.precio_sena||''}" value="${p.monto_recibido||''}"
-            style="flex:1;background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:8px 12px;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1rem;outline:none;-moz-appearance:textfield"
-            onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'" />
-          <button class="btn-modal btn-confirmar" style="white-space:nowrap" onclick="guardarMonto(${p.id})">Guardar monto</button>
-        </div>
-        <span style="font-size:.75rem;color:var(--muted-dim)">Ingresá el monto exacto recibido para llevar el control</span>
-      </div>
+      <div class="detail-row" style="flex-direction:column;gap:.6rem"><span>Comprobante</span>${comprobanteHTML}</div>
     `;
     const waTel=(p.telefono_cliente||'').replace(/\D/g,'');
     const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente}, somos de Andes Talleres Futsal. Tu pedido #${p.id} (${p.producto_nombre}, talle ${p.talle}) fue confirmado. ¿Cuándo pasás a retirar?`);
     let acciones='';
     if(p.estado==='pendiente'){
-      acciones+=`<button class="btn-modal btn-confirmar" onclick="cambiarEstado(${p.id},'confirmada')">✓ Confirmar pedido</button>`;
+      acciones+=`<button class="btn-modal btn-confirmar" onclick="cambiarEstado(${p.id},'confirmada')">✓ Confirmar pago</button>`;
       acciones+=`<button class="btn-modal btn-rechazar" onclick="cambiarEstado(${p.id},'rechazado')">✗ Rechazar</button>`;
     }
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
@@ -568,80 +546,17 @@
     document.getElementById('modal-actions').innerHTML=acciones;
     document.getElementById('modal-overlay').classList.add('open');
   }
-
-async function guardarMonto(id){
-  const input=document.getElementById('input-monto');
-  const monto=parseFloat(input.value)||0;
-
-  if(!monto){
-    showToast('Ingresá un monto válido','error');
-    return;
+  function b64toBlob(b64,type){const bc=atob(b64);const ba=new Uint8Array(bc.length);for(let i=0;i<bc.length;i++)ba[i]=bc.charCodeAt(i);return new Blob([ba],{type});}
+  async function cambiarEstado(id,nuevoEstado){
+    try{
+      const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({estado:nuevoEstado})});
+      if(!res.ok)throw new Error();
+      const idx=allPedidos.findIndex(p=>p.id===id);if(idx!==-1)allPedidos[idx].estado=nuevoEstado;
+      closeModal();renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
+      showToast(nuevoEstado==='confirmada'?'¡Venta confirmada!':'Pedido rechazado',nuevoEstado==='confirmada'?'success':'error');
+    }catch{showToast('Error al actualizar','error');}
   }
-
-  try{
-    const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{
-      method:'PATCH',
-      headers:{'Prefer':'return=representation'},
-      body:JSON.stringify({
-        monto_recibido:monto,
-        estado:'confirmada'
-      })
-    });
-
-    if(!res.ok) throw new Error();
-
-    const idx=allPedidos.findIndex(p=>p.id===id);
-    if(idx!==-1){
-      allPedidos[idx].monto_recibido=monto;
-      allPedidos[idx].estado='confirmada';
-    }
-
-    closeModal();
-    renderTabla('pendiente');
-    renderTabla('confirmada');
-    updateDashboard();
-    updateBadge();
-
-    showToast('Monto confirmado: $'+monto.toLocaleString('es-AR'),'success');
-
-  }catch{
-    showToast('Error al guardar monto','error');
-  }
-}
-
-/* 🔥 ESTA ES LA FUNCIÓN QUE TE FALTABA */
-async function cambiarEstado(id,nuevoEstado){
-  try{
-    const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{
-      method:'PATCH',
-      headers:{'Prefer':'return=representation'},
-      body:JSON.stringify({estado:nuevoEstado})
-    });
-
-    if(!res.ok) throw new Error();
-
-    const idx=allPedidos.findIndex(p=>p.id===id);
-    if(idx!==-1){
-      allPedidos[idx].estado=nuevoEstado;
-    }
-
-    closeModal();
-    renderTabla('pendiente');
-    renderTabla('confirmada');
-    updateDashboard();
-    updateBadge();
-
-    showToast(
-      nuevoEstado==='confirmada'
-        ? '¡Venta confirmada!'
-        : 'Pedido rechazado',
-      nuevoEstado==='confirmada' ? 'success' : 'error'
-    );
-
-  }catch{
-    showToast('Error al actualizar','error');
-  }
-}
+  function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
 
   // STOCK
   function renderProducts(){
