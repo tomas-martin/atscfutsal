@@ -600,10 +600,38 @@
     if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="5"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
     const pills2={confirmada:'<span class="pill pill-confirmada">✓ Confirmada</span>',pendiente:'<span class="pill pill-pendiente">⏳ Pendiente</span>',entregada:'<span class="pill pill-entregada">📦 Entregado</span>',rechazado:'<span class="pill pill-rechazado">✗ Rechazado</span>'};
     dtbody.innerHTML=ultimas.map(p=>{
-      const sena=p.monto_transferido||p.precio_sena?'$'+Number(p.monto_transferido||p.precio_sena).toLocaleString('es-AR'):'—';
-      const pill=pills2[p.estado]||pills2.pendiente;
-      return `<tr><td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td><td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${getPedidoProductosStr(p)}</td><td data-label="Cobrado" style="color:var(--green)">${sena}</td><td data-label="Estado">${pill}</td><td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td></tr>`;
-    }).join('');
+  const cobrado = Number(p.monto_transferido || p.precio_sena || 0);
+
+  const total = Number(p.precio_total || 0);
+
+  const saldo = total - cobrado;
+
+  const cobradoHTML = cobrado > 0 
+    ? `
+      <div style="color:var(--green)">
+        $${cobrado.toLocaleString('es-AR')}
+      </div>
+      <div style="font-size:0.8rem;color:${saldo > 0 ? 'orange' : 'var(--green)'}">
+        ${saldo > 0 
+          ? 'Falta: $' + saldo.toLocaleString('es-AR') 
+          : '✓ Completo'
+        }
+      </div>
+    `
+    : '—';
+
+  const pill=pills2[p.estado]||pills2.pendiente;
+
+  return `<tr>
+    <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+    <td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+      ${getPedidoProductosStr(p)}
+    </td>
+    <td data-label="Cobrado">${cobradoHTML}</td>
+    <td data-label="Estado">${pill}</td>
+    <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
+  </tr>`;
+}).join('');
   }
 
   function updateBadge(){const n=allPedidos.filter(p=>p.estado==='pendiente').length;const b=document.getElementById('badge-pendientes');b.textContent=n;b.style.display=n>0?'':'none';}
@@ -611,7 +639,17 @@
   // ── MODAL ──
   function verPedido(id){
     const p=allPedidos.find(x=>x.id===id);if(!p)return;
-    const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR'):'—';
+    const fecha = p.created_at 
+  ? new Date(p.created_at).toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'America/Argentina/Buenos_Aires'
+    })
+  : '-';
     const cobrado=Number(p.monto_transferido||p.precio_sena||0);
     const saldoNum=p.precio_total&&cobrado>0?Number(p.precio_total)-cobrado:0;
     const saldoStr=saldoNum>0?'$'+saldoNum.toLocaleString('es-AR'):'✓ Saldado';
@@ -675,6 +713,7 @@
       acciones+=`<button class="btn-modal btn-entregar" onclick="cambiarEstado(${p.id},'entregada')">📦 Marcar como entregado</button>`;
     }
     if(waTel) acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
+    acciones+=`<button class="btn-modal btn-secondary" onclick="descargarPDF(${p.id})">📄 VER PDF</button>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="closeModal()">Cerrar</button>`;
     document.getElementById('modal-actions').innerHTML=acciones;
     document.getElementById('modal-overlay').classList.add('open');
@@ -693,6 +732,10 @@
       showToast(msgs[nuevoEstado]||'Estado actualizado',types[nuevoEstado]||'info');
     }catch{showToast('Error al actualizar','error');}
   }
+  function descargarPDF(id){
+  const p = allPedidos.find(x => x.id === id);
+  if(p) generarPDF(p);
+}
 
   function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
 
@@ -807,6 +850,89 @@
       loadAll();
     }else{localStorage.removeItem('atsc_token');localStorage.removeItem('atsc_email');}
   })();
+  async function generarPDF(p){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  // Header estilo Mercado Pago
+  doc.setFillColor(0, 158, 227);
+  doc.rect(0, 0, 210, 30, 'F');
+
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(16);
+  doc.text("Comprobante de pago", 20, 18);
+
+  doc.setTextColor(0,0,0);
+  doc.setFontSize(12);
+
+  let y = 50;
+
+  doc.text(`Pedido #${p.id}`, 20, y); y+=10;
+  doc.text(`Cliente: ${p.nombre_cliente || '-'}`, 20, y); y+=10;
+  doc.text(`Email: ${p.email_cliente || '-'}`, 20, y); y+=10;
+
+  const fecha = p.created_at 
+  ? new Date(p.created_at).toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'America/Argentina/Buenos_Aires'
+    })
+  : '-';
+
+  doc.text(`Fecha: ${fecha}`, 20, y); y+=15;
+
+  doc.line(20, y, 190, y); y+=10;
+
+  const total = Number(p.precio_total || 0);
+  const cobrado = Number(
+    p.monto_transferido !== null && p.monto_transferido !== undefined
+      ? p.monto_transferido
+      : p.precio_sena || 0
+  );
+
+  const saldo = total - cobrado;
+
+  doc.text(`Total: $${total.toLocaleString('es-AR')}`, 20, y); y+=10;
+  doc.text(`Pagado: $${cobrado.toLocaleString('es-AR')}`, 20, y); y+=10;
+
+  if(saldo > 0){
+    doc.setTextColor(200,120,0);
+    doc.text(`Saldo pendiente: $${saldo.toLocaleString('es-AR')}`, 20, y);
+  } else {
+    doc.setTextColor(0,150,0);
+    doc.text(`✓ Pago completo`, 20, y);
+  }
+
+  y+=15;
+
+  if(p.mp_payment_id){
+    doc.setTextColor(0,0,0);
+    doc.text(`ID de operación: "#${p.mp_payment_id}"`, 20, y);
+  }
+
+  y+=15;
+  doc.text("Detalle:", 20, y); y+=10;
+
+  if(Array.isArray(p.productos)){
+    p.productos.forEach(prod => {
+      doc.text(
+        `- ${prod.producto_nombre} (${prod.talle}) x${prod.cantidad || 1}`,
+        20,
+        y
+      );
+      y+=8;
+    });
+  }
+
+  // 🚀 abrir en pestaña (NO descarga)
+  const url = doc.output('bloburl');
+  window.open(url, '_blank');
+}
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
