@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito — Andes Talleres Futsal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:       #09111f;
+      --navy-mid:   #0f1929;
+      --navy-light: #182238;
+      --navy-card:  #131e30;
+      --blue:       #1d3d9a;
+      --blue-dim:   #152d73;
+      --red:        #c0192a;
+      --white:      #eef2ff;
+      --muted:      #8a96b8;
+      --muted-dim:  #4f5a76;
+      --border:     rgba(255,255,255,0.07);
+      --border-h:   rgba(255,255,255,0.15);
+      --green:      #1d9e75;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-mid); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
+
+    /* ── HEADER ── */
+    header { position: sticky; top: 0; z-index: 200; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; background: rgba(9,17,31,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .shield { width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
+    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
+    .nav-desktop { display: flex; align-items: center; gap: 2rem; }
+    .nav-desktop a { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-desktop a:hover { color: var(--white); }
+    .burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: transparent; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: border-color .2s; flex-shrink: 0; }
+    .burger:hover { border-color: var(--border-h); }
+    .burger span { display: block; width: 100%; height: 1.5px; background: var(--muted); border-radius: 2px; transition: all .3s; }
+    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--white); }
+    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--white); }
+    .nav-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 400; background: var(--navy-mid); border-left: 1px solid var(--border); transform: translateX(100%); transition: transform .32s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .nav-drawer-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-drawer-logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
+    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--white); }
+    .nav-drawer-close { background: transparent; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s; }
+    .nav-drawer-close:hover { color: var(--white); }
+    .nav-drawer-close svg { width: 18px; height: 18px; display: block; }
+    .nav-links { display: flex; flex-direction: column; padding: 1.5rem 0; flex: 1; }
+    .nav-links a { display: flex; align-items: center; gap: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); text-decoration: none; padding: 14px 1.5rem; border-left: 2px solid transparent; transition: all .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.03); border-left-color: var(--border-h); }
+    .nav-links a.active { color: var(--white); border-left-color: var(--red); }
+    .nav-links a .nav-icon { width: 16px; height: 16px; opacity: .5; flex-shrink: 0; }
+    .nav-links a.active .nav-icon { opacity: 1; }
+    .nav-drawer-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim); }
+
+    /* ── PAGE ── */
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem 5rem; }
+    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: .05em; margin-bottom: .3rem; }
+    .page-title em { color: var(--red); font-style: normal; }
+    .page-sub { font-size: .9rem; color: var(--muted); margin-bottom: 2rem; }
+
+    /* ── LAYOUT ── */
+    .cart-layout { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; align-items: start; }
+
+    /* ── ITEMS DEL CARRITO ── */
+    .cart-items { display: flex; flex-direction: column; gap: .8rem; }
+
+    .cart-item {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.1rem 1.3rem; display: flex; align-items: center; gap: 1.2rem;
+      transition: border-color .2s;
+    }
+    .cart-item:hover { border-color: var(--border-h); }
+    .item-img { width: 64px; height: 64px; border-radius: 4px; overflow: hidden; background: var(--navy-light); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .item-img .ph { width: 36px; height: 36px; object-fit: contain; opacity: .25; }
+    .item-info { flex: 1; min-width: 0; }
+    .item-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 2px; }
+    .item-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.08rem; font-weight: 700; color: var(--white); }
+    .item-talle { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; color: var(--muted); margin-top: 2px; }
+    .item-precio { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .04em; color: var(--white); white-space: nowrap; }
+    .item-precio small { font-family: 'Barlow', sans-serif; font-size: .78rem; color: var(--muted); font-weight: 400; }
+    .btn-remove { background: transparent; border: 1px solid var(--border); color: var(--muted-dim); padding: 6px 10px; border-radius: 3px; cursor: pointer; transition: all .2s; flex-shrink: 0; }
+    .btn-remove:hover { border-color: var(--red); color: var(--red); }
+    .btn-remove svg { width: 14px; height: 14px; display: block; }
+
+    /* Carrito vacío */
+    .cart-empty { text-align: center; padding: 4rem 2rem; background: var(--navy-card); border: 1px solid var(--border); border-radius: 6px; }
+    .cart-empty svg { width: 48px; height: 48px; color: var(--muted-dim); margin-bottom: 1rem; }
+    .cart-empty p { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--muted); margin-bottom: .4rem; }
+    .cart-empty small { font-size: .85rem; color: var(--muted-dim); }
+
+    /* ── PANEL PAGO ── */
+    .payment-panel {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 6px;
+      overflow: hidden; position: sticky; top: 84px;
+    }
+
+    .panel-section { padding: 1.4rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .panel-section:last-child { border-bottom: none; }
+
+    .panel-title { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .25em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; margin-bottom: 1rem; }
+
+    /* Resumen */
+    .summary-row { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: .92rem; color: var(--muted); padding: .35rem 0; }
+    .summary-row span:last-child { color: var(--white); font-weight: 600; }
+    .summary-total { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; color: var(--white); font-weight: 700; padding: .6rem 0 0; border-top: 1px solid var(--border); margin-top: .4rem; }
+    .summary-total span:last-child { color: var(--white); font-size: 1.3rem; }
+    .summary-sena { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; padding: .4rem 0 0; }
+    .summary-sena span:first-child { color: var(--muted); }
+    .summary-sena span:last-child { color: var(--green); font-size: 1.2rem; }
+
+    /* Datos bancarios */
+    .banco-box { background: var(--navy-light); border: 1px solid rgba(29,61,154,.3); border-radius: 4px; padding: .9rem 1.1rem; margin-bottom: .2rem; }
+    .banco-box-label { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: #7fa3e8; font-weight: 700; margin-bottom: .7rem; }
+    .banco-row { display: flex; align-items: center; justify-content: space-between; padding: .35rem 0; border-bottom: 1px solid var(--border); }
+    .banco-row:last-child { border-bottom: none; }
+    .banco-label { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; }
+    .banco-value { font-family: 'Barlow Condensed', sans-serif; font-size: .88rem; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 6px; }
+    .btn-copy { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 2px; cursor: pointer; font-size: .65rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .08em; text-transform: uppercase; transition: all .2s; }
+    .btn-copy:hover { border-color: var(--blue); color: #7fa3e8; }
+    .btn-copy.copied { border-color: var(--green); color: var(--green); }
+
+    /* Formulario */
+    .form-field { margin-bottom: .9rem; }
+    .form-field label { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; display: block; margin-bottom: .4rem; }
+    .form-field input { width: 100%; background: var(--navy-light); border: 1px solid var(--border); border-radius: 3px; padding: 11px 14px; color: var(--white); font-family: 'Barlow', sans-serif; font-size: .95rem; transition: border-color .2s; outline: none; }
+    .form-field input:focus { border-color: var(--blue); }
+    .form-field input::placeholder { color: var(--muted-dim); }
+    .form-field input.error { border-color: var(--red); }
+
+    /* Upload */
+    .upload-area { border: 2px dashed var(--border); border-radius: 4px; padding: 1.2rem; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+    .upload-area:hover { border-color: var(--blue); background: rgba(29,61,154,.05); }
+    .upload-area.has-file { border-color: var(--green); background: rgba(29,158,117,.05); }
+    .upload-area.error { border-color: var(--red); }
+    .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 1.5rem; margin-bottom: .3rem; }
+    .upload-text { font-family: 'Barlow Condensed', sans-serif; font-size: .8rem; letter-spacing: .06em; color: var(--muted); }
+    .upload-text strong { color: var(--white); display: block; margin-bottom: .15rem; font-size: .88rem; }
+    .upload-filename { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; color: var(--green); margin-top: .3rem; font-weight: 700; }
+
+    /* Botón enviar */
+    .btn-enviar { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; background: var(--blue); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700; transition: all .2s; }
+    .btn-enviar:hover:not(:disabled) { background: #2a4fc4; transform: translateY(-1px); }
+    .btn-enviar:disabled { background: var(--muted-dim); cursor: not-allowed; transform: none; }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .panel-note { font-size: .78rem; color: var(--muted-dim); text-align: center; margin-top: .8rem; line-height: 1.5; }
+
+    /* Panel deshabilitado cuando carrito vacío */
+    .payment-panel.empty-state { opacity: .45; pointer-events: none; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: .95rem; color: var(--muted-dim); }
+    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
+
+    @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } .payment-panel { position: static; } }
+    @media (max-width: 768px) { header { padding: 0 1.2rem; } .nav-desktop { display: none; } .burger { display: flex; } .logo-copy .tag { display: none; } .page-wrap { padding: 1.5rem 1.2rem 4rem; } .nav-drawer { width: 100%; border-left: none; } footer { padding: 1.5rem 1.2rem; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">
+      <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo Andes Talleres" />
+      <div class="logo-copy">
+        <span class="name">Andes Talleres</span>
+        <span class="tag">Futsal · Indumentaria</span>
+      </div>
+    </a>
+    <nav class="nav-desktop">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+    <button class="burger" id="burger-btn" onclick="toggleNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <div class="nav-drawer-header">
+      <div class="nav-drawer-logo">
+        <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo" />
+        <span>Andes Talleres</span>
+      </div>
+      <button class="nav-drawer-close" onclick="closeNav()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html"><svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/></svg>Inicio</a>
+      <a href="catalogo.html"><svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>Catálogo</a>
+      <a href="contacto.html"><svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/></svg>Contacto</a>
+      <a href="carrito.html" class="active"><svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="1"/><circle cx="13" cy="14" r="1"/><path d="M1 1h2.5l1.8 8.9a1 1 0 001 .8h6.4a1 1 0 001-.84L15 5H4"/></svg>Carrito</a>
+    </nav>
+    <div class="nav-drawer-footer">© 2026 Andes Talleres Sport Club</div>
+  </div>
+
+  <div class="page-wrap">
+    <h1 class="page-title">Mi <em>Carrito</em></h1>
+    <p class="page-sub" id="page-sub">Revisá tu pedido y completá los datos para reservar</p>
+
+    <div class="cart-layout">
+      <!-- ITEMS -->
+      <div class="cart-items" id="cart-items"></div>
+
+      <!-- PANEL DE PAGO -->
+      <div class="payment-panel" id="payment-panel">
+
+        <!-- RESUMEN -->
+        <div class="panel-section">
+          <div class="panel-title">Resumen del pedido</div>
+          <div id="summary-items"></div>
+          <div class="summary-total"><span>Total</span><span id="summary-total">$0</span></div>
+          <div class="summary-sena"><span>Seña a transferir (50%)</span><span id="summary-sena">$0</span></div>
+        </div>
+
+        <!-- DATOS BANCARIOS -->
+        <div class="panel-section">
+          <div class="panel-title">Datos para la transferencia</div>
+          <div class="banco-box">
+            <div class="banco-box-label">📋 Transferí la seña a</div>
+            <div class="banco-row">
+              <span class="banco-label">Alias</span>
+              <span class="banco-value">totti.martin <button class="btn-copy" onclick="copiar('totti.martin', this)">Copiar</button></span>
+            </div>
+            <div class="banco-row">
+              <span class="banco-label">CVU</span>
+              <span class="banco-value" style="font-size:.78rem;">0000003100091234567890 <button class="btn-copy" onclick="copiar('0000003100091234567890', this)">Copiar</button></span>
+            </div>
+            <div class="banco-row">
+              <span class="banco-label">Titular</span>
+              <span class="banco-value">Tomas Martin</span>
+            </div>
+            <div class="banco-row">
+              <span class="banco-label">Banco</span>
+              <span class="banco-value">Tarjeta Naranja</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div class="panel-section">
+          <div class="panel-title">Tus datos</div>
+          <div class="form-field">
+            <label>Nombre completo *</label>
+            <input type="text" id="f-nombre" placeholder="Juan Pérez" />
+          </div>
+          <div class="form-field">
+            <label>Email *</label>
+            <input type="email" id="f-email" placeholder="juan@email.com" />
+          </div>
+          <div class="form-field">
+            <label>Teléfono WhatsApp *</label>
+            <input type="tel" id="f-tel" placeholder="3411234567" />
+          </div>
+          <div class="form-field">
+            <label>Comprobante de transferencia *</label>
+            <div class="upload-area" id="upload-area">
+              <input type="file" id="f-comprobante" accept="image/*,.pdf" onchange="onFileChange(this)" />
+              <div class="upload-icon">📎</div>
+              <div class="upload-text">
+                <strong>Adjuntá tu comprobante</strong>
+                Foto, captura o PDF
+              </div>
+              <div class="upload-filename" id="upload-filename" style="display:none"></div>
+            </div>
+          </div>
+
+          <button class="btn-enviar" id="btn-enviar" onclick="enviarPedido()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Confirmar pedido
+          </button>
+          <p class="panel-note">
+            Enviamos tu pedido una vez que confirmemos la transferencia.<br>
+            Te contactamos por WhatsApp para coordinar la entrega.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="hashtags">#SomosTalleres &nbsp; #SomosFamilia</span>
+    <p>© 2026 Andes Talleres Sport Club · Mendoza, Argentina</p>
+    <a href="admin.html" style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);text-decoration:none;border:1px solid var(--border);padding:4px 12px;border-radius:2px;transition:all .2s;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.color='var(--white)';this.style.borderColor='var(--border-h)'" onmouseout="this.style.color='var(--muted-dim)';this.style.borderColor='var(--border)'">⚙ Administrador</a>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
+    const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
+
+    // ── NAV ──
+    function toggleNav() {
+      const open = document.getElementById('nav-drawer').classList.toggle('open');
+      document.getElementById('nav-overlay').classList.toggle('open', open);
+      document.getElementById('burger-btn').classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeNav() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('nav-overlay').classList.remove('open');
+      document.getElementById('burger-btn').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+    // ── CARRITO ──
+    function getCarrito() {
+      try { return JSON.parse(localStorage.getItem('atsc_carrito') || '[]'); } catch { return []; }
+    }
+    function saveCarrito(c) { localStorage.setItem('atsc_carrito', JSON.stringify(c)); }
+
+    function removeItem(index) {
+      const c = getCarrito();
+      c.splice(index, 1);
+      saveCarrito(c);
+      renderCarrito();
+    }
+
+    // ── RENDER ──
+    function renderCarrito() {
+      const carrito = getCarrito();
+      const itemsEl = document.getElementById('cart-items');
+      const panel = document.getElementById('payment-panel');
+
+      if (carrito.length === 0) {
+        itemsEl.innerHTML = `
+          <div class="cart-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.97-1.68L23 6H6"/>
+            </svg>
+            <p>Tu carrito está vacío</p>
+            <small>Agregá productos desde el catálogo</small>
+            <br/><br/>
+            <a href="catalogo.html" style="font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--blue);color:#fff;text-decoration:none;padding:11px 24px;border-radius:3px;display:inline-block;transition:background .2s;" onmouseover="this.style.background='#2a4fc4'" onmouseout="this.style.background='var(--blue)'">Ver catálogo</a>
+          </div>`;
+        panel.classList.add('empty-state');
+        document.getElementById('page-sub').textContent = 'Agregá productos desde el catálogo para comenzar';
+        return;
+      }
+
+      panel.classList.remove('empty-state');
+      document.getElementById('page-sub').textContent = `${carrito.length} producto${carrito.length !== 1 ? 's' : ''} en tu carrito`;
+
+      itemsEl.innerHTML = carrito.map((item, i) => `
+        <div class="cart-item">
+          <div class="item-img">
+            ${item.imagen_url
+              ? `<img src="${item.imagen_url}" alt="${item.producto_nombre}" />`
+              : `<img class="ph" src="${ESCUDO}" alt="" />`}
+          </div>
+          <div class="item-info">
+            <div class="item-cat">${item.categoria || ''}</div>
+            <div class="item-name">${item.producto_nombre}</div>
+            <div class="item-talle">Talle: <strong style="color:var(--white)">${item.talle}</strong></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;">
+            <div class="item-precio"><small>$</small>${item.precio ? item.precio.toLocaleString('es-AR') : '—'}</div>
+            <button class="btn-remove" onclick="removeItem(${i})" title="Quitar">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+            </button>
+          </div>
+        </div>`).join('');
+
+      // Resumen
+      const total = carrito.reduce((s, i) => s + (i.precio || 0), 0);
+      const sena = Math.ceil(total * 0.5);
+
+      const summaryEl = document.getElementById('summary-items');
+      summaryEl.innerHTML = carrito.map(item => `
+        <div class="summary-row">
+          <span>${item.producto_nombre} (${item.talle})</span>
+          <span>${item.precio ? '$' + item.precio.toLocaleString('es-AR') : '—'}</span>
+        </div>`).join('');
+
+      document.getElementById('summary-total').textContent = '$' + total.toLocaleString('es-AR');
+      document.getElementById('summary-sena').textContent = '$' + sena.toLocaleString('es-AR');
+    }
+
+    // ── UPLOAD ──
+    function onFileChange(input) {
+      const area = document.getElementById('upload-area');
+      const label = document.getElementById('upload-filename');
+      if (input.files && input.files[0]) {
+        area.classList.add('has-file');
+        area.classList.remove('error');
+        label.textContent = '✓ ' + input.files[0].name;
+        label.style.display = 'block';
+      }
+    }
+
+    // ── COPIAR ──
+    function copiar(texto, btn) {
+      navigator.clipboard.writeText(texto).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // ENVIAR PEDIDO
+    // Por cada item del carrito: crea un pedido en Supabase Y
+    // descuenta 1 unidad del stock del talle correspondiente.
+    // ══════════════════════════════════════════════════════════════
+    async function enviarPedido() {
+      const carrito = getCarrito();
+      if (!carrito.length) return;
+
+      // Validar campos
+      const nombre = document.getElementById('f-nombre').value.trim();
+      const email  = document.getElementById('f-email').value.trim();
+      const tel    = document.getElementById('f-tel').value.trim();
+      const file   = document.getElementById('f-comprobante').files[0];
+
+      let ok = true;
+      ['f-nombre','f-email','f-tel'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+      });
+      if (!file) { document.getElementById('upload-area').classList.add('error'); ok = false; }
+      if (!ok) return;
+
+      const btn = document.getElementById('btn-enviar');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+      try {
+        // Convertir comprobante a base64
+        const base64 = await new Promise((res, rej) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result.split(',')[1]);
+          r.onerror = rej;
+          r.readAsDataURL(file);
+        });
+
+        const total = carrito.reduce((s, i) => s + (i.precio || 0), 0);
+        const sena  = Math.ceil(total * 0.5);
+
+        // ── 1. Crear UN pedido por item del carrito ──
+        const pedidosCreados = [];
+        for (const item of carrito) {
+          const res = await fetch(SUPABASE_URL + '/rest/v1/pedidos', {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation',
+            },
+            body: JSON.stringify({
+              producto_id:        item.producto_id,
+              producto_nombre:    item.producto_nombre,
+              talle:              item.talle,
+              precio_total:       item.precio,
+              precio_sena:        Math.ceil(item.precio * 0.5),
+              nombre_cliente:     nombre,
+              email_cliente:      email,
+              telefono_cliente:   tel,
+              comprobante_b64:    base64,
+              comprobante_nombre: file.name,
+              comprobante_tipo:   file.type,
+              estado:             'pendiente',
+            }),
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(JSON.stringify(err));
+          }
+          const data = await res.json();
+          pedidosCreados.push(data[0]);
+        }
+
+        // ── 2. Descontar stock por cada item ──
+        for (const item of carrito) {
+          await descontarStock(item.producto_id, item.talle);
+        }
+
+        // ── 3. Limpiar carrito ──
+        saveCarrito([]);
+
+        // ── 4. Redirigir ──
+        const ids = pedidosCreados.map(p => p.id).join(',');
+        window.location.href = `pago-exitoso.html?pedido=${ids}`;
+
+      } catch (e) {
+        console.error(e);
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Confirmar pedido`;
+        alert('Hubo un error al enviar el pedido. Intentá de nuevo.');
+      }
+    }
+
+    // ── DESCONTAR STOCK ──
+    async function descontarStock(productoId, talle) {
+      try {
+        // Obtener producto actual
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}&select=id,tallas,stock_total`,
+          { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+        );
+        if (!res.ok) return;
+        const [producto] = await res.json();
+        if (!producto) return;
+
+        // Actualizar el talle específico
+        const nuevasTallas = (producto.tallas || []).map(t => ({
+          ...t,
+          stock: t.talla === talle ? Math.max(0, t.stock - 1) : t.stock,
+        }));
+        const nuevoTotal = nuevasTallas.reduce((s, t) => s + t.stock, 0);
+
+        await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ tallas: nuevasTallas, stock_total: nuevoTotal }),
+        });
+      } catch (e) {
+        console.error('Error descontando stock:', e);
+        // No interrumpimos el flujo si falla el descuento
+      }
+    }
+
+    // ── INIT ──
+    renderCarrito();
+  </script>
+</body>
+</html>
