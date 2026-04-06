@@ -9,6 +9,11 @@ serve(async (req) => {
     const body = await req.json();
     console.log("WEBHOOK BODY:", JSON.stringify(body));
 
+    // Ignorar merchant_order
+    if (body.topic === 'merchant_order' || body.resource?.toString().includes('merchant_orders')) {
+      return new Response('ok', { status: 200 });
+    }
+
     if (body.type !== 'payment') {
       return new Response('ok', { status: 200 });
     }
@@ -16,52 +21,59 @@ serve(async (req) => {
     const paymentId = body.data?.id;
     if (!paymentId) return new Response('ok', { status: 200 });
 
-    // 🔎 Obtener pago de Mercado Pago
+    // Obtener pago de Mercado Pago
     const pagoRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
       headers: { 'Authorization': `Bearer ${MP_ACCESS_TOKEN}` },
     });
-
     const pago = await pagoRes.json();
-    console.log("PAGO MP:", JSON.stringify(pago));
+    console.log("PAGO MP status:", pago.status, "ref:", pago.external_reference);
 
-    const status = pago.status;
-    const mpPaymentId = String(paymentId);
-
-    if (status !== 'approved' && status !== 'pending') {
+    if (pago.status !== 'approved' && pago.status !== 'pending') {
       return new Response('ok', { status: 200 });
     }
 
-    // 🟢 1. Obtener ID del pedido
-    const pedidoId = pago.external_reference;
+    const pedidoTempId = pago.external_reference;
+    if (!pedidoTempId) {
+      console.error("Sin external_reference");
+      return new Response('ok', { status: 200 });
+    }
 
-    // 🟢 2. Buscar en pedidos_temp
-    const tempRes = await fetch(`${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${pedidoId}`, {
-      headers: {
-        'apikey': SERVICE_ROLE_KEY!,
-        'Authorization': `Bearer ${SERVICE_ROLE_KEY}`,
-      },
-    });
+    // Buscar en pedidos_temp
+    const tempRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${pedidoTempId}`,
+      {
+        headers: {
+          'apikey': SERVICE_ROLE_KEY!,
+          'Authorization': `Bearer ${SERVICE_ROLE_KEY}`,
+        },
+      }
+    );
+    const tempRows = await tempRes.json();
+    const row = tempRows[0];
 
-    const [row] = await tempRes.json();
     if (!row) {
-      console.error("Pedido no encontrado en temp");
+      console.error("No encontrado en pedidos_temp:", pedidoTempId);
       return new Response('error', { status: 400 });
     }
 
-    const datos = row.data;
+    const d = row.data;
 
-    const {
-      productos,
-      precio_total,
-      precio_sena,
-      monto_transferido,
-      tipo_pago,
-      nombre_cliente,
-      email_cliente,
-      telefono_cliente,
-    } = datos;
+    // Insertar en pedidos — exactamente las columnas que existen
+    const pedidoPayload = {
+      nombre_cliente:    d.nombre_cliente   ?? null,
+      email_cliente:     d.email_cliente    ?? null,
+      telefono_cliente:  d.telefono_cliente ?? null,
+      productos:         d.productos        ?? [],
+      precio_total:      Number(d.precio_total)      || 0,
+      precio_sena:       Number(d.precio_sena)       || 0,
+      monto_transferido: Number(d.monto_transferido) || 0,
+      mp_payment_id:     String(paymentId),
+      mp_status:         pago.status,
+      estado:            pago.status === 'approved' ? 'confirmada' : 'pendiente',
+    };
 
-    // 🟢 3. Guardar en tabla FINAL pedidos
+    console.log("Insertando pedido:", JSON.stringify(pedidoPayload));
+
     const pedidoRes = await fetch(`${SUPABASE_URL}/rest/v1/pedidos`, {
       method: 'POST',
       headers: {
@@ -70,26 +82,19 @@ serve(async (req) => {
         'Content-Type': 'application/json',
         'Prefer': 'return=representation',
       },
-      body: JSON.stringify({
-        productos,
-        precio_total,
-        precio_sena,
-        monto_transferido,
-        tipo_pago,
-        nombre_cliente,
-        email_cliente,
-        telefono_cliente,
-        mp_payment_id: mpPaymentId,
-        mp_status: status,
-        estado: status === 'approved' ? 'confirmada' : 'pendiente',
-      }),
+      body: JSON.stringify(pedidoPayload),
     });
 
     const pedidoData = await pedidoRes.json();
     console.log("PEDIDO GUARDADO:", JSON.stringify(pedidoData));
 
-    // 🟢 (opcional) borrar de temp
-    await fetch(`${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${pedidoId}`, {
+    if (!pedidoRes.ok) {
+      console.error("Error insertando pedido:", JSON.stringify(pedidoData));
+      return new Response('error', { status: 500 });
+    }
+
+    // Borrar de temp
+    await fetch(`${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${pedidoTempId}`, {
       method: 'DELETE',
       headers: {
         'apikey': SERVICE_ROLE_KEY!,
