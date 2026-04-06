@@ -747,12 +747,15 @@
         });
 
         if (!res.ok) {
-          const err = await res.json();
-          throw new Error(JSON.stringify(err));
-        }
+  const err = await res.json();
+  throw new Error(JSON.stringify(err));
+}
 
-        // Ir a página de éxito
-        window.location.href = 'pago-exitoso.html';
+const data = await res.json();
+const pedidoId = data[0].id;
+
+// Redirigir con el ID
+window.location.href = `pago-exitoso.html?pedido=${pedidoId}`;
 
       } catch (e) {
         console.error(e);
