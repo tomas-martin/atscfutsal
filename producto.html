@@ -432,8 +432,8 @@
       else if (p.nuevo)       imgBadge = `<span class="img-badge nuevo">Nuevo</span>`;
       else if (p.stock_total <= 5) imgBadge = `<span class="img-badge ultimas">¡Últimas!</span>`;
 
-      const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
-      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
+      const TALLES_FIJOS = ['6','8','10','12','14','16','S','M','L','XL','XXL'];
+      const tallesMap = p.tallas || {};
       const tallesHTML = TALLES_FIJOS.map(t => {
         const stock = tallesMap.hasOwnProperty(t) ? tallesMap[t] : -1;
         const agotado = stock <= 0;

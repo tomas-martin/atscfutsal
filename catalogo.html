@@ -620,14 +620,17 @@
              <span>Sin foto aún</span>
            </div>`;
 
-      const TALLES_ORDEN = ['XS','S','M','L','XL','XXL'];
-      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
-      const sizesHTML = '<div class="sizes">' + TALLES_ORDEN.map(t => {
-        const stock = t in tallesMap ? tallesMap[t] : -1;
-        const cls = stock > 0 ? 'available' : 'out';
-        const title = stock > 0 ? stock + ' disponibles' : 'Sin stock';
-        return '<span class="size-chip ' + cls + '" title="' + title + '">' + t + '</span>';
-      }).join('') + '</div>';
+      const TALLES_ORDEN = ['6','8','10','12','14','16','S','M','L','XL','XXL'];
+
+const tallas = Array.isArray(p.tallas) ? p.tallas : [];
+
+const tallesMap = p.tallas || {};
+
+const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
+  const stock = tallesMap[t] ?? -1;
+  if (stock === -1) return `<span class="size-chip out" title="Sin stock">${t}</span>`;
+  return `<span class="size-chip ${stock > 0 ? 'available' : 'out'}" title="${stock > 0 ? stock+' disponibles' : 'Sin stock'}">${t}</span>`;
+}).join('')}</div>`;
 
       const precio = p.precio
         ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
@@ -746,20 +749,30 @@
 
     // ── CHIPS DE TALLE ──
     function buildTalleChips() {
-      const tallesSet = new Set();
-      allProducts.forEach(p => (p.tallas || []).forEach(t => tallesSet.add(t.talla)));
-      const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
-      const sorted = [...tallesSet].sort((a, b) => {
-        const ia = orden.indexOf(a), ib = orden.indexOf(b);
-        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-      });
-      document.getElementById('talle-grid').innerHTML = sorted.map(t =>
-        `<button class="talle-chip" data-talle="${t}" onclick="toggleTalle(this,'${t}')">${t}</button>`
-      ).join('');
-      // Actualizar max-height de la sección ahora que tiene contenido
-      const body = document.getElementById('section-talle');
-      body.style.maxHeight = body.scrollHeight + 999 + 'px';
-    }
+  const tallesSet = new Set();
+
+  allProducts.forEach(p => {
+    const tallas = Array.isArray(p.tallas) ? p.tallas : [];
+
+    tallas.forEach(t => {
+      if (t?.talla) tallesSet.add(t.talla);
+    });
+  });
+
+  const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
+
+  const sorted = [...tallesSet].sort((a, b) => {
+    const ia = orden.indexOf(a), ib = orden.indexOf(b);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
+
+  document.getElementById('talle-grid').innerHTML = sorted.map(t =>
+    `<button class="talle-chip" data-talle="${t}" onclick="toggleTalle(this,'${t}')">${t}</button>`
+  ).join('');
+
+  const body = document.getElementById('section-talle');
+  body.style.maxHeight = body.scrollHeight + 999 + 'px';
+}
 
     function toggleTalle(chip, talle) {
       if (activeTalles.has(talle)) {

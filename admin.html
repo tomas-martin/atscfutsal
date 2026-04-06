@@ -855,8 +855,8 @@
   }
   function stockIndicator(s){if(s<=0)return'<span class="stock-indicator si-out"></span>';if(s<=5)return'<span class="stock-indicator si-low"></span>';return'<span class="stock-indicator si-ok"></span>';}
   function renderProductRow(p){
-    const TALLES=['XS','S','M','L','XL','XXL'];
-    const tallesMap=Object.fromEntries((p.tallas||[]).map(t=>[t.talla||t.talle,t.stock]));
+    const TALLES=['6','8','10','12','14','16','S','M','L','XL','XXL'];
+    const tallesMap = p.tallas || {};
     const talleRowsHTML=TALLES.map(talle=>{
       const stock=talle in tallesMap?tallesMap[talle]:0;
       return `<div class="talle-row" id="row-${p.id}-${talle}"><span class="talle-name">${talle}</span>${stockIndicator(stock)}<input type="number" min="0" max="9999" value="${stock}" data-producto="${p.id}" data-talle="${talle}" data-original="${stock}" onchange="markChange(this)" oninput="markChange(this)" /><span class="talle-stock-label">${stock>0?stock+' disponibles':'Sin stock'}</span></div>`;
