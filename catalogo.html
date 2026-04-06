@@ -21,7 +21,6 @@
       --border-h:   rgba(255,255,255,0.15);
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { font-size: 17px; }
     html { scroll-behavior: smooth; }
     body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 6px; }
@@ -49,7 +48,7 @@
     .nav-desktop { display: flex; align-items: center; gap: 2rem; }
     .nav-desktop a {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .95rem; letter-spacing: .15em; text-transform: uppercase;
+      font-size: .82rem; letter-spacing: .15em; text-transform: uppercase;
       color: var(--muted); text-decoration: none; transition: color .2s;
     }
     .nav-desktop a:hover { color: var(--white); }
@@ -173,7 +172,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 6px 0; cursor: pointer;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
+      font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
       color: var(--muted); transition: color .15s;
       border: none; background: transparent; width: 100%; text-align: left;
     }
@@ -235,9 +234,9 @@
     }
     .results-count {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: .92rem; letter-spacing: .1em; color: var(--muted-dim);
+      font-size: .8rem; letter-spacing: .1em; color: var(--muted-dim);
     }
-    .results-count strong { color: var(--white); font-size: 1.1rem; }
+    .results-count strong { color: var(--white); font-size: 1rem; }
 
     /* Tags de filtros activos */
     .active-filters { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -279,13 +278,13 @@
     .stock-bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); }
     .stock-bar { height: 100%; transition: width .3s; }
     .card-body { padding: 1rem 1.1rem 1.2rem; }
-    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
-    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
-    .card-desc { font-size: 1rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
+    .card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3px; }
+    .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 6px; }
+    .card-desc { font-size: .8rem; color: var(--muted); line-height: 1.4; margin-bottom: .9rem; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: .75rem; }
     .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .04em; color: var(--white); }
-    .card-price small { font-family: 'Barlow', sans-serif; font-size: .85rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
-    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .88rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
+    .card-price small { font-family: 'Barlow', sans-serif; font-size: .72rem; color: var(--muted); font-weight: 400; margin-right: 2px; }
+    .stock-info { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .08em; color: var(--muted); text-align: right; }
     .stock-info strong { color: var(--white); display: block; font-size: .92rem; }
     .sizes { display: flex; gap: 5px; margin-bottom: .9rem; flex-wrap: wrap; }
     .size-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); font-weight: 600; }
@@ -304,7 +303,7 @@
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    footer p { font-size: .95rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
     footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
 
     /* ── MOBILE FILTER BTN ── */
@@ -348,200 +347,6 @@
       .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .9rem; }
       .nav-drawer { width: 100%; border-left: none; }
     }
-    /* ══════════════════════════════════════════════
-   TIPOGRAFÍA AUMENTADA — Pegar al final de cada
-   bloque <style> en todos los HTML del sitio
-   ══════════════════════════════════════════════ */
-
-/* BASE GLOBAL */
-html { font-size: 18px; }
-
-body {
-  font-size: 1rem;        /* 18px */
-  line-height: 1.65;
-}
-
-/* NAVEGACIÓN DESKTOP */
-.nav-desktop a {
-  font-size: 1rem !important;
-  letter-spacing: .12em;
-}
-
-/* DRAWER MÓVIL */
-.nav-links a {
-  font-size: 1.15rem !important;
-  padding: 16px 1.5rem !important;
-}
-
-/* HEADER LOGO */
-.logo-copy .name { font-size: 1.45rem !important; }
-.logo-copy .tag  { font-size: .72rem !important; }
-
-/* BREADCRUMB */
-.breadcrumb { font-size: .85rem !important; }
-
-/* TÍTULOS DE PÁGINA */
-.page-title h1,
-.product-name { font-size: clamp(2.4rem, 5.5vw, 4rem) !important; }
-
-/* CATEGORÍAS EN CARDS */
-.card-cat,
-.product-cat,
-.item-cat { font-size: .85rem !important; }
-
-/* NOMBRES EN CARDS */
-.card-name { font-size: 1.35rem !important; }
-
-/* DESCRIPCIÓN */
-.card-desc,
-.product-desc { font-size: 1rem !important; }
-
-/* PRECIO EN CARDS */
-.card-price { font-size: 1.65rem !important; }
-
-/* PRECIOS EN PÁGINA PRODUCTO */
-.price-amount { font-size: 3rem !important; }
-.price-currency { font-size: 1rem !important; }
-
-/* CHIPS DE TALLE — producto */
-.talle-btn {
-  font-size: 1.05rem !important;
-  min-width: 64px !important;
-  padding: 13px 16px !important;
-}
-.talle-btn .stock-num { font-size: .75rem !important; }
-
-/* CHIPS TALLES — catálogo */
-.size-chip { font-size: .82rem !important; padding: 4px 10px !important; }
-
-/* STOCK INFO */
-.stock-info         { font-size: .92rem !important; }
-.stock-info strong  { font-size: 1rem !important; }
-
-/* BOTONES PRINCIPALES */
-.btn-agregar,
-.btn-ir-carrito,
-.btn-enviar {
-  font-size: 1.1rem !important;
-  padding: 18px !important;
-}
-
-/* BOTÓN VOLVER / SECUNDARIOS */
-.btn-back { font-size: .9rem !important; }
-
-/* STOCK BADGE */
-.stock-badge { font-size: .92rem !important; padding: 8px 16px !important; }
-
-/* LABELS DE FORMULARIOS */
-.form-field label,
-.talle-label { font-size: .82rem !important; }
-
-/* INPUTS */
-.form-field input,
-.field input { font-size: 1rem !important; padding: 13px 16px !important; }
-
-/* DATOS BANCARIOS */
-.banco-label  { font-size: .8rem !important; }
-.banco-value  { font-size: .95rem !important; }
-
-/* RESUMEN CARRITO */
-.summary-row    { font-size: 1rem !important; }
-.summary-total  { font-size: 1.2rem !important; }
-.summary-sena   { font-size: 1.05rem !important; }
-
-/* ITEMS DEL CARRITO */
-.item-name  { font-size: 1.15rem !important; }
-.item-talle { font-size: .9rem !important; }
-.item-precio { font-size: 1.45rem !important; }
-.item-cat   { font-size: .75rem !important; }
-
-/* PANEL DE PAGO — título sección */
-.panel-title { font-size: .8rem !important; }
-
-/* NOTA AL PIE DEL PANEL */
-.panel-note { font-size: .85rem !important; }
-
-/* PILLS (estados) */
-.pill,
-.pill-pendiente,
-.pill-confirmada,
-.pill-rechazado { font-size: .8rem !important; padding: 5px 13px !important; }
-
-/* SIDEBAR CATÁLOGO — filtros */
-.cat-option   { font-size: 1.05rem !important; }
-.talle-chip   { font-size: .8rem !important; padding: 5px 11px !important; }
-.stock-toggle span { font-size: .9rem !important; }
-
-/* SIDEBAR ADMIN */
-.nav-item { font-size: 1.05rem !important; }
-.stat-value { font-size: 2.8rem !important; }
-.stat-label { font-size: .82rem !important; }
-.stat-sub   { font-size: .85rem !important; }
-
-/* TABLAS ADMIN */
-thead th { font-size: .82rem !important; }
-tbody td { font-size: 1.05rem !important; }
-
-/* PRODUCT META ADMIN */
-.product-meta .nombre { font-size: 1.15rem !important; }
-
-/* CONTEO RESULTADOS CATÁLOGO */
-.results-count        { font-size: 1rem !important; }
-.results-count strong { font-size: 1.2rem !important; }
-
-/* FOOTER */
-footer p { font-size: 1rem !important; }
-footer .hashtags { font-size: .82rem !important; }
-
-/* BANNER PREVENTA */
-.preventa-banner .pb-text { font-size: .95rem !important; }
-.cd-num  { font-size: 1.55rem !important; }
-.cd-label { font-size: .58rem !important; }
-
-/* HERO */
-.hero h1    { font-size: clamp(3.2rem, 7.5vw, 6rem) !important; }
-.hero-sub   { font-size: 1.1rem !important; }
-.pill       { font-size: .75rem !important; }
-
-/* ── RESPONSIVE MÓVIL ── */
-@media (max-width: 600px) {
-  html { font-size: 17px; }
-
-  .card-name   { font-size: 1.2rem !important; }
-  .card-price  { font-size: 1.45rem !important; }
-  .card-desc   { font-size: .92rem !important; }
-
-  .product-name  { font-size: 2.4rem !important; }
-  .price-amount  { font-size: 2.5rem !important; }
-
-  .talle-btn {
-    font-size: 1rem !important;
-    min-width: 56px !important;
-    padding: 11px 12px !important;
-  }
-
-  .btn-agregar,
-  .btn-ir-carrito,
-  .btn-enviar {
-    font-size: 1rem !important;
-    padding: 16px !important;
-  }
-
-  .item-name   { font-size: 1.1rem !important; }
-  .item-precio { font-size: 1.3rem !important; }
-
-  .summary-total { font-size: 1.1rem !important; }
-  .summary-sena  { font-size: 1rem !important; }
-
-  .nav-links a { font-size: 1.2rem !important; }
-
-  .banco-value { font-size: .88rem !important; }
-
-  thead th { font-size: .78rem !important; }
-  tbody td  { font-size: .92rem !important; }
-
-  .stat-value { font-size: 2.4rem !important; }
-}
   </style>
 </head>
 <body>
@@ -814,17 +619,7 @@ footer .hashtags { font-size: .82rem !important; }
              <span>Sin foto aún</span>
            </div>`;
 
-      const TALLES_ORDEN = ['6','8','10','12','14','16','S','M','L','XL','XXL'];
-
-const tallas = Array.isArray(p.tallas) ? p.tallas : [];
-
-const tallesMap = p.tallas || {};
-
-const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
-  const stock = tallesMap[t] ?? -1;
-  if (stock === -1) return `<span class="size-chip out" title="Sin stock">${t}</span>`;
-  return `<span class="size-chip ${stock > 0 ? 'available' : 'out'}" title="${stock > 0 ? stock+' disponibles' : 'Sin stock'}">${t}</span>`;
-}).join('')}</div>`;
+      const sizesHTML = '<div class="sizes"><span class="size-chip available" style="letter-spacing:.04em">Todos los talles disponibles</span></div>';
 
       const precio = p.precio
         ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
@@ -832,7 +627,8 @@ const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
 
       // onclick → en el futuro lleva a producto.html?id=X
       return `
-        <article class="card${soldOut ? ' sold-out' : ''}" onclick="window.location='producto.html?id=${p.id}'">
+        <article class="card${soldOut ? ' sold-out' : ''}" onclick="irProducto(this)"
+data-id="${p.id}">
           <div class="card-img">
             ${imgContent}${badge}
             <div class="stock-bar-wrap">
@@ -858,7 +654,18 @@ const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
         if (activeCat !== 'all' && p.categoria !== activeCat) return false;
         if (soloStock && p.stock_total <= 0) return false;
         if (activeTalles.size > 0) {
-          const tallesProducto = (p.tallas || []).filter(t => t.stock > 0).map(t => t.talla);
+          const tallas = p.tallas || {};
+          let tallesProducto = [];
+
+if (Array.isArray(tallas)) {
+  tallesProducto = tallas
+    .filter(t => t.stock > 0)
+    .map(t => t.talla);
+} else {
+  tallesProducto = Object.entries(tallas)
+    .filter(([, v]) => Number(v) > 0)
+    .map(([k]) => k);
+}
           if (![...activeTalles].some(t => tallesProducto.includes(t))) return false;
         }
         return true;
@@ -943,30 +750,27 @@ const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
 
     // ── CHIPS DE TALLE ──
     function buildTalleChips() {
-  const tallesSet = new Set();
-
-  allProducts.forEach(p => {
-    const tallas = Array.isArray(p.tallas) ? p.tallas : [];
-
-    tallas.forEach(t => {
-      if (t?.talla) tallesSet.add(t.talla);
-    });
-  });
-
-  const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
-
-  const sorted = [...tallesSet].sort((a, b) => {
-    const ia = orden.indexOf(a), ib = orden.indexOf(b);
-    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-  });
-
-  document.getElementById('talle-grid').innerHTML = sorted.map(t =>
-    `<button class="talle-chip" data-talle="${t}" onclick="toggleTalle(this,'${t}')">${t}</button>`
-  ).join('');
-
-  const body = document.getElementById('section-talle');
-  body.style.maxHeight = body.scrollHeight + 999 + 'px';
-}
+      const tallesSet = new Set();
+      allProducts.forEach(p => {
+        const tallas = p.tallas || {};
+        if (Array.isArray(tallas)) {
+          tallas.forEach(t => { if (t?.talla) tallesSet.add(t.talla); });
+        } else {
+          Object.keys(tallas).forEach(k => tallesSet.add(k));
+        }
+      });
+      const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
+      const sorted = [...tallesSet].sort((a, b) => {
+        const ia = orden.indexOf(a), ib = orden.indexOf(b);
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      });
+      document.getElementById('talle-grid').innerHTML = sorted.map(t =>
+        `<button class="talle-chip" data-talle="${t}" onclick="toggleTalle(this,'${t}')">${t}</button>`
+      ).join('');
+      // Actualizar max-height de la sección ahora que tiene contenido
+      const body = document.getElementById('section-talle');
+      body.style.maxHeight = body.scrollHeight + 999 + 'px';
+    }
 
     function toggleTalle(chip, talle) {
       if (activeTalles.has(talle)) {
@@ -991,6 +795,18 @@ const sizesHTML = `<div class="sizes">${TALLES_ORDEN.map(t => {
       buildTalleChips();
       renderGrid();
     }
+    function irProducto(el) {
+  const id = el.getAttribute("data-id");
+
+  console.log("ID clickeado:", id);
+
+  if (!id || id === "undefined") {
+    alert("Error: ID inválido");
+    return;
+  }
+
+  window.location.href = "producto.html?id=" + id;
+}
 
     init();
   </script>
