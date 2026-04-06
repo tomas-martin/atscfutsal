@@ -19,188 +19,85 @@
       --muted-dim:  #4f5a76;
       --border:     rgba(255,255,255,0.07);
       --border-h:   rgba(255,255,255,0.15);
-      --green-wa:   #25D366;
+      --green:      #1d9e75;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 18px; }
     body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--navy-mid); }
     ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
 
-    /* ── HEADER ── */
+    /* HEADER */
     header {
-      position: sticky; top: 0; z-index: 200;
-      height: 64px;
+      position: sticky; top: 0; z-index: 200; height: 68px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 2.5rem;
-      background: rgba(9,17,31,0.88);
-      backdrop-filter: blur(16px);
+      background: rgba(9,17,31,0.92); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .shield { width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .shield { width: 46px; height: 46px; flex-shrink: 0; object-fit: contain; border-radius: 3px; }
     .logo-copy { line-height: 1; }
-    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .07em; color: var(--white); display: block; }
-    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
-/* NAV DESKTOP */
+    .logo-copy .name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: .07em; color: var(--white); display: block; }
+    .logo-copy .tag { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; display: block; }
     .nav-desktop { display: flex; align-items: center; gap: 2rem; }
-    .nav-desktop a {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .82rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; transition: color .2s;
-    }
+    .nav-desktop a { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
     .nav-desktop a:hover { color: var(--white); }
-    .nav-desktop a.active { color: var(--white); border-bottom: 2px solid var(--red); padding-bottom: 2px; }
-
-        .burger {
-      display: none;
-      flex-direction: column; justify-content: center; gap: 5px;
-      width: 40px; height: 40px; padding: 8px;
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 3px; cursor: pointer; transition: border-color .2s; flex-shrink: 0;
-    }
-    .burger:hover { border-color: var(--border-h); }
-    .burger span { display: block; width: 100%; height: 1.5px; background: var(--muted); border-radius: 2px; transition: all .3s; }
-    .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); background: var(--white); }
-    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); background: var(--white); }
-
-    /* NAV DRAWER */
+    .burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 9px; background: transparent; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; flex-shrink: 0; }
+    .burger span { display: block; width: 100%; height: 2px; background: var(--muted); border-radius: 2px; transition: all .3s; }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--white); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--white); }
     .nav-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
     .nav-overlay.open { opacity: 1; pointer-events: all; }
-    .nav-drawer {
-      position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 400;
-      background: var(--navy-mid); border-left: 1px solid var(--border);
-      transform: translateX(100%); transition: transform .32s cubic-bezier(.4,0,.2,1);
-      display: flex; flex-direction: column;
-    }
+    .nav-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 300px; z-index: 400; background: var(--navy-mid); border-left: 1px solid var(--border); transform: translateX(100%); transition: transform .32s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; }
     .nav-drawer.open { transform: translateX(0); }
-    .nav-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
-    .nav-drawer-logo { display: flex; align-items: center; gap: 10px; }
-    .nav-drawer-logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
-    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--white); }
+    .nav-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 1.3rem 1.6rem; border-bottom: 1px solid var(--border); }
+    .nav-drawer-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-drawer-logo img { width: 36px; height: 36px; object-fit: contain; border-radius: 2px; }
+    .nav-drawer-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .08em; color: var(--white); }
     .nav-drawer-close { background: transparent; border: none; cursor: pointer; color: var(--muted); padding: 4px; transition: color .2s; }
     .nav-drawer-close:hover { color: var(--white); }
-    .nav-drawer-close svg { width: 18px; height: 18px; display: block; }
+    .nav-drawer-close svg { width: 22px; height: 22px; display: block; }
     .nav-links { display: flex; flex-direction: column; padding: 1.5rem 0; flex: 1; }
-    .nav-links a {
-      display: flex; align-items: center; gap: 14px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600;
-      color: var(--muted); text-decoration: none;
-      padding: 14px 1.5rem; border-left: 2px solid transparent; transition: all .2s;
-    }
+    .nav-links a { display: flex; align-items: center; gap: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 600; color: var(--muted); text-decoration: none; padding: 15px 1.6rem; border-left: 2px solid transparent; transition: all .2s; }
     .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.03); border-left-color: var(--border-h); }
     .nav-links a.active { color: var(--white); border-left-color: var(--red); }
-    .nav-links a .nav-icon { width: 16px; height: 16px; opacity: .5; flex-shrink: 0; }
-    .nav-links a.active .nav-icon { opacity: 1; }
-    .nav-drawer-footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .15em; color: var(--muted-dim); }
+    .nav-links a svg { width: 18px; height: 18px; opacity: .5; flex-shrink: 0; }
+    .nav-drawer-footer { padding: 1.3rem 1.6rem; border-top: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .15em; color: var(--muted-dim); }
 
-    /* ── BREADCRUMB ── */
-    .breadcrumb {
-      max-width: 1200px; margin: 0 auto;
-      padding: 1.2rem 2.5rem .5rem;
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-dim);
-    }
+    /* BREADCRUMB */
+    .breadcrumb { max-width: 1200px; margin: 0 auto; padding: 1.3rem 2.5rem .6rem; display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-dim); }
     .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
     .breadcrumb a:hover { color: var(--white); }
-    .breadcrumb svg { width: 10px; height: 10px; opacity: .4; }
+    .breadcrumb svg { width: 11px; height: 11px; opacity: .4; }
 
-    /* ── PRODUCTO LAYOUT ── */
-    .product-page {
-      max-width: 1200px; margin: 0 auto;
-      padding: 1.5rem 2.5rem 5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    /* ── GALERÍA IMAGEN ── */
+    /* LAYOUT */
+    .product-page { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2.5rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
     .product-gallery { position: sticky; top: 84px; }
-
-    .main-img {
-      width: 100%; aspect-ratio: 4/3;
-      background: var(--navy-light);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
+    .main-img { width: 100%; aspect-ratio: 4/3; background: var(--navy-light); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
     .main-img img { width: 100%; height: 100%; object-fit: cover; }
-    .main-img .placeholder {
-      display: flex; flex-direction: column; align-items: center; gap: 14px; color: var(--muted-dim);
-    }
-    .main-img .placeholder img { width: 100px; height: 100px; object-fit: contain; opacity: .25; }
-    .main-img .placeholder span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
-    }
-
-    /* badge en imagen */
-    .img-badge {
-      position: absolute; top: 14px; left: 14px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700;
-      padding: 4px 12px; border-radius: 2px;
-    }
+    .main-img .placeholder { display: flex; flex-direction: column; align-items: center; gap: 14px; color: var(--muted-dim); }
+    .main-img .placeholder img { width: 110px; height: 110px; object-fit: contain; opacity: .25; }
+    .main-img .placeholder span { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .2em; text-transform: uppercase; }
+    .img-badge { position: absolute; top: 14px; left: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; padding: 5px 14px; border-radius: 3px; }
     .img-badge.nuevo { background: var(--red); color: #fff; }
     .img-badge.ultimas { background: rgba(186,117,23,.9); color: #fff; }
     .img-badge.agotado { background: rgba(0,0,0,.7); color: var(--muted); border: 1px solid var(--border); }
 
-    /* ── INFO PRODUCTO ── */
+    /* INFO */
     .product-info { display: flex; flex-direction: column; gap: 0; }
-
-    .product-cat {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .8rem; letter-spacing: .28em; text-transform: uppercase;
-      color: var(--red); font-weight: 700; margin-bottom: .5rem;
-    }
-
-    .product-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.6rem, 4.5vw, 3.6rem);
-      letter-spacing: .05em; line-height: 1;
-      color: var(--white); margin-bottom: 1rem;
-    }
-
-    .product-price {
-      display: flex; align-items: baseline; gap: 6px;
-      margin-bottom: 1.5rem;
-    }
-    .price-amount {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.8rem; letter-spacing: .04em; color: var(--white);
-    }
-    .price-currency {
-      font-family: 'Barlow', sans-serif;
-      font-size: .9rem; color: var(--muted); font-weight: 500;
-    }
-    .price-consultar {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.3rem; letter-spacing: .1em; color: var(--muted);
-    }
-
-    .divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
-
-    /* descripción */
-    .product-desc {
-      font-size: 1rem; color: var(--muted); line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-
-    /* stock total */
-    .stock-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
-      padding: 6px 14px; border-radius: 2px; margin-bottom: 1.5rem;
-    }
-    .stock-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .product-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; letter-spacing: .28em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: .6rem; }
+    .product-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 4.5vw, 3.8rem); letter-spacing: .05em; line-height: 1; color: var(--white); margin-bottom: 1.1rem; }
+    .product-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 1.5rem; }
+    .price-amount { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; letter-spacing: .04em; color: var(--white); }
+    .price-currency { font-family: 'Barlow', sans-serif; font-size: 1.1rem; color: var(--muted); font-weight: 500; }
+    .price-consultar { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; letter-spacing: .1em; color: var(--muted); }
+    .divider { height: 1px; background: var(--border); margin: 1.3rem 0; }
+    .product-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .stock-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; padding: 8px 16px; border-radius: 3px; margin-bottom: 1.5rem; }
+    .stock-badge .dot { width: 7px; height: 7px; border-radius: 50%; }
     .stock-badge.disponible { background: rgba(15,110,86,.15); border: 1px solid rgba(15,110,86,.3); color: #1d9e75; }
     .stock-badge.disponible .dot { background: #1d9e75; }
     .stock-badge.pocas { background: rgba(186,117,23,.12); border: 1px solid rgba(186,117,23,.3); color: #ba7517; }
@@ -208,256 +105,99 @@
     .stock-badge.agotado { background: rgba(192,25,42,.12); border: 1px solid rgba(192,25,42,.3); color: var(--red); }
     .stock-badge.agotado .dot { background: var(--red); }
 
-    /* talles */
-    .talle-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--muted-dim); font-weight: 700; margin-bottom: .75rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .talle-label span { color: var(--muted); font-weight: 400; letter-spacing: 0; text-transform: none; font-size: .8rem; }
-
-    .talle-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.8rem; }
-
-    .talle-btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem; letter-spacing: .06em; font-weight: 700;
-      min-width: 58px; padding: 11px 14px; text-align: center;
-      border: 1.5px solid var(--border); background: transparent; color: var(--muted);
-      border-radius: 3px; cursor: pointer; transition: all .2s;
-      position: relative;
-    }
+    /* TALLES */
+    .talle-label { font-family: 'Barlow Condensed', sans-serif; font-size: .82rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; margin-bottom: .85rem; display: flex; align-items: center; justify-content: space-between; }
+    .talle-label span { color: var(--muted); font-weight: 400; letter-spacing: 0; text-transform: none; font-size: .9rem; }
+    .talle-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1.5rem; }
+    .talle-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: .06em; font-weight: 700; min-width: 64px; padding: 13px 16px; text-align: center; border: 1.5px solid var(--border); background: transparent; color: var(--muted); border-radius: 4px; cursor: pointer; transition: all .2s; }
     .talle-btn:hover:not(.agotado) { border-color: var(--border-h); color: var(--white); }
     .talle-btn.selected { border-color: var(--white); background: rgba(255,255,255,.08); color: var(--white); }
-    .talle-btn.agotado {
-      opacity: .45; cursor: not-allowed;
-      text-decoration: line-through;
-      color: var(--muted-dim);
-    }
-    .talle-btn .stock-num {
-      display: block;
-      font-size: .68rem; letter-spacing: .04em; font-weight: 400;
-      color: var(--muted-dim); margin-top: 2px; text-decoration: none;
-    }
+    .talle-btn.agotado { opacity: .4; cursor: not-allowed; text-decoration: line-through; color: var(--muted-dim); }
+    .talle-btn .stock-num { display: block; font-size: .75rem; letter-spacing: .04em; font-weight: 400; color: var(--muted-dim); margin-top: 3px; }
     .talle-btn.selected .stock-num { color: var(--muted); }
-
-    /* talle seleccionado info */
-    .talle-selected-info {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .78rem; letter-spacing: .08em; color: var(--muted);
-      margin-bottom: 1.5rem; min-height: 1.2rem;
-    }
+    .talle-selected-info { font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; letter-spacing: .08em; color: var(--muted); margin-bottom: 1.5rem; min-height: 1.4rem; }
     .talle-selected-info strong { color: var(--white); }
 
-    /* botones */
-    .btn-wa {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 16px;
-      background: var(--green-wa); color: #fff;
-      border: none; border-radius: 4px; cursor: pointer;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
-      text-decoration: none;
-      transition: opacity .2s, transform .15s;
-      margin-bottom: 10px;
-    }
-    .btn-wa:hover { opacity: .9; transform: translateY(-1px); }
-    .btn-wa:active { transform: translateY(0); }
-    .btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
-    .btn-wa.disabled { background: var(--navy-light); color: var(--muted-dim); cursor: not-allowed; pointer-events: none; border: 1px solid var(--border); }
-
-    .btn-back {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 13px;
-      background: transparent; color: var(--muted);
-      border: 1px solid var(--border); border-radius: 4px; cursor: pointer;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
-      text-decoration: none; transition: all .2s;
-    }
+    /* BOTONES */
+    .btn-back { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 5px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; text-decoration: none; transition: all .2s; margin-top: 1rem; }
     .btn-back:hover { border-color: var(--border-h); color: var(--white); }
-    .btn-back svg { width: 14px; height: 14px; }
+    .btn-back svg { width: 16px; height: 16px; }
 
-    .wa-note {
-      font-size: .75rem; color: var(--muted-dim); text-align: center;
-      margin-top: .6rem; letter-spacing: .03em;
-    }
-
-    /* ── SKELETON ── */
-    .skeleton-page {
-      max-width: 1200px; margin: 0 auto;
-      padding: 1.5rem 2.5rem 5rem;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-    }
-    .skeleton-block { background: var(--navy-light); border-radius: 6px; animation: pulse 1.4s ease-in-out infinite; }
+    /* SKELETON */
+    .skeleton-page { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2.5rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .skeleton-block { background: var(--navy-light); border-radius: 8px; animation: pulse 1.4s ease-in-out infinite; }
     .skeleton-img-block { aspect-ratio: 4/3; }
-    .skeleton-line { height: 14px; border-radius: 3px; margin-bottom: 14px; background: var(--navy-light); animation: pulse 1.4s ease-in-out infinite; }
+    .skeleton-line { height: 16px; border-radius: 4px; margin-bottom: 16px; background: var(--navy-light); animation: pulse 1.4s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
 
-    /* ── ERROR ── */
-    .error-page {
-      max-width: 500px; margin: 6rem auto; text-align: center; padding: 0 2rem;
-    }
-    .error-page h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white); margin-bottom: .5rem; }
-    .error-page p { color: var(--muted); margin-bottom: 1.5rem; font-size: .9rem; }
+    /* ERROR */
+    .error-page { max-width: 500px; margin: 6rem auto; text-align: center; padding: 0 2rem; }
+    .error-page h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--white); margin-bottom: .6rem; }
+    .error-page p { color: var(--muted); margin-bottom: 1.5rem; font-size: 1.05rem; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    footer p { font-size: .8rem; color: var(--muted-dim); letter-spacing: .04em; }
-    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
+    footer p { font-size: .9rem; color: var(--muted-dim); letter-spacing: .04em; }
+    footer .hashtags { font-family: 'Barlow Condensed', sans-serif; font-size: .85rem; letter-spacing: .12em; color: var(--blue); font-weight: 600; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 860px) {
-      .product-page { grid-template-columns: 1fr; gap: 2rem; }
-      .product-gallery { position: static; }
-      .skeleton-page { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      header { padding: 0 1.2rem; }
-      .nav-desktop { display: none; }
-      .burger { display: flex; }
-      .logo-copy .tag { display: none; }
-      .breadcrumb { padding: 1rem 1.2rem .4rem; }
-      .product-page { padding: 1rem 1.2rem 4rem; }
-      .nav-drawer { width: 100%; border-left: none; }
-      footer { padding: 1.5rem 1.2rem; }
-    }
+    /* RESPONSIVE */
+    @media (max-width: 860px) { .product-page { grid-template-columns: 1fr; gap: 2rem; } .product-gallery { position: static; } .skeleton-page { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { header { padding: 0 1.2rem; } .nav-desktop { display: none; } .burger { display: flex; } .logo-copy .tag { display: none; } .breadcrumb { padding: 1rem 1.2rem .4rem; } .product-page { padding: 1rem 1.2rem 4rem; } .nav-drawer { width: 100%; border-left: none; } footer { padding: 1.5rem 1.2rem; } }
 
-    /* ── SECCIÓN TRANSFERENCIA ── */
-    .transferencia-section {
-      margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem;
-      display: none;
-    }
-    .transferencia-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem; letter-spacing: .05em; color: var(--white); margin-bottom: .3rem;
-    }
-    .transferencia-desc {
-      font-size: .9rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6;
-    }
+    /* SECCIÓN TRANSFERENCIA */
+    .transferencia-section { margin-top: 1.8rem; border-top: 1px solid var(--border); padding-top: 1.8rem; display: none; }
+    .transferencia-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .05em; color: var(--white); margin-bottom: .4rem; }
+    .transferencia-desc { font-size: 1rem; color: var(--muted); margin-bottom: 1.4rem; line-height: 1.65; }
     .transferencia-desc strong { color: var(--white); }
 
     /* Datos bancarios */
-    .banco-box {
-      background: var(--navy-light); border: 1px solid rgba(29,61,154,.3);
-      border-radius: 4px; padding: 1.1rem 1.3rem; margin-bottom: 1.2rem;
-    }
-    .banco-box-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .7rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--blue); font-weight: 700; margin-bottom: .8rem;
-    }
-    .banco-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: .4rem 0; border-bottom: 1px solid var(--border);
-    }
+    .banco-box { background: var(--navy-light); border: 1px solid rgba(29,61,154,.35); border-radius: 6px; padding: 1.3rem 1.5rem; margin-bottom: 1.4rem; }
+    .banco-box-title { font-family: 'Barlow Condensed', sans-serif; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; color: #7fa3e8; font-weight: 700; margin-bottom: 1rem; }
+    .banco-row { display: flex; align-items: center; justify-content: space-between; padding: .55rem 0; border-bottom: 1px solid var(--border); gap: .5rem; flex-wrap: wrap; }
     .banco-row:last-child { border-bottom: none; }
-    .banco-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted-dim); font-weight: 700;
-    }
-    .banco-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .95rem; font-weight: 700; color: var(--white);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .btn-copy {
-      background: transparent; border: 1px solid var(--border); color: var(--muted);
-      padding: 2px 8px; border-radius: 2px; cursor: pointer; font-size: .7rem;
-      font-family: 'Barlow Condensed', sans-serif; letter-spacing: .08em;
-      text-transform: uppercase; transition: all .2s;
-    }
+    .banco-label { font-family: 'Barlow Condensed', sans-serif; font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; }
+    .banco-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn-copy { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 3px; cursor: pointer; font-size: .8rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .08em; text-transform: uppercase; transition: all .2s; }
     .btn-copy:hover { border-color: var(--blue); color: #7fa3e8; }
-    .btn-copy.copied { border-color: var(--green, #1d9e75); color: var(--green, #1d9e75); }
+    .btn-copy.copied { border-color: var(--green); color: var(--green); }
 
     /* Resumen */
-    .trans-resumen {
-      background: var(--navy-light); border: 1px solid var(--border);
-      border-radius: 4px; padding: 1rem 1.2rem; margin-bottom: 1.2rem;
-    }
-    .trans-resumen-row {
-      display: flex; justify-content: space-between;
-      font-family: 'Barlow Condensed', sans-serif; font-size: .88rem;
-      color: var(--muted); padding: .35rem 0;
-    }
-    .trans-resumen-row.total {
-      border-top: 1px solid var(--border); padding-top: .6rem; margin-top: .2rem;
-      font-size: 1rem; color: var(--white); font-weight: 700;
-    }
+    .trans-resumen { background: var(--navy-light); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.4rem; margin-bottom: 1.4rem; }
+    .trans-resumen-row { display: flex; justify-content: space-between; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; color: var(--muted); padding: .4rem 0; }
+    .trans-resumen-row.total { border-top: 1px solid var(--border); padding-top: .65rem; margin-top: .25rem; font-size: 1.1rem; color: var(--white); font-weight: 700; }
     .trans-resumen-row span:last-child { color: var(--white); font-weight: 600; }
-    .trans-resumen-row.total span:last-child { color: #1d9e75; font-size: 1.1rem; }
+    .trans-resumen-row.total span:last-child { color: #1d9e75; font-size: 1.2rem; }
 
     /* Formulario */
-    .trans-form { display: flex; flex-direction: column; gap: .9rem; }
-    .trans-field label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--muted-dim); font-weight: 700; display: block; margin-bottom: .4rem;
-    }
-    .trans-field input[type="text"],
-    .trans-field input[type="email"],
-    .trans-field input[type="tel"] {
-      width: 100%; background: var(--navy-light); border: 1px solid var(--border);
-      border-radius: 3px; padding: 11px 14px; color: var(--white);
-      font-family: 'Barlow', sans-serif; font-size: .95rem;
-      transition: border-color .2s; outline: none;
-    }
+    .trans-form { display: flex; flex-direction: column; gap: 1rem; }
+    .trans-field label { font-family: 'Barlow Condensed', sans-serif; font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; display: block; margin-bottom: .5rem; }
+    .trans-field input[type="text"], .trans-field input[type="email"], .trans-field input[type="tel"] { width: 100%; background: var(--navy-light); border: 1px solid var(--border); border-radius: 4px; padding: 13px 16px; color: var(--white); font-family: 'Barlow', sans-serif; font-size: 1.05rem; transition: border-color .2s; outline: none; }
     .trans-field input:focus { border-color: var(--blue); }
     .trans-field input::placeholder { color: var(--muted-dim); }
     .trans-field input.error { border-color: var(--red); }
 
-    /* Upload comprobante */
-    .upload-area {
-      border: 2px dashed var(--border); border-radius: 4px;
-      padding: 1.5rem; text-align: center; cursor: pointer;
-      transition: all .2s; position: relative;
-    }
-    .upload-area:hover { border-color: var(--blue); background: rgba(29,61,154,.05); }
-    .upload-area.has-file { border-color: #1d9e75; background: rgba(29,158,117,.05); }
+    /* Upload */
+    .upload-area { border: 2px dashed var(--border); border-radius: 6px; padding: 2rem 1.5rem; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+    .upload-area:hover { border-color: rgba(29,61,154,.6); background: rgba(29,61,154,.05); }
+    .upload-area.has-file { border-color: var(--green); background: rgba(29,158,117,.05); border-style: solid; }
     .upload-area.error { border-color: var(--red); }
-    .upload-area input[type="file"] {
-      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-    }
-    .upload-icon { font-size: 1.8rem; margin-bottom: .4rem; }
-    .upload-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .85rem; letter-spacing: .08em; color: var(--muted);
-    }
-    .upload-text strong { color: var(--white); display: block; margin-bottom: .2rem; font-size: .95rem; }
-    .upload-filename {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .82rem; color: #1d9e75; margin-top: .4rem; font-weight: 700;
-    }
+    .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 2; }
+    .upload-icon { font-size: 2.2rem; margin-bottom: .5rem; display: block; }
+    .upload-text { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; letter-spacing: .06em; color: var(--muted); }
+    .upload-text strong { color: var(--white); display: block; margin-bottom: .25rem; font-size: 1.05rem; }
+    .upload-filename { font-family: 'Barlow Condensed', sans-serif; font-size: .95rem; color: var(--green); margin-top: .5rem; font-weight: 700; }
 
     /* Botón enviar */
-    .btn-enviar-pedido {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%; padding: 16px;
-      background: var(--blue); color: #fff;
-      border: none; border-radius: 4px; cursor: pointer;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.05rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700;
-      transition: opacity .2s, transform .15s; margin-top: .3rem;
-    }
+    .btn-enviar-pedido { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; background: var(--blue); color: #fff; border: none; border-radius: 5px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 700; transition: opacity .2s, transform .15s; margin-top: .3rem; }
     .btn-enviar-pedido:hover { opacity: .9; transform: translateY(-1px); }
     .btn-enviar-pedido:disabled { background: var(--muted-dim); cursor: not-allowed; transform: none; }
-    .trans-note {
-      font-size: .8rem; color: var(--muted-dim); text-align: center;
-      margin-top: .4rem; line-height: 1.5;
-    }
-    .spinner {
-      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin .7s linear infinite; flex-shrink: 0;
-      display: inline-block;
-    }
+    .trans-note { font-size: .9rem; color: var(--muted-dim); text-align: center; margin-top: .5rem; line-height: 1.55; }
+    .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <a class="logo" href="index.html">
       <img class="shield" src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png" alt="Escudo Andes Talleres" />
@@ -491,22 +231,21 @@
     </div>
     <nav class="nav-links">
       <a href="index.html">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/></svg>
         Inicio
       </a>
       <a href="catalogo.html" class="active">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
         Catálogo
       </a>
       <a href="contacto.html">
-        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 11.5c0 .4-.1.8-.3 1.1-.2.4-.5.6-.9.8-.4.1-.8.1-1.3 0C11 13.2 10 12.5 9 11.5S7 9.1 6.7 8.5c-.3-.6-.4-1-.3-1.5.1-.5.3-.8.7-1C7.5 5.7 8 5.7 8.5 6l1 .8c.2.1.3.3.3.5 0 .5-.3 1.2-.3 1.2s.5.9 1 1.4 1.4 1 1.4 1 .7-.3 1.2-.3c.2 0 .4.1.5.3l.8 1c.3.4.3.9.1 1.1z"/></svg>
         Contacto
       </a>
     </nav>
     <div class="nav-drawer-footer">© 2026 Andes Talleres Sport Club</div>
   </div>
 
-  <!-- BREADCRUMB -->
   <div class="breadcrumb">
     <a href="index.html">Inicio</a>
     <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3,2 7,5 3,8"/></svg>
@@ -515,61 +254,42 @@
     <span id="breadcrumb-name" style="color:var(--white)">Cargando...</span>
   </div>
 
-  <!-- CONTENIDO DINÁMICO -->
   <div id="page-content">
-    <!-- Skeleton de carga -->
-    <div class="skeleton-page" id="skeleton">
+    <div class="skeleton-page">
       <div class="skeleton-block skeleton-img-block"></div>
       <div>
-        <div class="skeleton-line" style="width:30%;height:10px;margin-bottom:16px"></div>
-        <div class="skeleton-line" style="width:70%;height:28px;margin-bottom:8px"></div>
-        <div class="skeleton-line" style="width:50%;height:28px;margin-bottom:24px"></div>
-        <div class="skeleton-line" style="width:25%;height:20px;margin-bottom:24px"></div>
-        <div class="skeleton-line" style="width:100%;height:1px;margin-bottom:24px"></div>
-        <div class="skeleton-line" style="width:100%;height:10px"></div>
-        <div class="skeleton-line" style="width:90%;height:10px"></div>
-        <div class="skeleton-line" style="width:80%;height:10px;margin-bottom:24px"></div>
-        <div style="display:flex;gap:8px;margin-bottom:24px">
-          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
-          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
-          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
-          <div class="skeleton-block" style="width:52px;height:52px;border-radius:3px"></div>
+        <div class="skeleton-line" style="width:30%;height:12px;margin-bottom:18px"></div>
+        <div class="skeleton-line" style="width:70%;height:32px;margin-bottom:10px"></div>
+        <div class="skeleton-line" style="width:50%;height:32px;margin-bottom:26px"></div>
+        <div class="skeleton-line" style="width:100%;height:1px;margin-bottom:26px"></div>
+        <div class="skeleton-line" style="width:100%;height:12px"></div>
+        <div class="skeleton-line" style="width:90%;height:12px"></div>
+        <div class="skeleton-line" style="width:80%;height:12px;margin-bottom:26px"></div>
+        <div style="display:flex;gap:10px;margin-bottom:26px">
+          <div class="skeleton-block" style="width:64px;height:64px;border-radius:4px"></div>
+          <div class="skeleton-block" style="width:64px;height:64px;border-radius:4px"></div>
+          <div class="skeleton-block" style="width:64px;height:64px;border-radius:4px"></div>
+          <div class="skeleton-block" style="width:64px;height:64px;border-radius:4px"></div>
         </div>
-        <div class="skeleton-block" style="height:54px;border-radius:4px;margin-bottom:10px"></div>
-        <div class="skeleton-block" style="height:46px;border-radius:4px"></div>
+        <div class="skeleton-block" style="height:58px;border-radius:5px"></div>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <span class="hashtags">#SomosTalleres &nbsp; #SomosFamilia</span>
     <p>© 2026 Andes Talleres Sport Club · Mendoza, Argentina</p>
-    <a href="admin.html" style="
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--muted-dim); text-decoration: none;
-      border: 1px solid var(--border); padding: 4px 12px; border-radius: 2px;
-      transition: all .2s; display: inline-flex; align-items: center; gap: 6px;
-    " onmouseover="this.style.color='var(--white)';this.style.borderColor='var(--border-h)'"
-       onmouseout="this.style.color='var(--muted-dim)';this.style.borderColor='var(--border)'">
-      ⚙ Administrador
-    </a>
-</footer>
+    <a href="admin.html" style="font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);text-decoration:none;border:1px solid var(--border);padding:5px 14px;border-radius:2px;transition:all .2s;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.color='var(--white)';this.style.borderColor='var(--border-h)'" onmouseout="this.style.color='var(--muted-dim)';this.style.borderColor='var(--border)'">⚙ Admin</a>
+  </footer>
 
   <script>
-    // ══════════════════════════════════════════════════
-    // CONFIGURACIÓN — cambiá el número cuando lo tengas
-    // Formato: código país + número sin espacios ni +
-    // Ejemplo Argentina: 5493412345678
-    // ══════════════════════════════════════════════════
-    const WA_NUMBER = '5493410000000';
-
     const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
     const ESCUDO = 'https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
 
-    // ── NAV ──
+    let producto = null;
+    let talleSeleccionado = null;
+
     function toggleNav() {
       const open = document.getElementById('nav-drawer').classList.toggle('open');
       document.getElementById('nav-overlay').classList.toggle('open', open);
@@ -584,38 +304,29 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 
-    // ── ESTADO ──
-    let producto = null;
-    let talleSeleccionado = null;
-
-    // ── FETCH PRODUCTO ──
     async function fetchProducto(id) {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/productos?id=eq.${id}&select=*`,
-        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-      );
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${id}&select=*`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
       if (!res.ok) throw new Error('Error');
       const data = await res.json();
       if (!data.length) throw new Error('No encontrado');
       return data[0];
     }
 
-    // ── STOCK BADGE ──
     function getStockBadge(total) {
-      if (total <= 0)  return { cls: 'agotado',    txt: 'Sin stock' };
-      if (total <= 5)  return { cls: 'pocas',      txt: `${total} unidades disponibles` };
-      return               { cls: 'disponible',  txt: `${total} unidades disponibles` };
+      if (total <= 0) return { cls: 'agotado', txt: 'Sin stock' };
+      if (total <= 5) return { cls: 'pocas', txt: `${total} unidades disponibles` };
+      return { cls: 'disponible', txt: `${total} unidades disponibles` };
     }
 
-    // ── IMG BADGE ──
     function getImgBadge(p) {
-      if (p.stock_total <= 0) return `<span class="img-badge agotado">Sin stock</span>`;
-      if (p.nuevo)            return `<span class="img-badge nuevo">Nuevo</span>`;
-      if (p.stock_total <= 5) return `<span class="img-badge ultimas">¡Últimas!</span>`;
+      if (p.stock_total <= 0) return '<span class="img-badge agotado">Sin stock</span>';
+      if (p.nuevo) return '<span class="img-badge nuevo">Nuevo</span>';
+      if (p.stock_total <= 5) return '<span class="img-badge ultimas">¡Últimas!</span>';
       return '';
     }
 
-    // ── SELECCIONAR TALLE ──
     function selectTalle(btn, talle, stock) {
       if (stock <= 0) return;
       talleSeleccionado = { talle, stock };
@@ -626,7 +337,6 @@
       mostrarTransferencia();
     }
 
-    // ── TRANSFERENCIA ──
     function mostrarTransferencia() {
       if (!talleSeleccionado || !producto || !producto.precio) return;
       const sena = Math.ceil(producto.precio * 0.5);
@@ -636,12 +346,12 @@
       document.getElementById('tr-sena').textContent = '$' + sena.toLocaleString('es-AR');
       const sec = document.getElementById('trans-section');
       sec.style.display = 'block';
-      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
 
     function copiar(texto, btn) {
       navigator.clipboard.writeText(texto).then(() => {
-        btn.textContent = '✓';
+        btn.textContent = '✓ Copiado';
         btn.classList.add('copied');
         setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
       });
@@ -651,9 +361,16 @@
       const area = document.getElementById('upload-area');
       const label = document.getElementById('upload-filename');
       if (input.files && input.files[0]) {
+        const f = input.files[0];
+        // Validar tamaño (max 5MB)
+        if (f.size > 5 * 1024 * 1024) {
+          alert('El archivo es muy grande. Máximo 5MB.');
+          input.value = '';
+          return;
+        }
         area.classList.add('has-file');
         area.classList.remove('error');
-        label.textContent = '✓ ' + input.files[0].name;
+        label.textContent = '✓ ' + f.name;
         label.style.display = 'block';
       }
     }
@@ -674,7 +391,10 @@
         document.getElementById('upload-area').classList.add('error');
         ok = false;
       }
-      if (!ok) return;
+      if (!ok) {
+        alert('Por favor completá todos los campos y adjuntá el comprobante.');
+        return;
+      }
 
       const btn = document.getElementById('btn-enviar');
       btn.disabled = true;
@@ -682,8 +402,9 @@
 
       try {
         // 1. Subir comprobante a Supabase Storage
-        const ext = file.name.split('.').pop();
-        const fileName = `comprobante_${Date.now()}.${ext}`;
+        const ext = file.name.split('.').pop().toLowerCase();
+        const fileName = `pedido_${Date.now()}_${Math.random().toString(36).slice(2,7)}.${ext}`;
+
         const uploadRes = await fetch(
           `${SUPABASE_URL}/storage/v1/object/comprobantes/${fileName}`,
           {
@@ -691,20 +412,38 @@
             headers: {
               'apikey': SUPABASE_KEY,
               'Authorization': 'Bearer ' + SUPABASE_KEY,
-              'Content-Type': file.type,
-              'x-upsert': 'true',
+              'Content-Type': file.type || 'application/octet-stream',
+              'x-upsert': 'false',
             },
             body: file,
           }
         );
-        if (!uploadRes.ok) {
-          const errData = await uploadRes.json();
-          throw new Error('Error al subir comprobante: ' + JSON.stringify(errData));
+
+        let comprobanteUrl = null;
+
+        if (uploadRes.ok) {
+          comprobanteUrl = `${SUPABASE_URL}/storage/v1/object/public/comprobantes/${fileName}`;
+        } else {
+          // Si falla el upload, igual guardamos el pedido pero sin comprobante
+          const errBody = await uploadRes.text();
+          console.warn('Upload falló, guardando pedido sin comprobante:', errBody);
         }
-        const comprobanteUrl = `${SUPABASE_URL}/storage/v1/object/public/comprobantes/${fileName}`;
 
         // 2. Insertar pedido en Supabase
         const sena = Math.ceil(producto.precio * 0.5);
+        const pedidoBody = {
+          producto_id:      producto.id,
+          producto_nombre:  producto.nombre,
+          talle:            talleSeleccionado.talle,
+          precio_total:     producto.precio,
+          precio_sena:      sena,
+          nombre_cliente:   nombre,
+          email_cliente:    email,
+          telefono_cliente: tel,
+          estado:           'pendiente',
+        };
+        if (comprobanteUrl) pedidoBody.comprobante_url = comprobanteUrl;
+
         const res = await fetch(SUPABASE_URL + '/rest/v1/pedidos', {
           method: 'POST',
           headers: {
@@ -713,66 +452,45 @@
             'Content-Type': 'application/json',
             'Prefer': 'return=representation',
           },
-          body: JSON.stringify({
-            producto_id:       producto.id,
-            producto_nombre:   producto.nombre,
-            talle:             talleSeleccionado.talle,
-            precio_total:      producto.precio,
-            precio_sena:       sena,
-            nombre_cliente:    nombre,
-            email_cliente:     email,
-            telefono_cliente:  tel,
-            comprobante_url:   comprobanteUrl,
-            estado:            'pendiente',
-          }),
+          body: JSON.stringify(pedidoBody),
         });
 
         if (!res.ok) {
           const err = await res.json();
-          throw new Error(JSON.stringify(err));
+          throw new Error('Error al guardar pedido: ' + JSON.stringify(err));
         }
 
-        const [pedido] = await res.json();
+        const data = await res.json();
+        const pedido = Array.isArray(data) ? data[0] : data;
         window.location.href = 'pago-exitoso.html?pedido=' + (pedido?.id || '');
 
       } catch (e) {
         console.error(e);
         btn.disabled = false;
         btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar pedido';
-        alert('Hubo un error al enviar el pedido: ' + e.message);
+        alert('Error: ' + e.message + '\n\nRevisá la consola para más detalles.');
       }
     }
 
-    // ── RENDER ──
     function renderProducto(p) {
       producto = p;
       document.title = `${p.nombre} — Andes Talleres Futsal`;
       document.getElementById('breadcrumb-name').textContent = p.nombre;
 
       const sb = getStockBadge(p.stock_total);
-
       const imgHTML = p.imagen_url
         ? `<img src="${p.imagen_url}" alt="${p.nombre}" />`
-        : `<div class="placeholder">
-             <img src="${ESCUDO}" alt="Andes Talleres" />
-             <span>Sin foto aún</span>
-           </div>`;
+        : `<div class="placeholder"><img src="${ESCUDO}" alt="Andes Talleres" /><span>Sin foto aún</span></div>`;
 
-      const talles = (p.tallas || []);
       const TALLES_FIJOS = ['XS','S','M','L','XL','XXL'];
-      const tallesMap = Object.fromEntries(talles.map(t => [t.talla, t.stock]));
-      const tallesHTML = `${TALLES_FIJOS.map(t => {
-            const stock = tallesMap.hasOwnProperty(t) ? tallesMap[t] : -1;
-            const agotado = stock <= 0;
-            return `<button
-              class="talle-btn${agotado ? ' agotado' : ''}"
-              onclick="${!agotado ? `selectTalle(this, '${t}', ${stock})` : ''}"
-              ${agotado ? 'disabled' : ''}
-            >
-              ${t}
-              <span class="stock-num">${stock > 0 ? stock + ' ud.' : 'sin stock'}</span>
-            </button>`;
-          }).join('')}`;
+      const tallesMap = Object.fromEntries((p.tallas || []).map(t => [t.talla, t.stock]));
+      const tallesHTML = TALLES_FIJOS.map(t => {
+        const stock = tallesMap.hasOwnProperty(t) ? tallesMap[t] : -1;
+        const agotado = stock <= 0;
+        return `<button class="talle-btn${agotado ? ' agotado' : ''}" onclick="${!agotado ? `selectTalle(this, '${t}', ${stock})` : ''}" ${agotado ? 'disabled' : ''}>
+          ${t}<span class="stock-num">${stock > 0 ? stock + ' ud.' : 'sin stock'}</span>
+        </button>`;
+      }).join('');
 
       const precioHTML = p.precio
         ? `<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`
@@ -780,47 +498,23 @@
 
       document.getElementById('page-content').innerHTML = `
         <div class="product-page">
-          <!-- GALERÍA -->
           <div class="product-gallery">
-            <div class="main-img">
-              ${imgHTML}
-              ${getImgBadge(p)}
-            </div>
+            <div class="main-img">${imgHTML}${getImgBadge(p)}</div>
           </div>
-
-          <!-- INFO -->
           <div class="product-info">
             <div class="product-cat">${p.categoria}</div>
             <h1 class="product-name">${p.nombre}</h1>
-
             <div class="product-price">${precioHTML}</div>
-
-            <span class="stock-badge ${sb.cls}">
-              <span class="dot"></span>
-              ${sb.txt}
-            </span>
-
+            <span class="stock-badge ${sb.cls}"><span class="dot"></span>${sb.txt}</span>
             <div class="divider"></div>
-
             ${p.descripcion ? `<p class="product-desc">${p.descripcion}</p>` : ''}
-
-            <div class="talle-label">
-              Elegí tu talle
-              <span>Cantidad por talle</span>
-            </div>
+            <div class="talle-label">Elegí tu talle<span>Stock por talle</span></div>
             <div class="talle-grid">${tallesHTML}</div>
+            <div class="talle-selected-info" id="talle-info">Seleccioná un talle para continuar</div>
 
-            <div class="talle-selected-info" id="talle-info">
-              Seleccioná un talle para continuar
-            </div>
-
-            <!-- SECCIÓN TRANSFERENCIA -->
             <div class="transferencia-section" id="trans-section">
               <div class="transferencia-title">Reservar con transferencia</div>
-              <p class="transferencia-desc">
-                Pagá el <strong>50% como seña</strong> por transferencia para reservar tu talle.
-                El resto lo abonás cuando retirás en el club.
-              </p>
+              <p class="transferencia-desc">Pagá el <strong>50% como seña</strong> por transferencia para reservar tu talle. El resto lo abonás cuando retirás en el club.</p>
 
               <div class="banco-box">
                 <div class="banco-box-title">📋 Datos para la transferencia</div>
@@ -830,7 +524,7 @@
                 </div>
                 <div class="banco-row">
                   <span class="banco-label">CVU</span>
-                  <span class="banco-value">0000003100091234567890 <button class="btn-copy" onclick="copiar('0000003100091234567890', this)">Copiar</button></span>
+                  <span class="banco-value" style="font-size:.9rem">0000003100091234567890 <button class="btn-copy" onclick="copiar('0000003100091234567890', this)">Copiar</button></span>
                 </div>
                 <div class="banco-row">
                   <span class="banco-label">Titular</span>
@@ -838,7 +532,7 @@
                 </div>
                 <div class="banco-row">
                   <span class="banco-label">Banco</span>
-                  <span class="banco-value">Tarjeta Naranja</span>
+                  <span class="banco-value">Naranja X</span>
                 </div>
               </div>
 
@@ -866,27 +560,20 @@
                   <label>Comprobante de transferencia *</label>
                   <div class="upload-area" id="upload-area">
                     <input type="file" id="trans-comprobante" accept="image/*,.pdf" onchange="onFileChange(this)" />
-                    <div class="upload-icon">📎</div>
-                    <div class="upload-text">
-                      <strong>Adjuntá tu comprobante</strong>
-                      Foto o captura de pantalla (JPG, PNG, PDF)
-                    </div>
+                    <span class="upload-icon">📎</span>
+                    <div class="upload-text"><strong>Adjuntá tu comprobante</strong>Foto o captura (JPG, PNG, PDF · máx 5MB)</div>
                     <div class="upload-filename" id="upload-filename" style="display:none"></div>
                   </div>
                 </div>
-
                 <button class="btn-enviar-pedido" id="btn-enviar" onclick="enviarPedido()">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg>
                   Enviar pedido
                 </button>
-                <p class="trans-note">
-                  Tu pedido quedará pendiente hasta que confirmemos el pago.<br>
-                  Te contactamos por WhatsApp para coordinar la entrega.
-                </p>
+                <p class="trans-note">Tu pedido quedará pendiente hasta que confirmemos el pago.<br>Te contactamos por WhatsApp para coordinar la entrega.</p>
               </div>
             </div>
 
-            <a href="catalogo.html" class="btn-back" style="margin-top:1rem">
+            <a href="catalogo.html" class="btn-back">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
               Volver al catálogo
             </a>
@@ -899,14 +586,13 @@
         <div class="error-page">
           <h2>Producto no encontrado</h2>
           <p>Este producto no existe o fue eliminado del catálogo.</p>
-          <a href="catalogo.html" class="btn-back" style="display:inline-flex;width:auto;padding:12px 24px;">
+          <a href="catalogo.html" class="btn-back" style="display:inline-flex;width:auto;padding:14px 28px;">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
             Volver al catálogo
           </a>
         </div>`;
     }
 
-    // ── INIT ──
     async function init() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
@@ -919,7 +605,6 @@
         renderError();
       }
     }
-
     init();
   </script>
 </body>
