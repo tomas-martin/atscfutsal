@@ -315,6 +315,11 @@
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Señas recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Monto cobrado confirmado</div></div>
           <div class="stat-card"><div class="stat-label">Confirmadas</div><div class="stat-value blue" id="stat-confirmadas">—</div><div class="stat-sub">Pagos verificados</div></div>
+          <div class="stat-card">
+  <div class="stat-label">Entregadas</div>
+  <div class="stat-value green" id="stat-entregadas">—</div>
+  <div class="stat-sub">Pedidos completados</div>
+</div>
           <div class="stat-card"><div class="stat-label">Por confirmar</div><div class="stat-value yellow" id="stat-pendientes">—</div><div class="stat-sub">Esperando revisión</div></div>
           <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="stat-stock">—</div><div class="stat-sub">Unidades disponibles</div></div>
           <div class="stat-card"><div class="stat-label">Saldo por cobrar</div><div class="stat-value yellow" id="stat-saldo">—</div><div class="stat-sub">Resto pendiente de señas</div></div>
@@ -549,18 +554,43 @@
   }
 
   function updateDashboard(){
-    const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
-    const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-    // Ingresos = suma de monto_transferido de pedidos confirmados
-    const ingresos=confirmadas.reduce((s,p)=>s+(Number(p.monto_transferido)||Number(p.precio_sena)||0),0);
-    const saldoPendiente=confirmadas.reduce((s,p)=>{
-      const total=Number(p.precio_total||0);
-      const cobrado=Number(p.monto_transferido||p.precio_sena||0);
-      return s+(total>cobrado?total-cobrado:0);
-    },0);
+
+  const confirmadas = allPedidos.filter(p => 
+    p.estado === 'confirmada' || p.estado === 'entregada'
+  );
+
+  const entregadas = allPedidos.filter(p => 
+    p.estado === 'entregada'
+  );
+
+  const pendientes = allPedidos.filter(p => 
+    p.estado === 'pendiente'
+  );
+
+  const ingresos = confirmadas.reduce((s, p) => {
+    const cobrado = Number(
+      p.monto_transferido !== null && p.monto_transferido !== undefined
+        ? p.monto_transferido
+        : p.precio_sena || 0
+    );
+    return s + cobrado;
+  }, 0);
+
+  const saldoPendiente = confirmadas.reduce((s, p) => {
+    const total = Number(p.precio_total || 0);
+
+    const cobrado = Number(
+      p.monto_transferido !== null && p.monto_transferido !== undefined
+        ? p.monto_transferido
+        : p.precio_sena || 0
+    );
+
+    return s + (total > cobrado ? total - cobrado : 0);
+  }, 0);
     document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
     document.getElementById('stat-confirmadas').textContent=confirmadas.length;
     document.getElementById('stat-pendientes').textContent=pendientes.length;
+    document.getElementById('stat-entregadas').textContent = entregadas.length;
     document.getElementById('stat-stock').textContent=allProducts.reduce((s,p)=>s+(p.stock_total||0),0);
     const saldoEl=document.getElementById('stat-saldo');
     if(saldoEl) saldoEl.textContent='$'+saldoPendiente.toLocaleString('es-AR');
