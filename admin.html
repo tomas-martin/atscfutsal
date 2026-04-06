@@ -117,6 +117,11 @@
     tbody td{padding:.95rem 1rem;font-size:1rem;color:var(--white);}
     td.muted{color:var(--muted);font-size:.95rem;}
 
+    /* productos list en celda */
+    .prod-list{display:flex;flex-direction:column;gap:2px;}
+    .prod-item{font-size:.88rem;color:var(--muted);}
+    .prod-item strong{color:var(--white);}
+
     /* PILLS */
     .pill{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:3px;white-space:nowrap;}
     .pill-pendiente{background:rgba(186,117,23,.15);border:1px solid rgba(186,117,23,.3);color:var(--yellow);}
@@ -208,8 +213,40 @@
     .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);}
     .btn-secondary:hover{border-color:var(--border-h);color:var(--white);}
 
+    /* CONFIRM PAGO MODAL */
+    .confirm-modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .confirm-modal-overlay.open{opacity:1;pointer-events:all;}
+    .confirm-modal{background:var(--navy-mid);border:1px solid rgba(29,158,117,.3);border-radius:8px;width:100%;max-width:460px;overflow:hidden;}
+    .confirm-modal-header{padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+    .confirm-modal-icon{width:40px;height:40px;border-radius:50%;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .confirm-modal-icon svg{width:20px;height:20px;color:var(--green);}
+    .confirm-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;}
+    .confirm-modal-body{padding:1.5rem 1.6rem;}
+    .confirm-modal-body p{font-size:.95rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6;}
+    .confirm-modal-body p strong{color:var(--white);}
+    .monto-options{display:flex;gap:.75rem;margin-bottom:1.2rem;}
+    .monto-opt{flex:1;padding:12px;background:var(--navy-light);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;text-align:center;transition:all .2s;}
+    .monto-opt:hover{border-color:var(--border-h);}
+    .monto-opt.selected{border-color:var(--green);background:rgba(29,158,117,.08);}
+    .monto-opt .opt-label{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;display:block;margin-bottom:4px;}
+    .monto-opt .opt-value{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;color:var(--white);}
+    .monto-opt.selected .opt-value{color:var(--green);}
+    .monto-custom{margin-bottom:1.2rem;}
+    .monto-custom label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
+    .monto-input-wrap{display:flex;align-items:center;gap:8px;background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:0 14px;}
+    .monto-input-wrap span{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--muted-dim);}
+    .monto-input-wrap input{flex:1;background:transparent;border:none;outline:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;padding:12px 0;-moz-appearance:textfield;}
+    .monto-input-wrap input::-webkit-outer-spin-button,.monto-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;}
+    .confirm-modal-actions{display:flex;gap:.75rem;padding:0 1.6rem 1.4rem;}
+    .btn-confirm-ok{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--green);color:#fff;border:none;padding:13px;border-radius:3px;cursor:pointer;transition:all .2s;}
+    .btn-confirm-ok:hover{opacity:.9;}
+    .btn-confirm-ok:disabled{background:var(--muted-dim);cursor:not-allowed;}
+    .btn-confirm-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
+    .btn-confirm-cancel:hover{border-color:var(--border-h);color:var(--white);}
+    .monto-nota{font-size:.82rem;color:var(--muted-dim);margin-top:.5rem;text-align:center;}
+
     /* TOAST */
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+    .toast{position:fixed;bottom:2rem;right:2rem;z-index:700;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
     .toast.show{transform:translateY(0);opacity:1;}
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
     .toast.error{background:rgba(192,25,42,.95);color:#fff;border:1px solid rgba(192,25,42,.5);}
@@ -229,6 +266,8 @@
       .stats-grid{grid-template-columns:1fr;}
       .modal-overlay{padding:0;align-items:flex-end;}
       .modal{border-radius:12px 12px 0 0;max-height:95vh;}
+      .confirm-modal-overlay{padding:.5rem;}
+      .confirm-modal{max-height:95vh;overflow-y:auto;}
       .save-all-bar{padding:.9rem 1.2rem;}
       .admin-header{padding:0 1rem;}
       .main-content{padding:1rem;}
@@ -237,6 +276,7 @@
       tbody td{display:flex;justify-content:space-between;align-items:flex-start;padding:.3rem 0;border:none;font-size:.9rem;gap:.5rem;}
       tbody td::before{content:attr(data-label);font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;flex-shrink:0;}
       .table-wrap table{min-width:unset;}
+      .monto-options{flex-direction:column;}
     }
   </style>
 </head>
@@ -323,7 +363,7 @@
           <button class="btn-refresh" onclick="loadAll()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Señas recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Ventas confirmadas</div></div>
+          <div class="stat-card"><div class="stat-label">Transferencias recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Monto real cobrado</div></div>
           <div class="stat-card"><div class="stat-label">Confirmadas</div><div class="stat-value blue" id="stat-confirmadas">—</div><div class="stat-sub">Pagos verificados</div></div>
           <div class="stat-card"><div class="stat-label">Por confirmar</div><div class="stat-value yellow" id="stat-pendientes">—</div><div class="stat-sub">Esperando revisión</div></div>
           <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="stat-stock">—</div><div class="stat-sub">Unidades disponibles</div></div>
@@ -332,7 +372,7 @@
           <div><h2>Últimas <em>Ventas</em></h2></div>
           <button class="btn-refresh" onclick="showTab('pendientes')" style="background:var(--red);color:#fff;border-color:var(--red)">Ver pendientes →</button>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Producto</th><th>Talle</th><th>Seña</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Productos</th><th>Transferido</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
       </div>
 
       <!-- POR CONFIRMAR -->
@@ -344,7 +384,7 @@
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="pend-search" placeholder="Buscar por nombre, producto…" oninput="renderTabla('pendiente')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Producto</th><th>Talle</th><th>Seña</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total pedido</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
       </div>
 
       <!-- CONFIRMADAS -->
@@ -356,7 +396,7 @@
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="conf-search" placeholder="Buscar por nombre, producto…" oninput="renderTabla('confirmada')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Producto</th><th>Talle</th><th>Seña</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Transferido</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
       </div>
 
       <!-- STOCK -->
@@ -379,7 +419,7 @@
 
 <div class="sidebar-overlay-mob" id="sidebar-overlay-mob" onclick="closeSidebar()"></div>
 
-<!-- MODAL -->
+<!-- MODAL DETALLE PEDIDO -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -391,6 +431,50 @@
   </div>
 </div>
 
+<!-- MODAL CONFIRMAR PAGO -->
+<div class="confirm-modal-overlay" id="confirm-modal-overlay">
+  <div class="confirm-modal" onclick="event.stopPropagation()">
+    <div class="confirm-modal-header">
+      <div class="confirm-modal-icon">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg>
+      </div>
+      <span class="confirm-modal-title">Confirmar Pago</span>
+    </div>
+    <div class="confirm-modal-body">
+      <p id="confirm-modal-desc">¿Cuánto transfirió el cliente?</p>
+
+      <div class="monto-options" id="monto-options">
+        <div class="monto-opt selected" id="opt-sena" onclick="selectMonto('sena')">
+          <span class="opt-label">50% — Seña</span>
+          <span class="opt-value" id="opt-sena-val">$0</span>
+        </div>
+        <div class="monto-opt" id="opt-total" onclick="selectMonto('total')">
+          <span class="opt-label">100% — Total</span>
+          <span class="opt-value" id="opt-total-val">$0</span>
+        </div>
+        <div class="monto-opt" id="opt-custom" onclick="selectMonto('custom')">
+          <span class="opt-label">Otro monto</span>
+          <span class="opt-value">✏</span>
+        </div>
+      </div>
+
+      <div class="monto-custom" id="monto-custom-wrap" style="display:none">
+        <label>Monto recibido</label>
+        <div class="monto-input-wrap">
+          <span>$</span>
+          <input type="number" id="monto-custom-input" placeholder="0" min="0" oninput="onCustomMonto()" />
+        </div>
+      </div>
+
+      <p class="monto-nota" id="monto-nota"></p>
+    </div>
+    <div class="confirm-modal-actions">
+      <button class="btn-confirm-cancel" onclick="closeConfirmModal()">Cancelar</button>
+      <button class="btn-confirm-ok" id="btn-confirm-ok" onclick="doConfirmarPago()">Confirmar pago</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -399,9 +483,42 @@
   const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
   let accessToken=null,allPedidos=[],allProducts=[],pendingChanges={};
 
+  // Estado del modal confirmar
+  let confirmPedidoId=null;
+  let confirmMontoSeleccionado='sena';
+  let confirmPedidoData=null;
+
   async function sbFetch(path,opts={}){
     const headers={'apikey':SUPABASE_KEY,'Content-Type':'application/json',...(accessToken?{'Authorization':'Bearer '+accessToken}:{}),...(opts.headers||{})};
     return fetch(SUPABASE_URL+path,{...opts,headers});
+  }
+
+  // ── HELPERS PRODUCTOS ──
+  // Devuelve string legible de productos del pedido
+  function getProductosTexto(p){
+    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
+      return p.productos.map(prod=>`${prod.producto_nombre||prod.nombre||'Producto'} (${prod.talle||'-'})`).join(' · ');
+    }
+    if(p.producto_nombre) return p.producto_nombre+(p.talle?' ('+p.talle+')':'');
+    return '—';
+  }
+
+  // Devuelve HTML con lista de productos
+  function getProductosHTML(p){
+    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
+      return '<div class="prod-list">'+p.productos.map(prod=>`<div class="prod-item"><strong>${prod.producto_nombre||prod.nombre||'Producto'}</strong> · Talle ${prod.talle||'-'}</div>`).join('')+'</div>';
+    }
+    if(p.producto_nombre){
+      return `<div class="prod-list"><div class="prod-item"><strong>${p.producto_nombre}</strong>${p.talle?' · Talle '+p.talle:''}</div></div>`;
+    }
+    return '<span style="color:var(--muted-dim)">—</span>';
+  }
+
+  // Monto real transferido (puede ser precio_sena_real si fue confirmado con monto custom, o precio_sena)
+  function getMontoTransferido(p){
+    if(p.monto_transferido!=null) return Number(p.monto_transferido);
+    if(p.precio_sena!=null) return Number(p.precio_sena);
+    return 0;
   }
 
   // LOGIN
@@ -461,76 +578,98 @@
     if(res.ok)allProducts=await res.json();renderProducts();
   }
 
-  // TABLAS
+  // ── TABLAS ──
   function renderTabla(tipo){
     const esPend=tipo==='pendiente';
     const searchVal=(document.getElementById(esPend?'pend-search':'conf-search')?.value||'').toLowerCase();
     const tbody=document.getElementById(esPend?'pendientes-tbody':'confirmadas-tbody');
     if(!tbody)return;
+
     const filtered=allPedidos.filter(p=>{
       const matchEstado=esPend?p.estado==='pendiente':p.estado==='confirmada';
-      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,p.producto_nombre,p.talle].some(v=>v&&String(v).toLowerCase().includes(searchVal));
+      const textoProductos=getProductosTexto(p).toLowerCase();
+      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,textoProductos].some(v=>v&&String(v).toLowerCase().includes(searchVal));
       return matchEstado&&matchSearch;
     });
-    if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-table"><p>${esPend?'Sin pedidos pendientes':'Sin ventas confirmadas'}</p><small>${esPend?'Los nuevos pedidos aparecen acá.':'Confirmá pedidos desde Por confirmar.'}</small></div></td></tr>`;return;}
+
+    if(!filtered.length){
+      tbody.innerHTML=`<tr><td colspan="9"><div class="empty-table"><p>${esPend?'Sin pedidos pendientes':'Sin ventas confirmadas'}</p><small>${esPend?'Los nuevos pedidos aparecen acá.':'Confirmá pedidos desde Por confirmar.'}</small></div></td></tr>`;
+      return;
+    }
+
     tbody.innerHTML=filtered.map(p=>{
       const fecha=p.created_at?new Date(p.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
-      const sena=p.precio_sena?'$'+Number(p.precio_sena).toLocaleString('es-AR'):'—';
-      const saldo=(p.precio_total&&p.precio_sena)?'$'+(p.precio_total-p.precio_sena).toLocaleString('es-AR'):'—';
+      const total=p.precio_total?'$'+Number(p.precio_total).toLocaleString('es-AR'):'—';
+      const transferido=getMontoTransferido(p);
+      const transferidoStr=transferido>0?'$'+transferido.toLocaleString('es-AR'):'—';
+      const saldo=p.precio_total&&transferido>0?'$'+(Number(p.precio_total)-transferido).toLocaleString('es-AR'):'—';
       const pill=esPend?'<span class="pill pill-pendiente">⏳ Pendiente</span>':'<span class="pill pill-confirmada">✓ Confirmada</span>';
-        const cols=esPend
-  ?`<td data-label="#">#${p.id}</td>
-    <td data-label="Fecha" class="muted">${fecha}</td>
-    <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-    <td data-label="Producto" class="muted">${getProductosTexto(p)}</td>
-    <td data-label="Talle">—</td>
-    <td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td>
-    <td data-label="Estado">${pill}</td>`
-  :`<td data-label="#">#${p.id}</td>
-    <td data-label="Fecha" class="muted">${fecha}</td>
-    <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-    <td data-label="Producto" class="muted">${getProductosTexto(p)}</td>
-    <td data-label="Talle">—</td>
-    <td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td>
-    <td data-label="Saldo" class="muted">${saldo}</td>
-    <td data-label="Estado">${pill}</td>`;
-      return `<tr>${cols}<td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td></tr>`;
+      const prodHTML=getProductosHTML(p);
+
+      if(esPend){
+        return `<tr>
+          <td data-label="#">#${p.id}</td>
+          <td data-label="Fecha" class="muted">${fecha}</td>
+          <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+          <td data-label="Productos">${prodHTML}</td>
+          <td data-label="Total" style="color:var(--white);font-weight:700">${total}</td>
+          <td data-label="Estado">${pill}</td>
+          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
+        </tr>`;
+      } else {
+        return `<tr>
+          <td data-label="#">#${p.id}</td>
+          <td data-label="Fecha" class="muted">${fecha}</td>
+          <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+          <td data-label="Productos">${prodHTML}</td>
+          <td data-label="Total" class="muted">${total}</td>
+          <td data-label="Transferido" style="color:var(--green);font-weight:700">${transferidoStr}</td>
+          <td data-label="Saldo" style="color:var(--yellow)">${saldo}</td>
+          <td data-label="Estado">${pill}</td>
+          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
+        </tr>`;
+      }
     }).join('');
   }
-  function getProductosTexto(p) {
-  if (p.productos && p.productos.length > 0) {
-    return p.productos.map(prod => 
-      `${prod.nombre || 'Producto'} (${prod.talle || '-'})`
-    ).join(', ');
-  }
-  return p.producto_nombre || '—';
-}
 
-  // DASHBOARD
+  // ── DASHBOARD ──
   function updateDashboard(){
     const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
     const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-    const ingresos=confirmadas.reduce((s,p)=>s+(Number(p.precio_sena)||0),0);
+    // Sumar montos reales transferidos (monto_transferido si existe, sino precio_sena)
+    const ingresos=confirmadas.reduce((s,p)=>s+getMontoTransferido(p),0);
     document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
     document.getElementById('stat-confirmadas').textContent=confirmadas.length;
     document.getElementById('stat-pendientes').textContent=pendientes.length;
     document.getElementById('stat-stock').textContent=allProducts.reduce((s,p)=>s+(p.stock_total||0),0);
+
     const dtbody=document.getElementById('dashboard-tbody');
     const ultimas=allPedidos.slice(0,8);
-    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="6"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
+    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="5"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
     dtbody.innerHTML=ultimas.map(p=>{
-      const sena=p.precio_sena?'$'+Number(p.precio_sena).toLocaleString('es-AR'):'—';
+      const transferido=getMontoTransferido(p);
+      const transferidoStr=transferido>0?'$'+transferido.toLocaleString('es-AR'):'—';
       const pill=p.estado==='confirmada'?'<span class="pill pill-confirmada">✓ Confirmada</span>':p.estado==='pendiente'?'<span class="pill pill-pendiente">⏳ Pendiente</span>':'<span class="pill pill-rechazado">✗ Rechazado</span>';
-      return `<tr><td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td><td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td><td data-label="Talle">${p.talle||'—'}</td><td data-label="Seña" style="color:var(--green)">${sena}</td><td data-label="Estado">${pill}</td><td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td></tr>`;
+      return `<tr>
+        <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+        <td data-label="Productos">${getProductosHTML(p)}</td>
+        <td data-label="Transferido" style="color:var(--green)">${transferidoStr}</td>
+        <td data-label="Estado">${pill}</td>
+        <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
+      </tr>`;
     }).join('');
   }
+
   function updateBadge(){const n=allPedidos.filter(p=>p.estado==='pendiente').length;const b=document.getElementById('badge-pendientes');b.textContent=n;b.style.display=n>0?'':'none';}
 
-  // MODAL
+  // ── MODAL DETALLE ──
   function verPedido(id){
     const p=allPedidos.find(x=>x.id===id);if(!p)return;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR'):'—';
-    const saldo=(p.precio_total&&p.precio_sena)?'$'+(p.precio_total-p.precio_sena).toLocaleString('es-AR'):'—';
+    const total=Number(p.precio_total||0);
+    const transferido=getMontoTransferido(p);
+    const saldo=total>0&&transferido>0?'$'+(total-transferido).toLocaleString('es-AR'):'—';
+
     let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante</span>';
     if(p.comprobante_b64){
       if(p.comprobante_tipo&&p.comprobante_tipo.includes('pdf')){
@@ -541,25 +680,43 @@
         comprobanteHTML=`<img class="comprobante-img" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" title="Click para ampliar" />`;
       }
     }
+
+    // Lista de productos
+    let productosDetalle='';
+    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
+      productosDetalle=p.productos.map(prod=>`
+        <div style="display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.95rem;">
+          <span style="color:var(--muted)">${prod.producto_nombre||prod.nombre||'Producto'}</span>
+          <span style="color:var(--white);font-weight:600">Talle ${prod.talle||'-'}</span>
+        </div>`).join('');
+    } else if(p.producto_nombre){
+      productosDetalle=`<div style="display:flex;justify-content:space-between;padding:.3rem 0;font-size:.95rem;"><span style="color:var(--muted)">${p.producto_nombre}</span><span style="color:var(--white)">Talle ${p.talle||'-'}</span></div>`;
+    }
+
+    const estadoLabel=p.estado==='confirmada'?'✓ Confirmada':p.estado==='pendiente'?'⏳ Pendiente':'✗ Rechazado';
+
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
     document.getElementById('modal-body').innerHTML=`
       <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
-      <div class="detail-row"><span>Estado</span><span>${p.estado==='confirmada'?'✓ Confirmada':p.estado==='pendiente'?'⏳ Pendiente':'✗ Rechazado'}</span></div>
+      <div class="detail-row"><span>Estado</span><span>${estadoLabel}</span></div>
       <div class="detail-row"><span>Cliente</span><span>${p.nombre_cliente||'—'}</span></div>
       <div class="detail-row"><span>Email</span><span>${p.email_cliente||'—'}</span></div>
       <div class="detail-row"><span>Teléfono</span><span>${p.telefono_cliente||'—'}</span></div>
-      <div class="detail-row"><span>Producto</span><span>${p.producto_nombre||'—'}</span></div>
-      <div class="detail-row"><span>Talle</span><span>${p.talle||'—'}</span></div>
-      <div class="detail-row"><span>Precio total</span><span>$${Number(p.precio_total||0).toLocaleString('es-AR')}</span></div>
-      <div class="detail-row"><span>Seña recibida</span><span style="color:var(--green);font-size:1.05rem">$${Number(p.precio_sena||0).toLocaleString('es-AR')}</span></div>
-      <div class="detail-row"><span>Saldo a cobrar</span><span style="color:var(--yellow)">${saldo}</span></div>
+      <div class="detail-row" style="flex-direction:column;gap:.5rem;align-items:stretch;">
+        <span>Productos</span>
+        <div>${productosDetalle||'<span style="color:var(--muted-dim)">—</span>'}</div>
+      </div>
+      <div class="detail-row"><span>Precio total</span><span>$${total.toLocaleString('es-AR')}</span></div>
+      ${transferido>0?`<div class="detail-row"><span>Transferido</span><span style="color:var(--green);font-size:1.05rem">$${transferido.toLocaleString('es-AR')}</span></div>`:''}
+      ${total>0&&transferido>0?`<div class="detail-row"><span>Saldo a cobrar</span><span style="color:var(--yellow)">${saldo}</span></div>`:''}
       <div class="detail-row" style="flex-direction:column;gap:.6rem"><span>Comprobante</span>${comprobanteHTML}</div>
     `;
+
     const waTel=(p.telefono_cliente||'').replace(/\D/g,'');
-    const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente}, somos de Andes Talleres Futsal. Tu pedido #${p.id} (${p.producto_nombre}, talle ${p.talle}) fue confirmado. ¿Cuándo pasás a retirar?`);
+    const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente}, somos de Andes Talleres Futsal. Tu pedido #${p.id} fue confirmado. ¿Cuándo pasás a retirar?`);
     let acciones='';
     if(p.estado==='pendiente'){
-      acciones+=`<button class="btn-modal btn-confirmar" onclick="cambiarEstado(${p.id},'confirmada')">✓ Confirmar pago</button>`;
+      acciones+=`<button class="btn-modal btn-confirmar" onclick="abrirConfirmModal(${p.id})">✓ Confirmar pago</button>`;
       acciones+=`<button class="btn-modal btn-rechazar" onclick="cambiarEstado(${p.id},'rechazado')">✗ Rechazar</button>`;
     }
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
@@ -567,17 +724,128 @@
     document.getElementById('modal-actions').innerHTML=acciones;
     document.getElementById('modal-overlay').classList.add('open');
   }
+
   function b64toBlob(b64,type){const bc=atob(b64);const ba=new Uint8Array(bc.length);for(let i=0;i<bc.length;i++)ba[i]=bc.charCodeAt(i);return new Blob([ba],{type});}
+
+  function closeModal(e){
+    if(e&&e.target!==document.getElementById('modal-overlay'))return;
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  // ── MODAL CONFIRMAR PAGO ──
+  function abrirConfirmModal(pedidoId){
+    const p=allPedidos.find(x=>x.id===pedidoId);
+    if(!p)return;
+    confirmPedidoId=pedidoId;
+    confirmPedidoData=p;
+    confirmMontoSeleccionado='sena';
+
+    const total=Number(p.precio_total||0);
+    const sena=Number(p.precio_sena||Math.ceil(total*0.5));
+
+    document.getElementById('confirm-modal-desc').innerHTML=`Pedido <strong>#${p.id}</strong> de <strong>${p.nombre_cliente||'cliente'}</strong>. ¿Cuánto transfirió?`;
+    document.getElementById('opt-sena-val').textContent='$'+sena.toLocaleString('es-AR');
+    document.getElementById('opt-total-val').textContent='$'+total.toLocaleString('es-AR');
+    document.getElementById('monto-custom-input').value='';
+    document.getElementById('monto-custom-wrap').style.display='none';
+    document.getElementById('monto-nota').textContent='';
+
+    // Reset selección
+    ['opt-sena','opt-total','opt-custom'].forEach(id=>document.getElementById(id).classList.remove('selected'));
+    document.getElementById('opt-sena').classList.add('selected');
+    document.getElementById('btn-confirm-ok').disabled=false;
+
+    // Ocultar modal detalle y abrir confirm
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.getElementById('confirm-modal-overlay').classList.add('open');
+  }
+
+  function selectMonto(tipo){
+    confirmMontoSeleccionado=tipo;
+    ['opt-sena','opt-total','opt-custom'].forEach(id=>document.getElementById(id).classList.remove('selected'));
+    document.getElementById('opt-'+tipo).classList.add('selected');
+
+    const wrap=document.getElementById('monto-custom-wrap');
+    wrap.style.display=tipo==='custom'?'block':'none';
+
+    if(tipo!=='custom'){
+      document.getElementById('monto-custom-input').value='';
+      document.getElementById('btn-confirm-ok').disabled=false;
+      actualizarNotaMonto();
+    } else {
+      document.getElementById('btn-confirm-ok').disabled=true;
+      document.getElementById('monto-nota').textContent='Ingresá el monto recibido';
+    }
+  }
+
+  function onCustomMonto(){
+    const val=parseInt(document.getElementById('monto-custom-input').value)||0;
+    document.getElementById('btn-confirm-ok').disabled=val<=0;
+    actualizarNotaMonto();
+  }
+
+  function actualizarNotaMonto(){
+    if(!confirmPedidoData)return;
+    const total=Number(confirmPedidoData.precio_total||0);
+    let monto=0;
+    if(confirmMontoSeleccionado==='sena') monto=Number(confirmPedidoData.precio_sena||Math.ceil(total*0.5));
+    else if(confirmMontoSeleccionado==='total') monto=total;
+    else monto=parseInt(document.getElementById('monto-custom-input').value)||0;
+    if(monto>0&&total>0){
+      const saldo=total-monto;
+      document.getElementById('monto-nota').textContent=saldo>0?`Saldo pendiente: $${saldo.toLocaleString('es-AR')}`:saldo===0?'✓ Pago completo':'';
+    }
+  }
+
+  function closeConfirmModal(){
+    document.getElementById('confirm-modal-overlay').classList.remove('open');
+    confirmPedidoId=null;
+    confirmPedidoData=null;
+  }
+
+  async function doConfirmarPago(){
+    if(!confirmPedidoId||!confirmPedidoData)return;
+    const p=confirmPedidoData;
+    const total=Number(p.precio_total||0);
+    let monto=0;
+    if(confirmMontoSeleccionado==='sena') monto=Number(p.precio_sena||Math.ceil(total*0.5));
+    else if(confirmMontoSeleccionado==='total') monto=total;
+    else monto=parseInt(document.getElementById('monto-custom-input').value)||0;
+    if(monto<=0){showToast('Ingresá un monto válido','error');return;}
+
+    const btn=document.getElementById('btn-confirm-ok');
+    btn.disabled=true;btn.textContent='Guardando…';
+
+    try{
+      const res=await sbFetch('/rest/v1/pedidos?id=eq.'+confirmPedidoId,{
+        method:'PATCH',
+        headers:{'Prefer':'return=representation'},
+        body:JSON.stringify({estado:'confirmada',monto_transferido:monto})
+      });
+      if(!res.ok)throw new Error();
+      const idx=allPedidos.findIndex(x=>x.id===confirmPedidoId);
+      if(idx!==-1){allPedidos[idx].estado='confirmada';allPedidos[idx].monto_transferido=monto;}
+      closeConfirmModal();
+      renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
+      showToast(`¡Pago confirmado! $${monto.toLocaleString('es-AR')} registrado`,'success');
+    }catch{
+      showToast('Error al confirmar','error');
+    }finally{
+      btn.disabled=false;btn.textContent='Confirmar pago';
+    }
+  }
+
+  // Mantener compatibilidad con botón rechazar directo
   async function cambiarEstado(id,nuevoEstado){
     try{
       const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({estado:nuevoEstado})});
       if(!res.ok)throw new Error();
       const idx=allPedidos.findIndex(p=>p.id===id);if(idx!==-1)allPedidos[idx].estado=nuevoEstado;
-      closeModal();renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
+      closeModal();closeConfirmModal();
+      renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
       showToast(nuevoEstado==='confirmada'?'¡Venta confirmada!':'Pedido rechazado',nuevoEstado==='confirmada'?'success':'error');
     }catch{showToast('Error al actualizar','error');}
   }
-  function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
 
   // STOCK
   function renderProducts(){
