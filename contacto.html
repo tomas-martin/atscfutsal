@@ -148,6 +148,200 @@
       footer { padding: 1.5rem 1.2rem; }
       .nav-drawer { width: 100%; border-left: none; }
     }
+    /* ══════════════════════════════════════════════
+   TIPOGRAFÍA AUMENTADA — Pegar al final de cada
+   bloque <style> en todos los HTML del sitio
+   ══════════════════════════════════════════════ */
+
+/* BASE GLOBAL */
+html { font-size: 18px; }
+
+body {
+  font-size: 1rem;        /* 18px */
+  line-height: 1.65;
+}
+
+/* NAVEGACIÓN DESKTOP */
+.nav-desktop a {
+  font-size: 1rem !important;
+  letter-spacing: .12em;
+}
+
+/* DRAWER MÓVIL */
+.nav-links a {
+  font-size: 1.15rem !important;
+  padding: 16px 1.5rem !important;
+}
+
+/* HEADER LOGO */
+.logo-copy .name { font-size: 1.45rem !important; }
+.logo-copy .tag  { font-size: .72rem !important; }
+
+/* BREADCRUMB */
+.breadcrumb { font-size: .85rem !important; }
+
+/* TÍTULOS DE PÁGINA */
+.page-title h1,
+.product-name { font-size: clamp(2.4rem, 5.5vw, 4rem) !important; }
+
+/* CATEGORÍAS EN CARDS */
+.card-cat,
+.product-cat,
+.item-cat { font-size: .85rem !important; }
+
+/* NOMBRES EN CARDS */
+.card-name { font-size: 1.35rem !important; }
+
+/* DESCRIPCIÓN */
+.card-desc,
+.product-desc { font-size: 1rem !important; }
+
+/* PRECIO EN CARDS */
+.card-price { font-size: 1.65rem !important; }
+
+/* PRECIOS EN PÁGINA PRODUCTO */
+.price-amount { font-size: 3rem !important; }
+.price-currency { font-size: 1rem !important; }
+
+/* CHIPS DE TALLE — producto */
+.talle-btn {
+  font-size: 1.05rem !important;
+  min-width: 64px !important;
+  padding: 13px 16px !important;
+}
+.talle-btn .stock-num { font-size: .75rem !important; }
+
+/* CHIPS TALLES — catálogo */
+.size-chip { font-size: .82rem !important; padding: 4px 10px !important; }
+
+/* STOCK INFO */
+.stock-info         { font-size: .92rem !important; }
+.stock-info strong  { font-size: 1rem !important; }
+
+/* BOTONES PRINCIPALES */
+.btn-agregar,
+.btn-ir-carrito,
+.btn-enviar {
+  font-size: 1.1rem !important;
+  padding: 18px !important;
+}
+
+/* BOTÓN VOLVER / SECUNDARIOS */
+.btn-back { font-size: .9rem !important; }
+
+/* STOCK BADGE */
+.stock-badge { font-size: .92rem !important; padding: 8px 16px !important; }
+
+/* LABELS DE FORMULARIOS */
+.form-field label,
+.talle-label { font-size: .82rem !important; }
+
+/* INPUTS */
+.form-field input,
+.field input { font-size: 1rem !important; padding: 13px 16px !important; }
+
+/* DATOS BANCARIOS */
+.banco-label  { font-size: .8rem !important; }
+.banco-value  { font-size: .95rem !important; }
+
+/* RESUMEN CARRITO */
+.summary-row    { font-size: 1rem !important; }
+.summary-total  { font-size: 1.2rem !important; }
+.summary-sena   { font-size: 1.05rem !important; }
+
+/* ITEMS DEL CARRITO */
+.item-name  { font-size: 1.15rem !important; }
+.item-talle { font-size: .9rem !important; }
+.item-precio { font-size: 1.45rem !important; }
+.item-cat   { font-size: .75rem !important; }
+
+/* PANEL DE PAGO — título sección */
+.panel-title { font-size: .8rem !important; }
+
+/* NOTA AL PIE DEL PANEL */
+.panel-note { font-size: .85rem !important; }
+
+/* PILLS (estados) */
+.pill,
+.pill-pendiente,
+.pill-confirmada,
+.pill-rechazado { font-size: .8rem !important; padding: 5px 13px !important; }
+
+/* SIDEBAR CATÁLOGO — filtros */
+.cat-option   { font-size: 1.05rem !important; }
+.talle-chip   { font-size: .8rem !important; padding: 5px 11px !important; }
+.stock-toggle span { font-size: .9rem !important; }
+
+/* SIDEBAR ADMIN */
+.nav-item { font-size: 1.05rem !important; }
+.stat-value { font-size: 2.8rem !important; }
+.stat-label { font-size: .82rem !important; }
+.stat-sub   { font-size: .85rem !important; }
+
+/* TABLAS ADMIN */
+thead th { font-size: .82rem !important; }
+tbody td { font-size: 1.05rem !important; }
+
+/* PRODUCT META ADMIN */
+.product-meta .nombre { font-size: 1.15rem !important; }
+
+/* CONTEO RESULTADOS CATÁLOGO */
+.results-count        { font-size: 1rem !important; }
+.results-count strong { font-size: 1.2rem !important; }
+
+/* FOOTER */
+footer p { font-size: 1rem !important; }
+footer .hashtags { font-size: .82rem !important; }
+
+/* BANNER PREVENTA */
+.preventa-banner .pb-text { font-size: .95rem !important; }
+.cd-num  { font-size: 1.55rem !important; }
+.cd-label { font-size: .58rem !important; }
+
+/* HERO */
+.hero h1    { font-size: clamp(3.2rem, 7.5vw, 6rem) !important; }
+.hero-sub   { font-size: 1.1rem !important; }
+.pill       { font-size: .75rem !important; }
+
+/* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 600px) {
+  html { font-size: 17px; }
+
+  .card-name   { font-size: 1.2rem !important; }
+  .card-price  { font-size: 1.45rem !important; }
+  .card-desc   { font-size: .92rem !important; }
+
+  .product-name  { font-size: 2.4rem !important; }
+  .price-amount  { font-size: 2.5rem !important; }
+
+  .talle-btn {
+    font-size: 1rem !important;
+    min-width: 56px !important;
+    padding: 11px 12px !important;
+  }
+
+  .btn-agregar,
+  .btn-ir-carrito,
+  .btn-enviar {
+    font-size: 1rem !important;
+    padding: 16px !important;
+  }
+
+  .item-name   { font-size: 1.1rem !important; }
+  .item-precio { font-size: 1.3rem !important; }
+
+  .summary-total { font-size: 1.1rem !important; }
+  .summary-sena  { font-size: 1rem !important; }
+
+  .nav-links a { font-size: 1.2rem !important; }
+
+  .banco-value { font-size: .88rem !important; }
+
+  thead th { font-size: .78rem !important; }
+  tbody td  { font-size: .92rem !important; }
+
+  .stat-value { font-size: 2.4rem !important; }
+}
   </style>
 </head>
 <body>
