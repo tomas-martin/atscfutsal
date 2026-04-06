@@ -478,12 +478,33 @@
       const sena=p.precio_sena?'$'+Number(p.precio_sena).toLocaleString('es-AR'):'—';
       const saldo=(p.precio_total&&p.precio_sena)?'$'+(p.precio_total-p.precio_sena).toLocaleString('es-AR'):'—';
       const pill=esPend?'<span class="pill pill-pendiente">⏳ Pendiente</span>':'<span class="pill pill-confirmada">✓ Confirmada</span>';
-      const cols=esPend
-        ?`<td data-label="#">#${p.id}</td><td data-label="Fecha" class="muted">${fecha}</td><td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td><td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td><td data-label="Talle">${p.talle||'—'}</td><td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td><td data-label="Estado">${pill}</td>`
-        :`<td data-label="#">#${p.id}</td><td data-label="Fecha" class="muted">${fecha}</td><td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td><td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td><td data-label="Talle">${p.talle||'—'}</td><td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td><td data-label="Saldo" class="muted">${saldo}</td><td data-label="Estado">${pill}</td>`;
+        const cols=esPend
+  ?`<td data-label="#">#${p.id}</td>
+    <td data-label="Fecha" class="muted">${fecha}</td>
+    <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+    <td data-label="Producto" class="muted">${getProductosTexto(p)}</td>
+    <td data-label="Talle">—</td>
+    <td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td>
+    <td data-label="Estado">${pill}</td>`
+  :`<td data-label="#">#${p.id}</td>
+    <td data-label="Fecha" class="muted">${fecha}</td>
+    <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+    <td data-label="Producto" class="muted">${getProductosTexto(p)}</td>
+    <td data-label="Talle">—</td>
+    <td data-label="Seña" style="color:var(--green);font-weight:700">${sena}</td>
+    <td data-label="Saldo" class="muted">${saldo}</td>
+    <td data-label="Estado">${pill}</td>`;
       return `<tr>${cols}<td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td></tr>`;
     }).join('');
   }
+  function getProductosTexto(p) {
+  if (p.productos && p.productos.length > 0) {
+    return p.productos.map(prod => 
+      `${prod.nombre || 'Producto'} (${prod.talle || '-'})`
+    ).join(', ');
+  }
+  return p.producto_nombre || '—';
+}
 
   // DASHBOARD
   function updateDashboard(){
