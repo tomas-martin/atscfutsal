@@ -1,0 +1,179 @@
+/* ══════════════════════════════════════════════════════
+   ANDES TALLERES FUTSAL — Tipografía Mobile Corregida
+   Agregar en el <head> de todos los HTML:
+   <link rel="stylesheet" href="typography.css" />
+   ══════════════════════════════════════════════════════ */
+
+html { font-size: 18px; }
+body { font-size: 1rem; line-height: 1.65; }
+
+/* ── Navegación ── */
+.nav-desktop a            { font-size: 1rem !important; letter-spacing: .12em; }
+.nav-links a              { font-size: 1.2rem !important; padding: 18px 1.5rem !important; }
+.logo-copy .name          { font-size: 1.45rem !important; }
+.logo-copy .tag           { font-size: .72rem !important; }
+.breadcrumb               { font-size: .88rem !important; }
+
+/* ── Títulos ── */
+.page-title h1,
+.product-name             { font-size: clamp(2.4rem, 5.5vw, 4rem) !important; }
+.hero h1                  { font-size: clamp(3.2rem, 7.5vw, 6rem) !important; }
+.hero-sub                 { font-size: 1.1rem !important; }
+
+/* ── Cards catálogo ── */
+.card-cat, .product-cat,
+.item-cat                 { font-size: .88rem !important; }
+.card-name                { font-size: 1.35rem !important; }
+.card-desc, .product-desc { font-size: 1rem !important; }
+.card-price               { font-size: 1.65rem !important; }
+.stock-info               { font-size: .95rem !important; }
+.stock-info strong        { font-size: 1.05rem !important; }
+.size-chip                { font-size: .85rem !important; padding: 5px 11px !important; }
+
+/* ── Página producto ── */
+.price-amount             { font-size: 3rem !important; }
+.price-currency           { font-size: 1rem !important; }
+.talle-btn                { font-size: 1.05rem !important; min-width: 64px !important; padding: 13px 16px !important; }
+.talle-btn .stock-num     { font-size: .78rem !important; }
+.stock-badge              { font-size: .95rem !important; padding: 9px 17px !important; }
+.talle-selected-info      { font-size: .88rem !important; }
+.cant-label               { font-size: .88rem !important; }
+
+/* ── Botones ── */
+.btn-agregar,
+.btn-ir-carrito,
+.btn-enviar               { font-size: 1.1rem !important; padding: 18px !important; }
+.btn-back                 { font-size: .92rem !important; }
+
+/* ── Formularios ── */
+.form-field label,
+.talle-label              { font-size: .85rem !important; }
+.form-field input,
+.field input              { font-size: 1rem !important; padding: 14px 16px !important; }
+
+/* ── Carrito ── */
+.item-name                { font-size: 1.15rem !important; }
+.item-talle               { font-size: .92rem !important; }
+.item-precio              { font-size: 1.45rem !important; }
+.item-cat                 { font-size: .78rem !important; }
+.summary-row              { font-size: 1rem !important; }
+.summary-total            { font-size: 1.25rem !important; }
+.summary-sena             { font-size: 1.1rem !important; }
+
+/* ── Panel pago ── */
+.panel-title              { font-size: .82rem !important; }
+.panel-note               { font-size: .88rem !important; }
+.pago-opt-label           { font-size: 1.05rem !important; }
+.pago-opt-desc            { font-size: .88rem !important; }
+.pago-opt-monto           { font-size: 1.45rem !important; }
+.monto-pagar-val          { font-size: 1.75rem !important; }
+.monto-pagar-label        { font-size: .82rem !important; }
+
+/* ── Pills / estados ── */
+.pill,
+.pill-pendiente,
+.pill-confirmada,
+.pill-rechazado,
+.pill-entregada           { font-size: .82rem !important; padding: 5px 13px !important; }
+
+/* ── Catálogo filtros ── */
+.cat-option               { font-size: 1.05rem !important; }
+.talle-chip               { font-size: .82rem !important; padding: 5px 11px !important; }
+.stock-toggle span        { font-size: .92rem !important; }
+.results-count            { font-size: 1rem !important; }
+.results-count strong     { font-size: 1.2rem !important; }
+
+/* ── Admin ── */
+.nav-item                 { font-size: 1.05rem !important; }
+.stat-value               { font-size: 2.8rem !important; }
+.stat-label               { font-size: .85rem !important; }
+.stat-sub                 { font-size: .88rem !important; }
+thead th                  { font-size: .85rem !important; }
+tbody td                  { font-size: 1.05rem !important; }
+.product-meta .nombre     { font-size: 1.18rem !important; }
+
+/* ── Contacto ── */
+.social-text .sh          { font-size: 1.1rem !important; }
+.social-text .sn          { font-size: .7rem !important; }
+.ai-value                 { font-size: 1rem !important; }
+.horario-dia,
+.horario-hrs              { font-size: 1rem !important; }
+
+/* ── Footer ── */
+footer p                  { font-size: 1rem !important; }
+footer .hashtags          { font-size: .85rem !important; }
+
+
+/* ══════════════════════════════════════════════════════
+   MOBILE — max-width: 600px
+   Valores aumentados vs el bloque anterior
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  html { font-size: 17px; }
+
+  /* ── Catálogo cards ── */
+  .card-name       { font-size: 1.28rem !important; }
+  .card-price      { font-size: 1.55rem !important; }
+  .card-desc       { font-size: .97rem !important; }
+  .card-cat        { font-size: .84rem !important; }
+  .size-chip       { font-size: .84rem !important; }
+  .stock-info        { font-size: .92rem !important; }
+  .stock-info strong { font-size: 1.02rem !important; }
+
+  /* ── Producto ── */
+  .product-name    { font-size: 2.6rem !important; }
+  .price-amount    { font-size: 2.6rem !important; }
+  .product-desc    { font-size: .98rem !important; }
+  .talle-btn {
+    font-size: 1.02rem !important;
+    min-width: 58px !important;
+    padding: 12px 13px !important;
+  }
+  .talle-btn .stock-num  { font-size: .74rem !important; }
+  .stock-badge           { font-size: .92rem !important; padding: 8px 14px !important; }
+  .talle-selected-info   { font-size: .88rem !important; }
+  .cant-label            { font-size: .88rem !important; }
+  .qty-val               { font-size: 1rem !important; }
+
+  /* ── Botones ── */
+  .btn-agregar,
+  .btn-ir-carrito,
+  .btn-enviar {
+    font-size: 1.05rem !important;
+    padding: 17px !important;
+  }
+  .btn-back { font-size: .9rem !important; }
+
+  /* ── Carrito ── */
+  .item-name       { font-size: 1.12rem !important; }
+  .item-precio     { font-size: 1.38rem !important; }
+  .item-talle      { font-size: .9rem !important; }
+  .summary-total   { font-size: 1.18rem !important; }
+  .summary-sena    { font-size: 1.05rem !important; }
+
+  /* ── Panel pago ── */
+  .pago-opt-label  { font-size: 1.05rem !important; }
+  .pago-opt-desc   { font-size: .88rem !important; }
+  .pago-opt-monto  { font-size: 1.48rem !important; }
+  .monto-pagar-val { font-size: 1.78rem !important; }
+
+  /* ── Nav ── */
+  .nav-links a     { font-size: 1.25rem !important; padding: 18px 1.5rem !important; }
+
+  /* ── Admin ── */
+  thead th         { font-size: .82rem !important; }
+  tbody td         { font-size: .98rem !important; }
+  .stat-value      { font-size: 2.5rem !important; }
+  .stat-label      { font-size: .84rem !important; }
+
+  /* ── Contacto ── */
+  .social-text .sh  { font-size: 1.12rem !important; }
+  .horario-dia,
+  .horario-hrs      { font-size: 1.02rem !important; }
+  .ai-value         { font-size: 1rem !important; }
+
+  /* ── Misc ── */
+  .breadcrumb       { font-size: .84rem !important; }
+  .results-count strong { font-size: 1.12rem !important; }
+  .banco-value      { font-size: .95rem !important; }
+}

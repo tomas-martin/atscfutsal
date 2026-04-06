@@ -213,19 +213,115 @@
       .main-content{padding:1.2rem;}
       .stats-grid{grid-template-columns:1fr 1fr;}
     }
-    @media(max-width:600px){
-      .stats-grid{grid-template-columns:1fr;}
-      .modal-overlay{padding:0;align-items:flex-end;}
-      .modal{border-radius:12px 12px 0 0;max-height:95vh;}
-      .save-all-bar{padding:.9rem 1.2rem;}
-      .admin-header{padding:0 1rem;}
-      .main-content{padding:1rem;}
-      thead{display:none;}
-      tbody tr{display:block;padding:.8rem;border-bottom:1px solid var(--border);}
-      tbody td{display:flex;justify-content:space-between;align-items:flex-start;padding:.3rem 0;border:none;font-size:.9rem;gap:.5rem;}
-      tbody td::before{content:attr(data-label);font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;flex-shrink:0;}
-      .table-wrap table{min-width:unset;}
-    }
+    @media (max-width: 700px) {
+  .table-wrap table { min-width: unset !important; }
+ 
+  /* Mostrar como bloques en mobile */
+  thead { display: none; }
+  tbody tr {
+    display: block;
+    padding: .9rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: .35rem 0;
+    border: none;
+    font-size: .95rem;
+    gap: .5rem;
+  }
+  tbody td::before {
+    content: attr(data-label);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .72rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--muted-dim);
+    font-weight: 700;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .table-wrap { overflow-x: unset; }
+}
+ 
+/* ── Modal: scroll interno correcto ── */
+.modal {
+  display: flex;
+  flex-direction: column;
+}
+.modal-body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+ 
+/* ── Botones de acción en modal — touch-friendly ── */
+.btn-modal {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+ 
+/* ── Nav items sidebar — touch-friendly ── */
+.nav-item {
+  min-height: 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+ 
+/* ── Stats grid: 1 columna en pantallas muy pequeñas ── */
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr !important; }
+  .stat-value { font-size: 2.5rem !important; }
+}
+ 
+/* ── Talle editor inputs — más grandes en mobile ── */
+@media (max-width: 600px) {
+  html { font-size: 17px; }
+ 
+  .talle-row input[type="number"] {
+    width: 80px;
+    padding: 10px 8px;
+    font-size: 1.1rem;
+  }
+  .precio-editor input[type="number"] {
+    width: 130px;
+    font-size: 1.1rem;
+  }
+  .btn-save-precio {
+    font-size: .85rem;
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+  .btn-save-all {
+    font-size: 1rem;
+    padding: 13px 20px;
+    min-height: 48px;
+  }
+ 
+  /* Encabezado admin más compacto */
+  .admin-header { padding: 0 .9rem; }
+  .main-content { padding: .9rem; }
+ 
+  /* Product row header */
+  .product-row-header { padding: .9rem 1rem; }
+  .product-meta .nombre { font-size: 1.1rem !important; }
+ 
+  /* Modal actions stack */
+  .modal-actions { flex-direction: column; }
+  .modal-actions .btn-modal { width: 100%; }
+ 
+  /* Login card */
+  .login-card { padding: 1.8rem 1.4rem; }
+}
+ 
+/* ── Save bar ── */
+@media (max-width: 500px) {
+  .save-all-bar { flex-direction: column; align-items: stretch; padding: .9rem 1rem; gap: .6rem; }
+  .btn-save-all { width: 100%; text-align: center; }
+}    
   </style>
 </head>
 <body>
