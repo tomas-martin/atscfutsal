@@ -117,16 +117,12 @@
     tbody td{padding:.95rem 1rem;font-size:1rem;color:var(--white);}
     td.muted{color:var(--muted);font-size:.95rem;}
 
-    /* productos list en celda */
-    .prod-list{display:flex;flex-direction:column;gap:2px;}
-    .prod-item{font-size:.88rem;color:var(--muted);}
-    .prod-item strong{color:var(--white);}
-
     /* PILLS */
     .pill{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:3px;white-space:nowrap;}
     .pill-pendiente{background:rgba(186,117,23,.15);border:1px solid rgba(186,117,23,.3);color:var(--yellow);}
     .pill-confirmada{background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);color:var(--green);}
     .pill-rechazado{background:rgba(192,25,42,.15);border:1px solid rgba(192,25,42,.3);color:var(--red);}
+    .pill-entregada{background:rgba(100,120,200,.15);border:1px solid rgba(100,120,200,.3);color:#a0b4f0;}
 
     /* ACTION BTN */
     .btn-action{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .2s;}
@@ -213,40 +209,8 @@
     .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);}
     .btn-secondary:hover{border-color:var(--border-h);color:var(--white);}
 
-    /* CONFIRM PAGO MODAL */
-    .confirm-modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .25s;}
-    .confirm-modal-overlay.open{opacity:1;pointer-events:all;}
-    .confirm-modal{background:var(--navy-mid);border:1px solid rgba(29,158,117,.3);border-radius:8px;width:100%;max-width:460px;overflow:hidden;}
-    .confirm-modal-header{padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-    .confirm-modal-icon{width:40px;height:40px;border-radius:50%;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .confirm-modal-icon svg{width:20px;height:20px;color:var(--green);}
-    .confirm-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;}
-    .confirm-modal-body{padding:1.5rem 1.6rem;}
-    .confirm-modal-body p{font-size:.95rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6;}
-    .confirm-modal-body p strong{color:var(--white);}
-    .monto-options{display:flex;gap:.75rem;margin-bottom:1.2rem;}
-    .monto-opt{flex:1;padding:12px;background:var(--navy-light);border:1.5px solid var(--border);border-radius:4px;cursor:pointer;text-align:center;transition:all .2s;}
-    .monto-opt:hover{border-color:var(--border-h);}
-    .monto-opt.selected{border-color:var(--green);background:rgba(29,158,117,.08);}
-    .monto-opt .opt-label{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;display:block;margin-bottom:4px;}
-    .monto-opt .opt-value{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;color:var(--white);}
-    .monto-opt.selected .opt-value{color:var(--green);}
-    .monto-custom{margin-bottom:1.2rem;}
-    .monto-custom label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
-    .monto-input-wrap{display:flex;align-items:center;gap:8px;background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:0 14px;}
-    .monto-input-wrap span{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--muted-dim);}
-    .monto-input-wrap input{flex:1;background:transparent;border:none;outline:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;padding:12px 0;-moz-appearance:textfield;}
-    .monto-input-wrap input::-webkit-outer-spin-button,.monto-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;}
-    .confirm-modal-actions{display:flex;gap:.75rem;padding:0 1.6rem 1.4rem;}
-    .btn-confirm-ok{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--green);color:#fff;border:none;padding:13px;border-radius:3px;cursor:pointer;transition:all .2s;}
-    .btn-confirm-ok:hover{opacity:.9;}
-    .btn-confirm-ok:disabled{background:var(--muted-dim);cursor:not-allowed;}
-    .btn-confirm-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
-    .btn-confirm-cancel:hover{border-color:var(--border-h);color:var(--white);}
-    .monto-nota{font-size:.82rem;color:var(--muted-dim);margin-top:.5rem;text-align:center;}
-
     /* TOAST */
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:700;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
     .toast.show{transform:translateY(0);opacity:1;}
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
     .toast.error{background:rgba(192,25,42,.95);color:#fff;border:1px solid rgba(192,25,42,.5);}
@@ -266,8 +230,6 @@
       .stats-grid{grid-template-columns:1fr;}
       .modal-overlay{padding:0;align-items:flex-end;}
       .modal{border-radius:12px 12px 0 0;max-height:95vh;}
-      .confirm-modal-overlay{padding:.5rem;}
-      .confirm-modal{max-height:95vh;overflow-y:auto;}
       .save-all-bar{padding:.9rem 1.2rem;}
       .admin-header{padding:0 1rem;}
       .main-content{padding:1rem;}
@@ -276,202 +238,7 @@
       tbody td{display:flex;justify-content:space-between;align-items:flex-start;padding:.3rem 0;border:none;font-size:.9rem;gap:.5rem;}
       tbody td::before{content:attr(data-label);font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;flex-shrink:0;}
       .table-wrap table{min-width:unset;}
-      .monto-options{flex-direction:column;}
     }
-    /* ══════════════════════════════════════════════
-   TIPOGRAFÍA AUMENTADA — Pegar al final de cada
-   bloque <style> en todos los HTML del sitio
-   ══════════════════════════════════════════════ */
-
-/* BASE GLOBAL */
-html { font-size: 18px; }
-
-body {
-  font-size: 1rem;        /* 18px */
-  line-height: 1.65;
-}
-
-/* NAVEGACIÓN DESKTOP */
-.nav-desktop a {
-  font-size: 1rem !important;
-  letter-spacing: .12em;
-}
-
-/* DRAWER MÓVIL */
-.nav-links a {
-  font-size: 1.15rem !important;
-  padding: 16px 1.5rem !important;
-}
-
-/* HEADER LOGO */
-.logo-copy .name { font-size: 1.45rem !important; }
-.logo-copy .tag  { font-size: .72rem !important; }
-
-/* BREADCRUMB */
-.breadcrumb { font-size: .85rem !important; }
-
-/* TÍTULOS DE PÁGINA */
-.page-title h1,
-.product-name { font-size: clamp(2.4rem, 5.5vw, 4rem) !important; }
-
-/* CATEGORÍAS EN CARDS */
-.card-cat,
-.product-cat,
-.item-cat { font-size: .85rem !important; }
-
-/* NOMBRES EN CARDS */
-.card-name { font-size: 1.35rem !important; }
-
-/* DESCRIPCIÓN */
-.card-desc,
-.product-desc { font-size: 1rem !important; }
-
-/* PRECIO EN CARDS */
-.card-price { font-size: 1.65rem !important; }
-
-/* PRECIOS EN PÁGINA PRODUCTO */
-.price-amount { font-size: 3rem !important; }
-.price-currency { font-size: 1rem !important; }
-
-/* CHIPS DE TALLE — producto */
-.talle-btn {
-  font-size: 1.05rem !important;
-  min-width: 64px !important;
-  padding: 13px 16px !important;
-}
-.talle-btn .stock-num { font-size: .75rem !important; }
-
-/* CHIPS TALLES — catálogo */
-.size-chip { font-size: .82rem !important; padding: 4px 10px !important; }
-
-/* STOCK INFO */
-.stock-info         { font-size: .92rem !important; }
-.stock-info strong  { font-size: 1rem !important; }
-
-/* BOTONES PRINCIPALES */
-.btn-agregar,
-.btn-ir-carrito,
-.btn-enviar {
-  font-size: 1.1rem !important;
-  padding: 18px !important;
-}
-
-/* BOTÓN VOLVER / SECUNDARIOS */
-.btn-back { font-size: .9rem !important; }
-
-/* STOCK BADGE */
-.stock-badge { font-size: .92rem !important; padding: 8px 16px !important; }
-
-/* LABELS DE FORMULARIOS */
-.form-field label,
-.talle-label { font-size: .82rem !important; }
-
-/* INPUTS */
-.form-field input,
-.field input { font-size: 1rem !important; padding: 13px 16px !important; }
-
-/* DATOS BANCARIOS */
-.banco-label  { font-size: .8rem !important; }
-.banco-value  { font-size: .95rem !important; }
-
-/* RESUMEN CARRITO */
-.summary-row    { font-size: 1rem !important; }
-.summary-total  { font-size: 1.2rem !important; }
-.summary-sena   { font-size: 1.05rem !important; }
-
-/* ITEMS DEL CARRITO */
-.item-name  { font-size: 1.15rem !important; }
-.item-talle { font-size: .9rem !important; }
-.item-precio { font-size: 1.45rem !important; }
-.item-cat   { font-size: .75rem !important; }
-
-/* PANEL DE PAGO — título sección */
-.panel-title { font-size: .8rem !important; }
-
-/* NOTA AL PIE DEL PANEL */
-.panel-note { font-size: .85rem !important; }
-
-/* PILLS (estados) */
-.pill,
-.pill-pendiente,
-.pill-confirmada,
-.pill-rechazado { font-size: .8rem !important; padding: 5px 13px !important; }
-
-/* SIDEBAR CATÁLOGO — filtros */
-.cat-option   { font-size: 1.05rem !important; }
-.talle-chip   { font-size: .8rem !important; padding: 5px 11px !important; }
-.stock-toggle span { font-size: .9rem !important; }
-
-/* SIDEBAR ADMIN */
-.nav-item { font-size: 1.05rem !important; }
-.stat-value { font-size: 2.8rem !important; }
-.stat-label { font-size: .82rem !important; }
-.stat-sub   { font-size: .85rem !important; }
-
-/* TABLAS ADMIN */
-thead th { font-size: .82rem !important; }
-tbody td { font-size: 1.05rem !important; }
-
-/* PRODUCT META ADMIN */
-.product-meta .nombre { font-size: 1.15rem !important; }
-
-/* CONTEO RESULTADOS CATÁLOGO */
-.results-count        { font-size: 1rem !important; }
-.results-count strong { font-size: 1.2rem !important; }
-
-/* FOOTER */
-footer p { font-size: 1rem !important; }
-footer .hashtags { font-size: .82rem !important; }
-
-/* BANNER PREVENTA */
-.preventa-banner .pb-text { font-size: .95rem !important; }
-.cd-num  { font-size: 1.55rem !important; }
-.cd-label { font-size: .58rem !important; }
-
-/* HERO */
-.hero h1    { font-size: clamp(3.2rem, 7.5vw, 6rem) !important; }
-.hero-sub   { font-size: 1.1rem !important; }
-.pill       { font-size: .75rem !important; }
-
-/* ── RESPONSIVE MÓVIL ── */
-@media (max-width: 600px) {
-  html { font-size: 17px; }
-
-  .card-name   { font-size: 1.2rem !important; }
-  .card-price  { font-size: 1.45rem !important; }
-  .card-desc   { font-size: .92rem !important; }
-
-  .product-name  { font-size: 2.4rem !important; }
-  .price-amount  { font-size: 2.5rem !important; }
-
-  .talle-btn {
-    font-size: 1rem !important;
-    min-width: 56px !important;
-    padding: 11px 12px !important;
-  }
-
-  .btn-agregar,
-  .btn-ir-carrito,
-  .btn-enviar {
-    font-size: 1rem !important;
-    padding: 16px !important;
-  }
-
-  .item-name   { font-size: 1.1rem !important; }
-  .item-precio { font-size: 1.3rem !important; }
-
-  .summary-total { font-size: 1.1rem !important; }
-  .summary-sena  { font-size: 1rem !important; }
-
-  .nav-links a { font-size: 1.2rem !important; }
-
-  .banco-value { font-size: .88rem !important; }
-
-  thead th { font-size: .78rem !important; }
-  tbody td  { font-size: .92rem !important; }
-
-  .stat-value { font-size: 2.4rem !important; }
-}
   </style>
 </head>
 <body>
@@ -539,6 +306,14 @@ footer .hashtags { font-size: .82rem !important; }
       <div class="nav-divider"></div>
       <div class="nav-section">
         <div class="nav-section-label">Inventario</div>
+        <div class="nav-item" onclick="showTab('entregadas',this)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l4 4 8-8"/></svg>
+          Entregados
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-label">Inventario</div>
         <div class="nav-item" onclick="showTab('stock',this)">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3a3 3 0 016 0v1"/></svg>
           Stock & Precios
@@ -557,16 +332,17 @@ footer .hashtags { font-size: .82rem !important; }
           <button class="btn-refresh" onclick="loadAll()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Transferencias recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Monto real cobrado</div></div>
+          <div class="stat-card"><div class="stat-label">Señas recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Ventas confirmadas</div></div>
           <div class="stat-card"><div class="stat-label">Confirmadas</div><div class="stat-value blue" id="stat-confirmadas">—</div><div class="stat-sub">Pagos verificados</div></div>
           <div class="stat-card"><div class="stat-label">Por confirmar</div><div class="stat-value yellow" id="stat-pendientes">—</div><div class="stat-sub">Esperando revisión</div></div>
           <div class="stat-card"><div class="stat-label">Stock total</div><div class="stat-value" id="stat-stock">—</div><div class="stat-sub">Unidades disponibles</div></div>
+          <div class="stat-card"><div class="stat-label">Saldo por cobrar</div><div class="stat-value yellow" id="stat-saldo">—</div><div class="stat-sub">Resto pendiente de señas</div></div>
         </div>
         <div class="page-header" style="margin-top:1.5rem">
           <div><h2>Últimas <em>Ventas</em></h2></div>
           <button class="btn-refresh" onclick="showTab('pendientes')" style="background:var(--red);color:#fff;border-color:var(--red)">Ver pendientes →</button>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Productos</th><th>Transferido</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Producto</th><th>Talle</th><th>Seña</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
       </div>
 
       <!-- POR CONFIRMAR -->
@@ -578,7 +354,7 @@ footer .hashtags { font-size: .82rem !important; }
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="pend-search" placeholder="Buscar por nombre, producto…" oninput="renderTabla('pendiente')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total pedido</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Producto</th><th>Total</th><th>Seña esp.</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
       </div>
 
       <!-- CONFIRMADAS -->
@@ -590,7 +366,19 @@ footer .hashtags { font-size: .82rem !important; }
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="conf-search" placeholder="Buscar por nombre, producto…" oninput="renderTabla('confirmada')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Transferido</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Producto</th><th>Total</th><th>Cobrado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
+      </div>
+
+      <!-- ENTREGADOS -->
+      <div class="tab-panel" id="tab-entregadas">
+        <div class="page-header">
+          <div><h2>Pedidos <em>Entregados</em></h2><p>Ventas completadas y entregadas al cliente</p></div>
+          <button class="btn-refresh" onclick="loadPedidos()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="entr-search" placeholder="Buscar por nombre, producto…" oninput="renderTabla('entregada')" /></div>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="entregadas-tbody"></tbody></table></div>
       </div>
 
       <!-- STOCK -->
@@ -613,7 +401,7 @@ footer .hashtags { font-size: .82rem !important; }
 
 <div class="sidebar-overlay-mob" id="sidebar-overlay-mob" onclick="closeSidebar()"></div>
 
-<!-- MODAL DETALLE PEDIDO -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -625,50 +413,6 @@ footer .hashtags { font-size: .82rem !important; }
   </div>
 </div>
 
-<!-- MODAL CONFIRMAR PAGO -->
-<div class="confirm-modal-overlay" id="confirm-modal-overlay">
-  <div class="confirm-modal" onclick="event.stopPropagation()">
-    <div class="confirm-modal-header">
-      <div class="confirm-modal-icon">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 8,14 16,6"/></svg>
-      </div>
-      <span class="confirm-modal-title">Confirmar Pago</span>
-    </div>
-    <div class="confirm-modal-body">
-      <p id="confirm-modal-desc">¿Cuánto transfirió el cliente?</p>
-
-      <div class="monto-options" id="monto-options">
-        <div class="monto-opt selected" id="opt-sena" onclick="selectMonto('sena')">
-          <span class="opt-label">50% — Seña</span>
-          <span class="opt-value" id="opt-sena-val">$0</span>
-        </div>
-        <div class="monto-opt" id="opt-total" onclick="selectMonto('total')">
-          <span class="opt-label">100% — Total</span>
-          <span class="opt-value" id="opt-total-val">$0</span>
-        </div>
-        <div class="monto-opt" id="opt-custom" onclick="selectMonto('custom')">
-          <span class="opt-label">Otro monto</span>
-          <span class="opt-value">✏</span>
-        </div>
-      </div>
-
-      <div class="monto-custom" id="monto-custom-wrap" style="display:none">
-        <label>Monto recibido</label>
-        <div class="monto-input-wrap">
-          <span>$</span>
-          <input type="number" id="monto-custom-input" placeholder="0" min="0" oninput="onCustomMonto()" />
-        </div>
-      </div>
-
-      <p class="monto-nota" id="monto-nota"></p>
-    </div>
-    <div class="confirm-modal-actions">
-      <button class="btn-confirm-cancel" onclick="closeConfirmModal()">Cancelar</button>
-      <button class="btn-confirm-ok" id="btn-confirm-ok" onclick="doConfirmarPago()">Confirmar pago</button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -677,42 +421,9 @@ footer .hashtags { font-size: .82rem !important; }
   const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
   let accessToken=null,allPedidos=[],allProducts=[],pendingChanges={};
 
-  // Estado del modal confirmar
-  let confirmPedidoId=null;
-  let confirmMontoSeleccionado='sena';
-  let confirmPedidoData=null;
-
   async function sbFetch(path,opts={}){
     const headers={'apikey':SUPABASE_KEY,'Content-Type':'application/json',...(accessToken?{'Authorization':'Bearer '+accessToken}:{}),...(opts.headers||{})};
     return fetch(SUPABASE_URL+path,{...opts,headers});
-  }
-
-  // ── HELPERS PRODUCTOS ──
-  // Devuelve string legible de productos del pedido
-  function getProductosTexto(p){
-    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
-      return p.productos.map(prod=>`${prod.producto_nombre||prod.nombre||'Producto'} (${prod.talle||'-'})`).join(' · ');
-    }
-    if(p.producto_nombre) return p.producto_nombre+(p.talle?' ('+p.talle+')':'');
-    return '—';
-  }
-
-  // Devuelve HTML con lista de productos
-  function getProductosHTML(p){
-    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
-      return '<div class="prod-list">'+p.productos.map(prod=>`<div class="prod-item"><strong>${prod.producto_nombre||prod.nombre||'Producto'}</strong> · Talle ${prod.talle||'-'}</div>`).join('')+'</div>';
-    }
-    if(p.producto_nombre){
-      return `<div class="prod-list"><div class="prod-item"><strong>${p.producto_nombre}</strong>${p.talle?' · Talle '+p.talle:''}</div></div>`;
-    }
-    return '<span style="color:var(--muted-dim)">—</span>';
-  }
-
-  // Monto real transferido (puede ser precio_sena_real si fue confirmado con monto custom, o precio_sena)
-  function getMontoTransferido(p){
-    if(p.monto_transferido!=null) return Number(p.monto_transferido);
-    if(p.precio_sena!=null) return Number(p.precio_sena);
-    return 0;
   }
 
   // LOGIN
@@ -759,112 +470,129 @@ footer .hashtags { font-size: .82rem !important; }
     closeSidebar();
     if(tab==='pendientes')renderTabla('pendiente');
     if(tab==='confirmadas')renderTabla('confirmada');
+    if(tab==='entregadas')renderTabla('entregada');
   }
 
   // LOAD
   async function loadAll(){await Promise.all([loadPedidos(),loadProducts()]);updateDashboard();}
   async function loadPedidos(){
     try{const res=await sbFetch('/rest/v1/pedidos?select=*&order=created_at.desc');allPedidos=res.ok?await res.json():[];}catch{allPedidos=[];}
-    renderTabla('pendiente');renderTabla('confirmada');updateBadge();
+    renderTabla('pendiente');renderTabla('confirmada');renderTabla('entregada');updateBadge();
   }
   async function loadProducts(){
     const res=await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
     if(res.ok)allProducts=await res.json();renderProducts();
   }
 
-  // ── TABLAS ──
+  // TABLAS
+  function getSearchId(tipo){return tipo==='pendiente'?'pend-search':tipo==='confirmada'?'conf-search':'entr-search';}
+  function getTbodyId(tipo){return tipo==='pendiente'?'pendientes-tbody':tipo==='confirmada'?'confirmadas-tbody':'entregadas-tbody';}
+  function getSearchId(tipo){return tipo==='pendiente'?'pend-search':tipo==='confirmada'?'conf-search':'entr-search';}
+  function getTbodyId(tipo){return tipo==='pendiente'?'pendientes-tbody':tipo==='confirmada'?'confirmadas-tbody':'entregadas-tbody';}
   function renderTabla(tipo){
-    const esPend=tipo==='pendiente';
-    const searchVal=(document.getElementById(esPend?'pend-search':'conf-search')?.value||'').toLowerCase();
-    const tbody=document.getElementById(esPend?'pendientes-tbody':'confirmadas-tbody');
+    const searchVal=(document.getElementById(getSearchId(tipo))?.value||'').toLowerCase();
+    const tbody=document.getElementById(getTbodyId(tipo));
     if(!tbody)return;
-
     const filtered=allPedidos.filter(p=>{
-      const matchEstado=esPend?p.estado==='pendiente':p.estado==='confirmada';
-      const textoProductos=getProductosTexto(p).toLowerCase();
-      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,textoProductos].some(v=>v&&String(v).toLowerCase().includes(searchVal));
+      const matchEstado=p.estado===tipo;
+      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,p.producto_nombre,p.talle].some(v=>v&&String(v).toLowerCase().includes(searchVal));
       return matchEstado&&matchSearch;
     });
-
     if(!filtered.length){
-      tbody.innerHTML=`<tr><td colspan="9"><div class="empty-table"><p>${esPend?'Sin pedidos pendientes':'Sin ventas confirmadas'}</p><small>${esPend?'Los nuevos pedidos aparecen acá.':'Confirmá pedidos desde Por confirmar.'}</small></div></td></tr>`;
+      const msgs={pendiente:'Sin pedidos pendientes',confirmada:'Sin ventas confirmadas',entregada:'Sin pedidos entregados'};
+      const subs={pendiente:'Los nuevos pedidos aparecen acá.',confirmada:'Confirmá pedidos desde Por confirmar.',entregada:'Los pedidos entregados aparecerán acá.'};
+      tbody.innerHTML=`<tr><td colspan="9"><div class="empty-table"><p>${msgs[tipo]||'Sin resultados'}</p><small>${subs[tipo]||''}</small></div></td></tr>`;
       return;
     }
-
+    const pills={pendiente:'<span class="pill pill-pendiente">⏳ Pendiente</span>',confirmada:'<span class="pill pill-confirmada">✓ Confirmada</span>',entregada:'<span class="pill pill-entregada">📦 Entregado</span>',rechazado:'<span class="pill pill-rechazado">✗ Rechazado</span>'};
     tbody.innerHTML=filtered.map(p=>{
       const fecha=p.created_at?new Date(p.created_at).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—';
       const total=p.precio_total?'$'+Number(p.precio_total).toLocaleString('es-AR'):'—';
-      const transferido=getMontoTransferido(p);
-      const transferidoStr=transferido>0?'$'+transferido.toLocaleString('es-AR'):'—';
-      const saldo=p.precio_total&&transferido>0?'$'+(Number(p.precio_total)-transferido).toLocaleString('es-AR'):'—';
-      const pill=esPend?'<span class="pill pill-pendiente">⏳ Pendiente</span>':'<span class="pill pill-confirmada">✓ Confirmada</span>';
-      const prodHTML=getProductosHTML(p);
-
-      if(esPend){
+      const cobrado=Number(p.monto_transferido||p.precio_sena||0);
+      const cobradoStr=cobrado>0?'$'+cobrado.toLocaleString('es-AR'):'—';
+      const saldoNum=p.precio_total&&cobrado>0?Number(p.precio_total)-cobrado:0;
+      const saldoStr=saldoNum>0?'$'+saldoNum.toLocaleString('es-AR'):'✓ Saldado';
+      const saldoColor=saldoNum>0?'color:var(--yellow);font-weight:700':'color:var(--green)';
+      const pill=pills[tipo]||pills.pendiente;
+      if(tipo==='pendiente'){
+        const senaEsp=p.precio_total?'$'+Math.ceil(Number(p.precio_total)*0.5).toLocaleString('es-AR'):'-';
         return `<tr>
           <td data-label="#">#${p.id}</td>
           <td data-label="Fecha" class="muted">${fecha}</td>
           <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-          <td data-label="Productos">${prodHTML}</td>
+          <td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td>
           <td data-label="Total" style="color:var(--white);font-weight:700">${total}</td>
-          <td data-label="Estado">${pill}</td>
-          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
-        </tr>`;
-      } else {
-        return `<tr>
-          <td data-label="#">#${p.id}</td>
-          <td data-label="Fecha" class="muted">${fecha}</td>
-          <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-          <td data-label="Productos">${prodHTML}</td>
-          <td data-label="Total" class="muted">${total}</td>
-          <td data-label="Transferido" style="color:var(--green);font-weight:700">${transferidoStr}</td>
-          <td data-label="Saldo" style="color:var(--yellow)">${saldo}</td>
+          <td data-label="Seña esp." style="color:var(--yellow)">${senaEsp}</td>
           <td data-label="Estado">${pill}</td>
           <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
         </tr>`;
       }
-    }).join('');
-  }
-
-  // ── DASHBOARD ──
-  function updateDashboard(){
-    const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
-    const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-    // Sumar montos reales transferidos (monto_transferido si existe, sino precio_sena)
-    const ingresos=confirmadas.reduce((s,p)=>s+getMontoTransferido(p),0);
-    document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
-    document.getElementById('stat-confirmadas').textContent=confirmadas.length;
-    document.getElementById('stat-pendientes').textContent=pendientes.length;
-    document.getElementById('stat-stock').textContent=allProducts.reduce((s,p)=>s+(p.stock_total||0),0);
-
-    const dtbody=document.getElementById('dashboard-tbody');
-    const ultimas=allPedidos.slice(0,8);
-    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="5"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
-    dtbody.innerHTML=ultimas.map(p=>{
-      const transferido=getMontoTransferido(p);
-      const transferidoStr=transferido>0?'$'+transferido.toLocaleString('es-AR'):'—';
-      const pill=p.estado==='confirmada'?'<span class="pill pill-confirmada">✓ Confirmada</span>':p.estado==='pendiente'?'<span class="pill pill-pendiente">⏳ Pendiente</span>':'<span class="pill pill-rechazado">✗ Rechazado</span>';
+      if(tipo==='confirmada'){
+        return `<tr>
+          <td data-label="#">#${p.id}</td>
+          <td data-label="Fecha" class="muted">${fecha}</td>
+          <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
+          <td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td>
+          <td data-label="Total" class="muted">${total}</td>
+          <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}</td>
+          <td data-label="Saldo" style="${saldoColor}">${saldoStr}</td>
+          <td data-label="Estado">${pill}</td>
+          <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
+        </tr>`;
+      }
       return `<tr>
+        <td data-label="#">#${p.id}</td>
+        <td data-label="Fecha" class="muted">${fecha}</td>
         <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-        <td data-label="Productos">${getProductosHTML(p)}</td>
-        <td data-label="Transferido" style="color:var(--green)">${transferidoStr}</td>
+        <td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td>
+        <td data-label="Total" class="muted">${total}</td>
+        <td data-label="Cobrado" style="color:var(--green)">${cobradoStr}</td>
         <td data-label="Estado">${pill}</td>
-        <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
+        <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
       </tr>`;
     }).join('');
   }
 
+
+  // DASHBOARD
+  function updateDashboard(){
+    const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
+    const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
+    const entregadas=allPedidos.filter(p=>p.estado==='entregada');
+    const ingresos=confirmadas.reduce((s,p)=>s+(Number(p.precio_sena)||0),0);
+    // Saldo pendiente: suma de (precio_total - monto_transferido) de pedidos confirmados (no entregados aún)
+    const saldoPendiente=confirmadas.reduce((s,p)=>{
+      const total=Number(p.precio_total||0);
+      const cobrado=Number(p.monto_transferido||p.precio_sena||0);
+      return s+(total>cobrado?total-cobrado:0);
+    },0);
+    document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
+    document.getElementById('stat-confirmadas').textContent=confirmadas.length;
+    document.getElementById('stat-pendientes').textContent=pendientes.length;
+    document.getElementById('stat-stock').textContent=allProducts.reduce((s,p)=>s+(p.stock_total||0),0);
+    const saldoEl=document.getElementById('stat-saldo');
+    if(saldoEl) saldoEl.textContent='$'+saldoPendiente.toLocaleString('es-AR');
+    const dtbody=document.getElementById('dashboard-tbody');
+    const ultimas=allPedidos.slice(0,8);
+    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="6"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
+    dtbody.innerHTML=ultimas.map(p=>{
+      const sena=p.precio_sena?'$'+Number(p.precio_sena).toLocaleString('es-AR'):'—';
+      const pill=p.estado==='confirmada'?'<span class="pill pill-confirmada">✓ Confirmada</span>':p.estado==='pendiente'?'<span class="pill pill-pendiente">⏳ Pendiente</span>':p.estado==='entregada'?'<span class="pill pill-entregada">📦 Entregado</span>':'<span class="pill pill-rechazado">✗ Rechazado</span>';
+      return `<tr><td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td><td data-label="Producto" class="muted">${p.producto_nombre||'—'}</td><td data-label="Talle">${p.talle||'—'}</td><td data-label="Seña" style="color:var(--green)">${sena}</td><td data-label="Estado">${pill}</td><td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td></tr>`;
+    }).join('');
+  }
   function updateBadge(){const n=allPedidos.filter(p=>p.estado==='pendiente').length;const b=document.getElementById('badge-pendientes');b.textContent=n;b.style.display=n>0?'':'none';}
 
-  // ── MODAL DETALLE ──
+  // MODAL
   function verPedido(id){
     const p=allPedidos.find(x=>x.id===id);if(!p)return;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR'):'—';
-    const total=Number(p.precio_total||0);
-    const transferido=getMontoTransferido(p);
-    const saldo=total>0&&transferido>0?'$'+(total-transferido).toLocaleString('es-AR'):'—';
-
-    let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante</span>';
+    const saldo=(p.precio_total&&p.precio_sena)?'$'+(p.precio_total-p.precio_sena).toLocaleString('es-AR'):'—';
+    let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante adjunto</span>';
+    // Comprobante MP automático si existe mp_payment_id
+    if(p.mp_payment_id){
+      comprobanteHTML=`<a class="comprobante-pdf" href="https://www.mercadopago.com.ar/activities/search?q=${p.mp_payment_id}" target="_blank" rel="noopener" style="background:rgba(0,158,227,.1);border-color:rgba(0,158,227,.3);color:#009ee3">🔵 Ver comprobante MP #${p.mp_payment_id}</a>`;
+    }
     if(p.comprobante_b64){
       if(p.comprobante_tipo&&p.comprobante_tipo.includes('pdf')){
         const blob=b64toBlob(p.comprobante_b64,p.comprobante_tipo);
@@ -874,172 +602,48 @@ footer .hashtags { font-size: .82rem !important; }
         comprobanteHTML=`<img class="comprobante-img" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" title="Click para ampliar" />`;
       }
     }
-
-    // Lista de productos
-    let productosDetalle='';
-    if(p.productos&&Array.isArray(p.productos)&&p.productos.length>0){
-      productosDetalle=p.productos.map(prod=>`
-        <div style="display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.95rem;">
-          <span style="color:var(--muted)">${prod.producto_nombre||prod.nombre||'Producto'}</span>
-          <span style="color:var(--white);font-weight:600">Talle ${prod.talle||'-'}</span>
-        </div>`).join('');
-    } else if(p.producto_nombre){
-      productosDetalle=`<div style="display:flex;justify-content:space-between;padding:.3rem 0;font-size:.95rem;"><span style="color:var(--muted)">${p.producto_nombre}</span><span style="color:var(--white)">Talle ${p.talle||'-'}</span></div>`;
-    }
-
-    const estadoLabel=p.estado==='confirmada'?'✓ Confirmada':p.estado==='pendiente'?'⏳ Pendiente':'✗ Rechazado';
-
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
     document.getElementById('modal-body').innerHTML=`
       <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
-      <div class="detail-row"><span>Estado</span><span>${estadoLabel}</span></div>
+      <div class="detail-row"><span>Estado</span><span>${p.estado==='confirmada'?'✓ Confirmada':p.estado==='pendiente'?'⏳ Pendiente':'✗ Rechazado'}</span></div>
       <div class="detail-row"><span>Cliente</span><span>${p.nombre_cliente||'—'}</span></div>
       <div class="detail-row"><span>Email</span><span>${p.email_cliente||'—'}</span></div>
       <div class="detail-row"><span>Teléfono</span><span>${p.telefono_cliente||'—'}</span></div>
-      <div class="detail-row" style="flex-direction:column;gap:.5rem;align-items:stretch;">
-        <span>Productos</span>
-        <div>${productosDetalle||'<span style="color:var(--muted-dim)">—</span>'}</div>
-      </div>
-      <div class="detail-row"><span>Precio total</span><span>$${total.toLocaleString('es-AR')}</span></div>
-      ${transferido>0?`<div class="detail-row"><span>Transferido</span><span style="color:var(--green);font-size:1.05rem">$${transferido.toLocaleString('es-AR')}</span></div>`:''}
-      ${total>0&&transferido>0?`<div class="detail-row"><span>Saldo a cobrar</span><span style="color:var(--yellow)">${saldo}</span></div>`:''}
+      <div class="detail-row"><span>Producto</span><span>${p.producto_nombre||'—'}</span></div>
+      <div class="detail-row"><span>Talle</span><span>${p.talle||'—'}</span></div>
+      <div class="detail-row"><span>Precio total</span><span>$${Number(p.precio_total||0).toLocaleString('es-AR')}</span></div>
+      <div class="detail-row"><span>Seña recibida</span><span style="color:var(--green);font-size:1.05rem">$${Number(p.precio_sena||0).toLocaleString('es-AR')}</span></div>
+      <div class="detail-row"><span>Saldo a cobrar</span><span style="color:var(--yellow)">${saldo}</span></div>
       <div class="detail-row" style="flex-direction:column;gap:.6rem"><span>Comprobante</span>${comprobanteHTML}</div>
     `;
-
     const waTel=(p.telefono_cliente||'').replace(/\D/g,'');
-    const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente}, somos de Andes Talleres Futsal. Tu pedido #${p.id} fue confirmado. ¿Cuándo pasás a retirar?`);
+    const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente}, somos de Andes Talleres Futsal. Tu pedido #${p.id} (${p.producto_nombre}, talle ${p.talle}) fue confirmado. ¿Cuándo pasás a retirar?`);
     let acciones='';
     if(p.estado==='pendiente'){
-      acciones+=`<button class="btn-modal btn-confirmar" onclick="abrirConfirmModal(${p.id})">✓ Confirmar pago</button>`;
+      acciones+=`<button class="btn-modal btn-confirmar" onclick="cambiarEstado(${p.id},'confirmada')">✓ Confirmar pago</button>`;
       acciones+=`<button class="btn-modal btn-rechazar" onclick="cambiarEstado(${p.id},'rechazado')">✗ Rechazar</button>`;
+    }
+    if(p.estado==='confirmada'){
+      acciones+=`<button class="btn-modal btn-confirmar" style="background:rgba(100,120,200,.2);border:1px solid rgba(100,120,200,.4);color:#a0b4f0" onclick="cambiarEstado(${p.id},'entregada')">📦 Marcar como entregado</button>`;
     }
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="closeModal()">Cerrar</button>`;
     document.getElementById('modal-actions').innerHTML=acciones;
     document.getElementById('modal-overlay').classList.add('open');
   }
-
   function b64toBlob(b64,type){const bc=atob(b64);const ba=new Uint8Array(bc.length);for(let i=0;i<bc.length;i++)ba[i]=bc.charCodeAt(i);return new Blob([ba],{type});}
-
-  function closeModal(e){
-    if(e&&e.target!==document.getElementById('modal-overlay'))return;
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-
-  // ── MODAL CONFIRMAR PAGO ──
-  function abrirConfirmModal(pedidoId){
-    const p=allPedidos.find(x=>x.id===pedidoId);
-    if(!p)return;
-    confirmPedidoId=pedidoId;
-    confirmPedidoData=p;
-    confirmMontoSeleccionado='sena';
-
-    const total=Number(p.precio_total||0);
-    const sena=Number(p.precio_sena||Math.ceil(total*0.5));
-
-    document.getElementById('confirm-modal-desc').innerHTML=`Pedido <strong>#${p.id}</strong> de <strong>${p.nombre_cliente||'cliente'}</strong>. ¿Cuánto transfirió?`;
-    document.getElementById('opt-sena-val').textContent='$'+sena.toLocaleString('es-AR');
-    document.getElementById('opt-total-val').textContent='$'+total.toLocaleString('es-AR');
-    document.getElementById('monto-custom-input').value='';
-    document.getElementById('monto-custom-wrap').style.display='none';
-    document.getElementById('monto-nota').textContent='';
-
-    // Reset selección
-    ['opt-sena','opt-total','opt-custom'].forEach(id=>document.getElementById(id).classList.remove('selected'));
-    document.getElementById('opt-sena').classList.add('selected');
-    document.getElementById('btn-confirm-ok').disabled=false;
-
-    // Ocultar modal detalle y abrir confirm
-    document.getElementById('modal-overlay').classList.remove('open');
-    document.getElementById('confirm-modal-overlay').classList.add('open');
-  }
-
-  function selectMonto(tipo){
-    confirmMontoSeleccionado=tipo;
-    ['opt-sena','opt-total','opt-custom'].forEach(id=>document.getElementById(id).classList.remove('selected'));
-    document.getElementById('opt-'+tipo).classList.add('selected');
-
-    const wrap=document.getElementById('monto-custom-wrap');
-    wrap.style.display=tipo==='custom'?'block':'none';
-
-    if(tipo!=='custom'){
-      document.getElementById('monto-custom-input').value='';
-      document.getElementById('btn-confirm-ok').disabled=false;
-      actualizarNotaMonto();
-    } else {
-      document.getElementById('btn-confirm-ok').disabled=true;
-      document.getElementById('monto-nota').textContent='Ingresá el monto recibido';
-    }
-  }
-
-  function onCustomMonto(){
-    const val=parseInt(document.getElementById('monto-custom-input').value)||0;
-    document.getElementById('btn-confirm-ok').disabled=val<=0;
-    actualizarNotaMonto();
-  }
-
-  function actualizarNotaMonto(){
-    if(!confirmPedidoData)return;
-    const total=Number(confirmPedidoData.precio_total||0);
-    let monto=0;
-    if(confirmMontoSeleccionado==='sena') monto=Number(confirmPedidoData.precio_sena||Math.ceil(total*0.5));
-    else if(confirmMontoSeleccionado==='total') monto=total;
-    else monto=parseInt(document.getElementById('monto-custom-input').value)||0;
-    if(monto>0&&total>0){
-      const saldo=total-monto;
-      document.getElementById('monto-nota').textContent=saldo>0?`Saldo pendiente: $${saldo.toLocaleString('es-AR')}`:saldo===0?'✓ Pago completo':'';
-    }
-  }
-
-  function closeConfirmModal(){
-    document.getElementById('confirm-modal-overlay').classList.remove('open');
-    confirmPedidoId=null;
-    confirmPedidoData=null;
-  }
-
-  async function doConfirmarPago(){
-    if(!confirmPedidoId||!confirmPedidoData)return;
-    const p=confirmPedidoData;
-    const total=Number(p.precio_total||0);
-    let monto=0;
-    if(confirmMontoSeleccionado==='sena') monto=Number(p.precio_sena||Math.ceil(total*0.5));
-    else if(confirmMontoSeleccionado==='total') monto=total;
-    else monto=parseInt(document.getElementById('monto-custom-input').value)||0;
-    if(monto<=0){showToast('Ingresá un monto válido','error');return;}
-
-    const btn=document.getElementById('btn-confirm-ok');
-    btn.disabled=true;btn.textContent='Guardando…';
-
-    try{
-      const res=await sbFetch('/rest/v1/pedidos?id=eq.'+confirmPedidoId,{
-        method:'PATCH',
-        headers:{'Prefer':'return=representation'},
-        body:JSON.stringify({estado:'confirmada',monto_transferido:monto})
-      });
-      if(!res.ok)throw new Error();
-      const idx=allPedidos.findIndex(x=>x.id===confirmPedidoId);
-      if(idx!==-1){allPedidos[idx].estado='confirmada';allPedidos[idx].monto_transferido=monto;}
-      closeConfirmModal();
-      renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
-      showToast(`¡Pago confirmado! $${monto.toLocaleString('es-AR')} registrado`,'success');
-    }catch{
-      showToast('Error al confirmar','error');
-    }finally{
-      btn.disabled=false;btn.textContent='Confirmar pago';
-    }
-  }
-
-  // Mantener compatibilidad con botón rechazar directo
   async function cambiarEstado(id,nuevoEstado){
     try{
       const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({estado:nuevoEstado})});
       if(!res.ok)throw new Error();
       const idx=allPedidos.findIndex(p=>p.id===id);if(idx!==-1)allPedidos[idx].estado=nuevoEstado;
-      closeModal();closeConfirmModal();
-      renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
-      showToast(nuevoEstado==='confirmada'?'¡Venta confirmada!':'Pedido rechazado',nuevoEstado==='confirmada'?'success':'error');
+      closeModal();renderTabla('pendiente');renderTabla('confirmada');updateDashboard();updateBadge();
+      const msgs={'confirmada':'¡Venta confirmada!','rechazado':'Pedido rechazado','entregada':'✓ Marcado como entregado'};
+      const types={'confirmada':'success','rechazado':'error','entregada':'success'};
+      showToast(msgs[nuevoEstado]||'Estado actualizado',types[nuevoEstado]||'info');
     }catch{showToast('Error al actualizar','error');}
   }
+  function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
 
   // STOCK
   function renderProducts(){
@@ -1050,7 +654,15 @@ footer .hashtags { font-size: .82rem !important; }
   function stockIndicator(s){if(s<=0)return'<span class="stock-indicator si-out"></span>';if(s<=5)return'<span class="stock-indicator si-low"></span>';return'<span class="stock-indicator si-ok"></span>';}
   function renderProductRow(p){
     const TALLES=['6','8','10','12','14','16','S','M','L','XL','XXL'];
-    const tallesMap = p.tallas || {};
+    let tallesMap = {};
+
+if (Array.isArray(p.tallas)) {
+  tallesMap = Object.fromEntries(
+    p.tallas.map(t => [t.talla || t.talle, t.stock])
+  );
+} else if (p.tallas && typeof p.tallas === "object") {
+  tallesMap = p.tallas; // ya viene como { S: 5, M: 3 }
+}
     const talleRowsHTML=TALLES.map(talle=>{
       const stock=talle in tallesMap?tallesMap[talle]:0;
       return `<div class="talle-row" id="row-${p.id}-${talle}"><span class="talle-name">${talle}</span>${stockIndicator(stock)}<input type="number" min="0" max="9999" value="${stock}" data-producto="${p.id}" data-talle="${talle}" data-original="${stock}" onchange="markChange(this)" oninput="markChange(this)" /><span class="talle-stock-label">${stock>0?stock+' disponibles':'Sin stock'}</span></div>`;
