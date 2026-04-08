@@ -154,6 +154,74 @@
     .form-field input::placeholder { color: var(--muted-dim); }
     .form-field input.error { border-color: var(--red); }
 
+    .form-field select {
+  width: 100%;
+  background: var(--navy-light);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 14px 40px 14px 16px;
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+
+  /* Sacar estilo nativo */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  transition: border-color .2s, background .2s;
+}
+
+/* Hover + focus */
+.form-field select:hover {
+  border-color: var(--border-h);
+}
+
+.form-field select:focus {
+  border-color: var(--blue);
+}
+
+/* Flechita custom */
+.form-field {
+  position: relative;
+}
+
+.select-field {
+  position: relative;
+}
+
+.select-field::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 65%;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Estado error */
+.form-field select.error {
+  border-color: var(--red);
+}
+
+/* Optgroup (no todos los browsers lo estilizan mucho, pero suma) */
+.form-field select optgroup {
+  color: var(--muted-dim);
+  background: var(--navy-mid);
+}
+
+.form-field select option {
+  background: var(--navy-light);
+  color: var(--white);
+}
     /* Botón MP */
     .btn-mp {
       display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -331,7 +399,7 @@
         <div class="panel-section">
           <div class="panel-title">Tus datos</div>
           <div class="form-field">
-            <label>Nombre completo *</label>
+            <label>Nombre completo del jugador *</label>
             <input type="text" id="f-nombre" placeholder="Juan Pérez" autocomplete="name" />
           </div>
           <div class="form-field">
@@ -340,8 +408,25 @@
           </div>
           <div class="form-field">
             <label>Teléfono WhatsApp *</label>
-            <input type="tel" id="f-tel" placeholder="3411234567" autocomplete="tel" inputmode="numeric" />
+            <input type="tel" id="f-tel" placeholder="261 123 4567" autocomplete="tel" inputmode="numeric" />
           </div>
+          <div class="form-field select-field">
+  <label>Categoría *</label>
+  <select id="f-categoria" required>
+    <option value="">Seleccionar categoría</option>
+    <option value="c5">C5</option>
+    <option value="c7">C7</option>
+    <option value="c9">C9</option>
+    <option value="c11">C11</option>
+    <option value="c13">C13</option>
+    <option value="c15">C15</option>
+    <option value="c17">C17</option>
+    <option value="c20">C20</option>
+    <option value="primera">Primera</option>
+    <option value="seniors">Seniors</option>
+    <option value="veteranos">Veteranos</option>
+  </select>
+</div>
           <button class="btn-mp" id="btn-enviar" onclick="irAMercadoPago()">
             <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="16" cy="16" r="16" fill="white" fill-opacity="0.15"/>
@@ -528,6 +613,7 @@
             nombre_cliente: nombre,
             email_cliente: email,
             telefono_cliente: tel,
+            categoria: categoria,
           }),
         });
 

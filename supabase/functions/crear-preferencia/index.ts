@@ -20,6 +20,7 @@ serve(async (req) => {
       nombre_cliente,
       email_cliente,
       telefono_cliente,
+      categoria,
     } = body;
 
     const precioTotalNum = Number(precio_total) || 0;
@@ -52,6 +53,7 @@ serve(async (req) => {
           nombre_cliente,
           email_cliente,
           telefono_cliente,
+          categoria,
         }
       }),
     });

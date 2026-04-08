@@ -127,6 +127,7 @@ serve(async (req) => {
       nombre_cliente: d.nombre_cliente ?? null,
       email_cliente: d.email_cliente ?? null,
       telefono_cliente: d.telefono_cliente ?? null,
+      categoria: d.categoria ?? null,
       productos: d.productos ?? [],
       precio_total: Number(d.precio_total) || 0,
       precio_sena: Number(d.precio_sena) || 0,
