@@ -777,16 +777,42 @@
 
   function b64toBlob(b64,type){const bc=atob(b64);const ba=new Uint8Array(bc.length);for(let i=0;i<bc.length;i++)ba[i]=bc.charCodeAt(i);return new Blob([ba],{type});}
 
-  async function cambiarEstado(id,nuevoEstado){
-    try{
-      const res=await sbFetch('/rest/v1/pedidos?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({estado:nuevoEstado})});
-      if(!res.ok)throw new Error();
-      const idx=allPedidos.findIndex(p=>p.id===id);if(idx!==-1)allPedidos[idx].estado=nuevoEstado;
-      closeModal();renderTabla('pendiente');renderTabla('confirmada');renderTabla('entregada');updateDashboard();updateBadge();
-      const msgs={confirmada:'¡Venta confirmada!',rechazado:'Pedido rechazado',entregada:'✓ Marcado como entregado'};
-      const types={confirmada:'success',rechazado:'error',entregada:'success'};
-      showToast(msgs[nuevoEstado]||'Estado actualizado',types[nuevoEstado]||'info');
-    }catch{showToast('Error al actualizar','error');}
+  async function cambiarEstado(id, nuevoEstado) {
+    try {
+      // Si se marca como entregada, actualizar monto_transferido al total
+      const payload = { estado: nuevoEstado };
+      if (nuevoEstado === 'entregada') {
+        const pedido = allPedidos.find(p => p.id === id);
+        if (pedido && pedido.precio_total) {
+          payload.monto_transferido = Number(pedido.precio_total);
+        }
+      }
+
+      const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, {
+        method: 'PATCH',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error();
+
+      const idx = allPedidos.findIndex(p => p.id === id);
+      if (idx !== -1) {
+        allPedidos[idx].estado = nuevoEstado;
+        if (nuevoEstado === 'entregada' && allPedidos[idx].precio_total) {
+          allPedidos[idx].monto_transferido = Number(allPedidos[idx].precio_total);
+        }
+      }
+
+      closeModal();
+      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+      updateDashboard(); updateBadge();
+
+      const msgs = { confirmada: '¡Venta confirmada!', rechazado: 'Pedido rechazado', entregada: '✓ Marcado como entregado' };
+      const types = { confirmada: 'success', rechazado: 'error', entregada: 'success' };
+      showToast(msgs[nuevoEstado] || 'Estado actualizado', types[nuevoEstado] || 'info');
+    } catch {
+      showToast('Error al actualizar', 'error');
+    }
   }
 
   // ── ELIMINAR VENTA ──
