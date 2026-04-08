@@ -446,16 +446,37 @@
       const low     = !soldOut && p.stock_total <= 5;
 
       let badge = '';
-      if (soldOut)      badge = `<span class="badge badge-out">Sin stock</span>`;
-      else if (p.nuevo) badge = `<span class="badge badge-new">Nuevo</span>`;
-      else if (low)     badge = `<span class="badge badge-low">¡Últimas!</span>`;
+      //if (soldOut)      badge = `<span class="badge badge-out">Sin stock</span>`;
+      //else if (p.nuevo) badge = `<span class="badge badge-new">Nuevo</span>`;
+      //else if (low)     badge = `<span class="badge badge-low">¡Últimas!</span>`;
 
-      const imgContent = p.imagen_url
-        ? `<img src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" />`
-        : `<div class="img-placeholder">
-             <img src="${ESCUDO}" alt="Andes Talleres" style="width:70px;height:70px;object-fit:contain;opacity:.3;" />
-             <span>Sin foto aún</span>
-           </div>`;
+      // ── obtener primera imagen ──
+let primeraImagen = "";
+
+// array
+if (Array.isArray(p.imagenes)) {
+  primeraImagen = p.imagenes[0];
+}
+
+// string "img1,img2"
+else if (typeof p.imagenes === "string") {
+  primeraImagen = p.imagenes.split(",")[0]?.trim();
+}
+
+// fallback viejo
+else if (p.imagen_url) {
+  primeraImagen = p.imagen_url;
+}
+
+// ── render ──
+const imgContent = primeraImagen
+  ? `<img src="${primeraImagen}" alt="${p.nombre}" loading="lazy" />`
+  : `<div class="img-placeholder">
+       <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png"
+            alt="Andes Talleres"
+            style="width:70px;height:70px;object-fit:contain;opacity:.3;" />
+       <span>Sin foto aún</span>
+     </div>`;
 
       const sizesHTML = '<div class="sizes"><span class="size-chip available" style="letter-spacing:.04em">Todos los talles disponibles</span></div>';
 
