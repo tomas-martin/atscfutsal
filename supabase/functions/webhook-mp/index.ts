@@ -134,7 +134,7 @@ async function enviarEmailConfirmacion(pedido: any, pedidoId: number) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Andes Talleres <subcomision.atsc@gmail.com>",
+      from: "Andes Talleres <onboarding@resend.dev>",
       to: [pedido.email_cliente],
       subject: `✅ Pedido #${pedidoId} confirmado — Andes Talleres Futsal`,
       html,
