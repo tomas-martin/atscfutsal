@@ -74,18 +74,18 @@ const items = productos.map((p: any) => {
     throw new Error("Precio inválido en producto");
   }
 
-  return {
-    id: String(p.producto_id || crypto.randomUUID()),
-    title: `${p.producto_nombre || 'Producto'} — Talle ${p.talle || ''}`,
-    description: tipo_pago === 'sena'
-      ? `Seña 50%`
-      : `Pago completo`,
-    quantity: cant,
-    currency_id: 'ARS',
-    unit_price: tipo_pago === 'total'
-      ? precioBase
-      : Math.ceil(precioBase * 0.5),
-  };
+return {
+  id: String(p.producto_id || crypto.randomUUID()),
+  title: `${p.producto_nombre || 'Producto'}${p.talle ? ` — Talle ${p.talle}` : ''}`,
+  description: tipo_pago === 'sena'
+    ? 'Seña del 50% del precio total'
+    : 'Pago completo del producto',
+  quantity: cant,
+  currency_id: 'ARS',
+  unit_price: tipo_pago === 'total'
+    ? precioBase
+    : Math.ceil(precioBase * 0.5),
+};
 });
 
     const preferencia = {
