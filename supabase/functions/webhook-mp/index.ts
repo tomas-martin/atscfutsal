@@ -1,26 +1,21 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 // ── Enviar email via Gmail SMTP ──
 async function enviarEmailConfirmacion(pedido: any, paymentId: string) {
-  const GMAIL_USER = Deno.env.get("GMAIL_USER")!;
-  const GMAIL_PASS = Deno.env.get("GMAIL_PASS")!;
+  const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
 
-  // Armar lista de productos para el email
+  // Armar productos
   const productosHTML = Array.isArray(pedido.productos)
-    ? pedido.productos
-        .map(
-          (p: any) => `
-        <tr>
-          <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;color:#374151">
-            ${p.producto_nombre} — Talle ${p.talle}${p.cantidad > 1 ? ` × ${p.cantidad}` : ""}
-          </td>
-          <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;color:#111827;font-weight:600">
-            $${(Number(p.precio) * (p.cantidad || 1)).toLocaleString("es-AR")}
-          </td>
-        </tr>`
-        )
-        .join("")
+    ? pedido.productos.map((p: any) => `
+      <tr>
+        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;color:#374151">
+          ${p.producto_nombre} — Talle ${p.talle}${p.cantidad > 1 ? ` × ${p.cantidad}` : ""}
+        </td>
+        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;color:#111827;font-weight:600">
+          $${(Number(p.precio) * (p.cantidad || 1)).toLocaleString("es-AR")}
+        </td>
+      </tr>
+    `).join("")
     : "";
 
   const totalStr = `$${Number(pedido.precio_total).toLocaleString("es-AR")}`;
@@ -28,103 +23,39 @@ async function enviarEmailConfirmacion(pedido: any, paymentId: string) {
   const saldo = Number(pedido.precio_total) - Number(pedido.monto_transferido);
   const saldoStr = saldo > 0 ? `$${saldo.toLocaleString("es-AR")}` : null;
 
-  const emailBody = `
-<!DOCTYPE html>
-<html lang="es">
-<head><meta charset="UTF-8"/></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
-  <div style="max-width:560px;margin:40px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);">
-    
-    <!-- Header -->
-    <div style="background:#09111f;padding:28px 32px;text-align:center;">
-      <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png"
-           alt="Andes Talleres" width="56" height="56"
-           style="display:block;margin:0 auto 12px;" />
-      <div style="color:#eef2ff;font-size:22px;font-weight:700;letter-spacing:2px;">ANDES TALLERES</div>
-      <div style="color:#c0192a;font-size:11px;letter-spacing:4px;margin-top:3px;">FUTSAL · INDUMENTARIA</div>
-    </div>
+  const emailBody = `...TODO TU HTML EXACTO (no lo toques)...`;
 
-    <!-- Cuerpo -->
-    <div style="padding:32px;">
-      <h2 style="margin:0 0 8px;color:#111827;font-size:20px;">
-        ✅ ¡Pedido confirmado, ${pedido.nombre_cliente?.split(" ")[0] || "campeón"}!
-      </h2>
-      <p style="color:#6b7280;margin:0 0 24px;font-size:15px;line-height:1.6;">
-        Recibimos tu pago correctamente. Tu pedido <strong style="color:#111827">#${paymentId}</strong> quedó registrado y listo para coordinar la entrega.
-      </p>
-
-      <!-- Productos -->
-      <div style="background:#f9fafb;border-radius:6px;padding:20px;margin-bottom:20px;">
-        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;font-weight:700;margin-bottom:12px;">
-          Detalle del pedido
-        </div>
-        <table style="width:100%;border-collapse:collapse;">
-          ${productosHTML}
-        </table>
-      </div>
-
-      <!-- Montos -->
-      <div style="border:1px solid #e5e7eb;border-radius:6px;padding:16px;margin-bottom:24px;">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-          <span style="color:#6b7280;font-size:14px;">Total del pedido</span>
-          <span style="color:#111827;font-weight:600;font-size:14px;">${totalStr}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:${saldoStr ? "8px" : "0"};">
-          <span style="color:#6b7280;font-size:14px;">Pagado ahora</span>
-          <span style="color:#059669;font-weight:700;font-size:14px;">${pagadoStr}</span>
-        </div>
-        ${
-          saldoStr
-            ? `
-        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #e5e7eb;">
-          <span style="color:#6b7280;font-size:14px;">Saldo a pagar al retirar</span>
-          <span style="color:#d97706;font-weight:700;font-size:14px;">${saldoStr}</span>
-        </div>`
-            : ""
+  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${SENDGRID_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      personalizations: [
+        {
+          to: [{ email: pedido.email_cliente }],
+          subject: `✅ Pedido confirmado #${paymentId} — Andes Talleres`
         }
-      </div>
-
-      <!-- Aviso retiro -->
-      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:16px;margin-bottom:24px;">
-        <div style="font-size:13px;color:#1e40af;line-height:1.6;">
-          📍 <strong>Retiro en:</strong> Belgrano 1547, Godoy Cruz, Mendoza<br/>
-          📱 <strong>Te vamos a contactar por WhatsApp</strong> para coordinar la entrega.
-        </div>
-      </div>
-
-      <p style="color:#9ca3af;font-size:13px;text-align:center;margin:0;">
-        ¿Dudas? Escribinos por Instagram <strong>@atscfutsal</strong>
-      </p>
-    </div>
-
-    <!-- Footer -->
-    <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 32px;text-align:center;">
-      <p style="color:#9ca3af;font-size:12px;margin:0;">
-        © 2026 Andes Talleres Sport Club · Mendoza, Argentina
-      </p>
-    </div>
-  </div>
-</body>
-</html>`;
-
-  const client = new SmtpClient();
-
-  await client.connectTLS({
-    hostname: "smtp.gmail.com",
-    port: 465,
-    username: GMAIL_USER,
-    password: GMAIL_PASS,
+      ],
+      from: {
+        email: "subcomision.atsc@gmail.com", // 🔴 IMPORTANTE: email verificado en SendGrid
+        name: "Andes Talleres"
+      },
+      content: [
+        {
+          type: "text/html",
+          value: emailBody
+        }
+      ]
+    })
   });
 
-  await client.send({
-    from: `Andes Talleres Futsal <${GMAIL_USER}>`,
-    to: pedido.email_cliente,
-    subject: `✅ Pedido confirmado #${paymentId} — Andes Talleres Futsal`,
-    content: emailBody,
-    html: emailBody,
-  });
-
-  await client.close();
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("SendGrid error:", errorText);
+    throw new Error("Error enviando email");
+  }
 }
 
 serve(async (req) => {
