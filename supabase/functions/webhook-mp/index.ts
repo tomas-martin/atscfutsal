@@ -32,29 +32,22 @@ async function enviarEmailConfirmacion(pedido: any, pedidoId: number) {
     <h2 style="font-size:18px;">🧾 Detalle del pedido</h2>
 
     <p><strong>Número de pedido:</strong> #${pedidoId}</p>
-    <p><strong>Fecha:</strong> ${new Date(pedido.created_at).toLocaleString()}</p>
+    <p><strong>Fecha:</strong> ${new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}</p>
 
     ${
-      pedido.productos && pedido.productos.length > 0
-        ? `
-        <h3 style="font-size:16px;">🛍️ Productos</h3>
-        <ul>
-          ${pedido.productos
-            .map(
-              (p) => `
-              <li>
-                ${p.nombre}
-                ${p.talle ? ` (Talle: ${p.talle})` : ""}
-                ${p.cantidad ? ` x${p.cantidad}` : ""}
-                - $${p.precio}
-              </li>
-            `
-            )
-            .join("")}
-        </ul>
-      `
-        : ""
-    }
+  pedido.productos && pedido.productos.length > 0
+    ? `
+    <h3 style="font-size:16px;">🛍️ Productos</h3>
+    <ul>
+      ${pedido.productos
+        .map((p) => `
+          <li>${p.producto_nombre || p.nombre || 'Producto'}${p.talle ? ` (Talle: ${p.talle})` : ''}${p.cantidad ? ` x${p.cantidad}` : ''} — $${Number(p.precio || 0).toLocaleString('es-AR')}</li>
+        `)
+        .join('')}
+    </ul>
+    `
+    : ''
+}
 
     <hr style="margin:20px 0;" />
 
