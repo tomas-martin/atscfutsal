@@ -13,7 +13,8 @@
       --border: rgba(255,255,255,0.07); --green: #1d9e75;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+    html { font-size: 18px; }
+    body { background: var(--navy); color: var(--white); font-family: 'Barlow', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; font-size: 1rem; line-height: 1.65; }
 
     .card {
       background: var(--navy-mid); border: 1px solid rgba(29,158,117,.3);
@@ -34,9 +35,14 @@
       background: var(--navy-light); border: 1px solid var(--border);
       border-radius: 4px; padding: 1rem 1.2rem; margin-bottom: 2rem; text-align: left;
     }
-    .info-row { display: flex; justify-content: space-between; padding: .4rem 0; font-size: .85rem; }
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: .4rem 0; font-size: .85rem; }
+    .info-row + .info-row { border-top: 1px solid var(--border); }
     .info-row span:first-child { color: var(--muted-dim); font-family: 'Barlow Condensed', sans-serif; letter-spacing: .08em; text-transform: uppercase; font-size: .72rem; }
     .info-row span:last-child { color: var(--white); font-weight: 600; }
+
+    .spinner-wrap { display: flex; align-items: center; gap: 8px; }
+    .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.2); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
@@ -49,200 +55,11 @@
     .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; }
     .logo img { width: 36px; height: 36px; object-fit: contain; }
     .logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .07em; color: var(--white); }
-    /* ══════════════════════════════════════════════
-   TIPOGRAFÍA AUMENTADA — Pegar al final de cada
-   bloque <style> en todos los HTML del sitio
-   ══════════════════════════════════════════════ */
 
-/* BASE GLOBAL */
-html { font-size: 18px; }
-
-body {
-  font-size: 1rem;        /* 18px */
-  line-height: 1.65;
-}
-
-/* NAVEGACIÓN DESKTOP */
-.nav-desktop a {
-  font-size: 1rem !important;
-  letter-spacing: .12em;
-}
-
-/* DRAWER MÓVIL */
-.nav-links a {
-  font-size: 1.15rem !important;
-  padding: 16px 1.5rem !important;
-}
-
-/* HEADER LOGO */
-.logo-copy .name { font-size: 1.45rem !important; }
-.logo-copy .tag  { font-size: .72rem !important; }
-
-/* BREADCRUMB */
-.breadcrumb { font-size: .85rem !important; }
-
-/* TÍTULOS DE PÁGINA */
-.page-title h1,
-.product-name { font-size: clamp(2.4rem, 5.5vw, 4rem) !important; }
-
-/* CATEGORÍAS EN CARDS */
-.card-cat,
-.product-cat,
-.item-cat { font-size: .85rem !important; }
-
-/* NOMBRES EN CARDS */
-.card-name { font-size: 1.35rem !important; }
-
-/* DESCRIPCIÓN */
-.card-desc,
-.product-desc { font-size: 1rem !important; }
-
-/* PRECIO EN CARDS */
-.card-price { font-size: 1.65rem !important; }
-
-/* PRECIOS EN PÁGINA PRODUCTO */
-.price-amount { font-size: 3rem !important; }
-.price-currency { font-size: 1rem !important; }
-
-/* CHIPS DE TALLE — producto */
-.talle-btn {
-  font-size: 1.05rem !important;
-  min-width: 64px !important;
-  padding: 13px 16px !important;
-}
-.talle-btn .stock-num { font-size: .75rem !important; }
-
-/* CHIPS TALLES — catálogo */
-.size-chip { font-size: .82rem !important; padding: 4px 10px !important; }
-
-/* STOCK INFO */
-.stock-info         { font-size: .92rem !important; }
-.stock-info strong  { font-size: 1rem !important; }
-
-/* BOTONES PRINCIPALES */
-.btn-agregar,
-.btn-ir-carrito,
-.btn-enviar {
-  font-size: 1.1rem !important;
-  padding: 18px !important;
-}
-
-/* BOTÓN VOLVER / SECUNDARIOS */
-.btn-back { font-size: .9rem !important; }
-
-/* STOCK BADGE */
-.stock-badge { font-size: .92rem !important; padding: 8px 16px !important; }
-
-/* LABELS DE FORMULARIOS */
-.form-field label,
-.talle-label { font-size: .82rem !important; }
-
-/* INPUTS */
-.form-field input,
-.field input { font-size: 1rem !important; padding: 13px 16px !important; }
-
-/* DATOS BANCARIOS */
-.banco-label  { font-size: .8rem !important; }
-.banco-value  { font-size: .95rem !important; }
-
-/* RESUMEN CARRITO */
-.summary-row    { font-size: 1rem !important; }
-.summary-total  { font-size: 1.2rem !important; }
-.summary-sena   { font-size: 1.05rem !important; }
-
-/* ITEMS DEL CARRITO */
-.item-name  { font-size: 1.15rem !important; }
-.item-talle { font-size: .9rem !important; }
-.item-precio { font-size: 1.45rem !important; }
-.item-cat   { font-size: .75rem !important; }
-
-/* PANEL DE PAGO — título sección */
-.panel-title { font-size: .8rem !important; }
-
-/* NOTA AL PIE DEL PANEL */
-.panel-note { font-size: .85rem !important; }
-
-/* PILLS (estados) */
-.pill,
-.pill-pendiente,
-.pill-confirmada,
-.pill-rechazado { font-size: .8rem !important; padding: 5px 13px !important; }
-
-/* SIDEBAR CATÁLOGO — filtros */
-.cat-option   { font-size: 1.05rem !important; }
-.talle-chip   { font-size: .8rem !important; padding: 5px 11px !important; }
-.stock-toggle span { font-size: .9rem !important; }
-
-/* SIDEBAR ADMIN */
-.nav-item { font-size: 1.05rem !important; }
-.stat-value { font-size: 2.8rem !important; }
-.stat-label { font-size: .82rem !important; }
-.stat-sub   { font-size: .85rem !important; }
-
-/* TABLAS ADMIN */
-thead th { font-size: .82rem !important; }
-tbody td { font-size: 1.05rem !important; }
-
-/* PRODUCT META ADMIN */
-.product-meta .nombre { font-size: 1.15rem !important; }
-
-/* CONTEO RESULTADOS CATÁLOGO */
-.results-count        { font-size: 1rem !important; }
-.results-count strong { font-size: 1.2rem !important; }
-
-/* FOOTER */
-footer p { font-size: 1rem !important; }
-footer .hashtags { font-size: .82rem !important; }
-
-/* BANNER PREVENTA */
-.preventa-banner .pb-text { font-size: .95rem !important; }
-.cd-num  { font-size: 1.55rem !important; }
-.cd-label { font-size: .58rem !important; }
-
-/* HERO */
-.hero h1    { font-size: clamp(3.2rem, 7.5vw, 6rem) !important; }
-.hero-sub   { font-size: 1.1rem !important; }
-.pill       { font-size: .75rem !important; }
-
-/* ── RESPONSIVE MÓVIL ── */
-@media (max-width: 600px) {
-  html { font-size: 17px; }
-
-  .card-name   { font-size: 1.2rem !important; }
-  .card-price  { font-size: 1.45rem !important; }
-  .card-desc   { font-size: .92rem !important; }
-
-  .product-name  { font-size: 2.4rem !important; }
-  .price-amount  { font-size: 2.5rem !important; }
-
-  .talle-btn {
-    font-size: 1rem !important;
-    min-width: 56px !important;
-    padding: 11px 12px !important;
-  }
-
-  .btn-agregar,
-  .btn-ir-carrito,
-  .btn-enviar {
-    font-size: 1rem !important;
-    padding: 16px !important;
-  }
-
-  .item-name   { font-size: 1.1rem !important; }
-  .item-precio { font-size: 1.3rem !important; }
-
-  .summary-total { font-size: 1.1rem !important; }
-  .summary-sena  { font-size: 1rem !important; }
-
-  .nav-links a { font-size: 1.2rem !important; }
-
-  .banco-value { font-size: .88rem !important; }
-
-  thead th { font-size: .78rem !important; }
-  tbody td  { font-size: .92rem !important; }
-
-  .stat-value { font-size: 2.4rem !important; }
-}
+    @media (max-width: 600px) {
+      .card { padding: 2rem 1.4rem; }
+      .title { font-size: 1.9rem; }
+    }
   </style>
 </head>
 <body>
@@ -258,14 +75,25 @@ footer .hashtags { font-size: .82rem !important; }
     </div>
     <div class="title">Pedido <em>Recibido</em></div>
     <p class="desc">
-  Recibimos tu comprobante correctamente.<br><br>
-  Tu pedido quedó <strong>registrado y en verificación</strong>.<br>
-  Vamos a confirmar el pago y contactarte por WhatsApp para coordinar la entrega.<br><br>
-  <strong>No hace falta que envíes otro comprobante.</strong>
-</p>
+      Recibimos tu comprobante correctamente.<br><br>
+      Tu pedido quedó <strong>registrado y en verificación</strong>.<br>
+      Vamos a confirmar el pago y contactarte por WhatsApp para coordinar la entrega.<br><br>
+      <strong>No hace falta que envíes otro comprobante.</strong>
+    </p>
     <div class="info-box" id="info-box">
-      <div class="info-row"><span>N° de pedido</span><span id="pedido-id">—</span></div>
-      <div class="info-row"><span>Estado</span><span style="color:var(--green)">✓ Seña pagada</span></div>
+      <div class="info-row">
+        <span>N° de pedido</span>
+        <span id="pedido-id">
+          <span class="spinner-wrap">
+            <span class="spinner"></span>
+            <span style="color:var(--muted);font-size:.88rem">Buscando…</span>
+          </span>
+        </span>
+      </div>
+      <div class="info-row">
+        <span>Estado</span>
+        <span style="color:var(--green)">✓ Seña pagada</span>
+      </div>
     </div>
     <a href="catalogo.html" class="btn">Ver más productos</a>
   </div>
@@ -274,44 +102,58 @@ footer .hashtags { font-size: .82rem !important; }
   const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
 
-  async function buscarPedido() {
-  const params = new URLSearchParams(window.location.search);
-  const paymentId = params.get('payment_id');
-
-  if (!paymentId) return;
-
-  const pedidoIdEl = document.getElementById('pedido-id');
-  pedidoIdEl.textContent = 'Cargando...';
-
-  for (let i = 0; i < 10; i++) { // intentos aumentados
-    await new Promise(r => setTimeout(r, 2000));
-
-    try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/pedidos?mp_payment_id=eq.${encodeURIComponent(paymentId)}&select=id`,
-        {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          }
-        }
-      );
-      const data = await res.json();
-
-      if (data.length > 0) {
-        pedidoIdEl.textContent = '#' + data[0].id;
-        return;
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  function setIdEl(text, isError) {
+    const el = document.getElementById('pedido-id');
+    el.innerHTML = isError
+      ? `<span style="color:var(--muted)">${text}</span>`
+      : `<strong style="color:var(--white)">#${text}</strong>`;
   }
 
-  // fallback
-  pedidoIdEl.textContent = paymentId;
-}
+  async function buscarPedido() {
+    const params = new URLSearchParams(window.location.search);
+
+    // ── CASO 1: MP redirige con ?pedido=ID (back_url con query param) ──
+    const pedidoDirecto = params.get('pedido');
+    if (pedidoDirecto) {
+      setIdEl(pedidoDirecto);
+      return;
+    }
+
+    // ── CASO 2: MP redirige con ?payment_id=XXX (redireccion estándar) ──
+    const paymentId = params.get('payment_id');
+    if (!paymentId) {
+      setIdEl('—', true);
+      return;
+    }
+
+    // Buscar en Supabase por mp_payment_id con reintentos
+    for (let i = 0; i < 12; i++) {
+      await new Promise(r => setTimeout(r, 2500));
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/pedidos?mp_payment_id=eq.${encodeURIComponent(paymentId)}&select=id`,
+          {
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+          }
+        );
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setIdEl(data[0].id);
+          return;
+        }
+      } catch (e) {
+        console.error('Reintento', i, e);
+      }
+    }
+
+    // Fallback: mostrar el payment_id de MP
+    setIdEl(paymentId);
+  }
 
   buscarPedido();
-</script>
+  </script>
 </body>
 </html>

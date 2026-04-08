@@ -1,61 +1,154 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// ── Enviar email via Gmail SMTP ──
-async function enviarEmailConfirmacion(pedido: any, paymentId: string) {
-  const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
+// ── Enviar email via Resend ──
+async function enviarEmailConfirmacion(pedido: any, pedidoId: number) {
+  const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+  if (!RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY no configurada, saltando email");
+    return;
+  }
 
-  // Armar productos
+  const total = Number(pedido.precio_total) || 0;
+  const pagado = Number(pedido.monto_transferido) || 0;
+  const saldo = total - pagado;
+
+  // Armar filas de productos
   const productosHTML = Array.isArray(pedido.productos)
     ? pedido.productos.map((p: any) => `
-      <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;color:#374151">
-          ${p.producto_nombre} — Talle ${p.talle}${p.cantidad > 1 ? ` × ${p.cantidad}` : ""}
-        </td>
-        <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;text-align:right;color:#111827;font-weight:600">
-          $${(Number(p.precio) * (p.cantidad || 1)).toLocaleString("es-AR")}
-        </td>
-      </tr>
-    `).join("")
-    : "";
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #1e2d47;color:#c8d3f0;font-family:sans-serif;font-size:15px">
+            ${p.producto_nombre || "Producto"} — Talle ${p.talle || "?"}${(p.cantidad || 1) > 1 ? ` × ${p.cantidad}` : ""}
+          </td>
+          <td style="padding:10px 0;border-bottom:1px solid #1e2d47;text-align:right;color:#eef2ff;font-weight:700;font-family:sans-serif;font-size:15px">
+            $${(Number(p.precio || 0) * (p.cantidad || 1)).toLocaleString("es-AR")}
+          </td>
+        </tr>
+      `).join("")
+    : `<tr><td colspan="2" style="color:#8a96b8;font-size:14px;padding:8px 0">Sin detalle de productos</td></tr>`;
 
-  const totalStr = `$${Number(pedido.precio_total).toLocaleString("es-AR")}`;
-  const pagadoStr = `$${Number(pedido.monto_transferido).toLocaleString("es-AR")}`;
-  const saldo = Number(pedido.precio_total) - Number(pedido.monto_transferido);
-  const saldoStr = saldo > 0 ? `$${saldo.toLocaleString("es-AR")}` : null;
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#09111f;font-family:sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#09111f;padding:32px 16px">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#0f1929;border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden">
 
-  const emailBody = `...TODO TU HTML EXACTO (no lo toques)...`;
+        <!-- Header -->
+        <tr>
+          <td style="background:#0f1929;border-bottom:3px solid #c0192a;padding:28px 32px;text-align:center">
+            <img src="https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png"
+                 alt="Andes Talleres" width="52" height="52"
+                 style="display:block;margin:0 auto 14px;object-fit:contain" />
+            <p style="margin:0;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#c0192a;font-weight:700">Andes Talleres Futsal</p>
+            <h1 style="margin:8px 0 0;font-size:26px;letter-spacing:.04em;color:#eef2ff;font-weight:900">
+              ✅ PEDIDO CONFIRMADO
+            </h1>
+          </td>
+        </tr>
 
-  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+        <!-- Body -->
+        <tr>
+          <td style="padding:28px 32px">
+
+            <!-- Saludo -->
+            <p style="margin:0 0 20px;color:#c8d3f0;font-size:16px;line-height:1.6">
+              Hola <strong style="color:#eef2ff">${pedido.nombre_cliente || "cliente"}</strong>,<br>
+              recibimos tu seña correctamente. Tu pedido está registrado y en proceso de verificación.
+            </p>
+
+            <!-- Datos del pedido -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#182238;border-radius:6px;padding:16px 20px;margin-bottom:20px">
+              <tr>
+                <td style="color:#4f5a76;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding-bottom:6px">N° de Pedido</td>
+                <td style="text-align:right;color:#eef2ff;font-weight:700;font-size:16px">#${pedidoId}</td>
+              </tr>
+              <tr>
+                <td style="color:#4f5a76;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:6px 0">Categoría</td>
+                <td style="text-align:right;color:#eef2ff;font-size:14px">${pedido.categoria || "—"}</td>
+              </tr>
+              <tr>
+                <td style="color:#4f5a76;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding-top:6px">Estado</td>
+                <td style="text-align:right"><span style="background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);color:#1d9e75;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:3px">✓ Confirmado</span></td>
+              </tr>
+            </table>
+
+            <!-- Productos -->
+            <p style="margin:0 0 10px;color:#4f5a76;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700">Detalle del pedido</p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px">
+              ${productosHTML}
+            </table>
+
+            <!-- Montos -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#182238;border-radius:6px;padding:16px 20px;margin-bottom:24px">
+              <tr>
+                <td style="color:#8a96b8;font-size:14px;padding:4px 0">Total del pedido</td>
+                <td style="text-align:right;color:#eef2ff;font-size:14px">$${total.toLocaleString("es-AR")}</td>
+              </tr>
+              <tr>
+                <td style="color:#1d9e75;font-size:14px;font-weight:700;padding:4px 0">Seña pagada</td>
+                <td style="text-align:right;color:#1d9e75;font-size:14px;font-weight:700">$${pagado.toLocaleString("es-AR")}</td>
+              </tr>
+              ${saldo > 0 ? `
+              <tr>
+                <td style="color:#ba7517;font-size:14px;font-weight:700;border-top:1px solid rgba(255,255,255,0.07);padding-top:8px;margin-top:4px">Saldo a pagar al retirar</td>
+                <td style="text-align:right;color:#ba7517;font-size:14px;font-weight:700;border-top:1px solid rgba(255,255,255,0.07);padding-top:8px">$${saldo.toLocaleString("es-AR")}</td>
+              </tr>` : `
+              <tr>
+                <td colspan="2" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:8px;color:#1d9e75;font-size:13px;font-weight:700">✓ Pago completo — sin saldo pendiente</td>
+              </tr>`}
+            </table>
+
+            <!-- Mensaje -->
+            <div style="background:rgba(29,61,154,.12);border:1px solid rgba(29,61,154,.25);border-radius:6px;padding:16px 20px;margin-bottom:24px">
+              <p style="margin:0;color:#c8d3f0;font-size:14px;line-height:1.7">
+                📦 Te vamos a contactar por <strong style="color:#eef2ff">WhatsApp</strong> al número <strong style="color:#eef2ff">${pedido.telefono_cliente || "registrado"}</strong> para coordinar la entrega.<br><br>
+                No necesitás enviar ningún comprobante adicional.
+              </p>
+            </div>
+
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#09111f;border-top:1px solid rgba(255,255,255,0.06);padding:20px 32px;text-align:center">
+            <p style="margin:0;color:#4f5a76;font-size:12px;letter-spacing:.08em">
+              © 2026 Andes Talleres Sport Club · Godoy Cruz, Mendoza<br>
+              <span style="color:#1d3d9a">#SomosTalleres &nbsp; #SomosFamilia</span>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${SENDGRID_API_KEY}`,
-      "Content-Type": "application/json"
+      "Authorization": `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      personalizations: [
-        {
-          to: [{ email: pedido.email_cliente }],
-          subject: `✅ Pedido confirmado #${paymentId} — Andes Talleres`
-        }
-      ],
-      from: {
-        email: "subcomision.atsc@gmail.com", // 🔴 IMPORTANTE: email verificado en SendGrid
-        name: "Andes Talleres"
-      },
-      content: [
-        {
-          type: "text/html",
-          value: emailBody
-        }
-      ]
-    })
+      from: "Andes Talleres <subcomision.atsc@gmail.com>",
+      to: [pedido.email_cliente],
+      subject: `✅ Pedido #${pedidoId} confirmado — Andes Talleres Futsal`,
+      html,
+    }),
   });
 
   if (!res.ok) {
-    const errorText = await res.text();
-    console.error("SendGrid error:", errorText);
-    throw new Error("Error enviando email");
+    const err = await res.text();
+    console.error("Resend error:", err);
+    throw new Error("Error enviando email via Resend");
   }
+
+  const result = await res.json();
+  console.log("Email enviado OK, id:", result.id);
 }
 
 serve(async (req) => {
@@ -158,10 +251,13 @@ serve(async (req) => {
       return new Response("error", { status: 500 });
     }
 
-    // ✅ Enviar email de confirmación via Gmail SMTP
-    if (pedidoPayload.email_cliente) {
+    // ID del pedido recién insertado
+    const pedidoId = Array.isArray(pedidoData) ? pedidoData[0]?.id : pedidoData?.id;
+
+    // ✅ Enviar email de confirmación via Resend
+    if (pedidoPayload.email_cliente && pedidoId) {
       try {
-        await enviarEmailConfirmacion(pedidoPayload, paymentId);
+        await enviarEmailConfirmacion(pedidoPayload, pedidoId);
         console.log("Email enviado a:", pedidoPayload.email_cliente);
       } catch (emailError) {
         console.error("Error enviando email (no crítico):", emailError);
