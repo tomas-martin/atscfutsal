@@ -275,42 +275,41 @@ footer .hashtags { font-size: .82rem !important; }
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
 
   async function buscarPedido() {
-    const params = new URLSearchParams(window.location.search);
-    const paymentId = params.get('payment_id');
+  const params = new URLSearchParams(window.location.search);
+  const paymentId = params.get('payment_id');
 
-    if (!paymentId) return;
+  if (!paymentId) return;
 
-    // Mostrar que está cargando
-    document.getElementById('pedido-id').textContent = 'Cargando...';
+  const pedidoIdEl = document.getElementById('pedido-id');
+  pedidoIdEl.textContent = 'Cargando...';
 
-    // Intentar hasta 5 veces con 2 segundos entre cada intento
-    for (let i = 0; i < 5; i++) {
-      await new Promise(r => setTimeout(r, 2000));
+  for (let i = 0; i < 10; i++) { // intentos aumentados
+    await new Promise(r => setTimeout(r, 2000));
 
-      try {
-        const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/pedidos?mp_payment_id=eq.${paymentId}&select=id`,
-          {
-            headers: {
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`
-            }
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/pedidos?mp_payment_id=eq.${encodeURIComponent(paymentId)}&select=id`,
+        {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
           }
-        );
-        const data = await res.json();
-
-        if (data.length > 0) {
-          document.getElementById('pedido-id').textContent = '#' + data[0].id;
-          return; // Encontrado, salir
         }
-      } catch (e) {
-        console.error(e);
-      }
-    }
+      );
+      const data = await res.json();
 
-    // Si después de 5 intentos no encontró nada
-    document.getElementById('pedido-id').textContent = paymentId;
+      if (data.length > 0) {
+        pedidoIdEl.textContent = '#' + data[0].id;
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
+
+  // fallback
+  pedidoIdEl.textContent = paymentId;
+}
 
   buscarPedido();
 </script>
