@@ -382,7 +382,18 @@
       document.getElementById('burger-btn').classList.remove('open');
       document.body.style.overflow = '';
     }
+    // Dado un array de rangos y un talle, devuelve el precio
+function getPrecioParaTalle(rangos, talle) {
+  if (!rangos || !Array.isArray(rangos)) return null;
+  const rango = rangos.find(r => r.talles.includes(talle));
+  return rango ? rango.precio : null;
+}
 
+// Precio mínimo para mostrar "desde $X"
+function getPrecioMinimo(rangos) {
+  if (!rangos || !Array.isArray(rangos)) return null;
+  return Math.min(...rangos.map(r => r.precio));
+}
     // ── SIDEBAR MOBILE ──
     function openSidebar() {
       document.getElementById('sidebar').classList.add('mobile-open');
@@ -480,9 +491,12 @@ const imgContent = primeraImagen
 
       const sizesHTML = '<div class="sizes"><span class="size-chip available" style="letter-spacing:.04em">Todos los talles disponibles</span></div>';
 
-      const precio = p.precio
-        ? `<span class="card-price"><small>$</small>${p.precio.toLocaleString('es-AR')}</span>`
-        : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
+      const precioMin = getPrecioMinimo(p.precios_por_rango) || p.precio;
+const precio = precioMin
+  ? `<span class="card-price" style="font-size:1.3rem">
+       <small style="font-size:.65em;color:var(--muted);font-family:'Barlow',sans-serif;font-weight:400">a partir de $</small>${precioMin.toLocaleString('es-AR')}
+     </span>`
+  : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
 
       // onclick → en el futuro lleva a producto.html?id=X
       return `

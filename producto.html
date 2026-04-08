@@ -433,6 +433,18 @@ function changeImage(dir) {
       const counter = document.getElementById('slider-counter');
       if (counter) counter.textContent = `${sliderIndex + 1} / ${total}`;
     }
+    // Dado un array de rangos y un talle, devuelve el precio
+function getPrecioParaTalle(rangos, talle) {
+  if (!rangos || !Array.isArray(rangos)) return null;
+  const rango = rangos.find(r => r.talles.includes(talle));
+  return rango ? rango.precio : null;
+}
+
+// Precio mínimo para mostrar "desde $X"
+function getPrecioMinimo(rangos) {
+  if (!rangos || !Array.isArray(rangos)) return null;
+  return Math.min(...rangos.map(r => r.precio));
+}
 
     function buildSlider(images, badgeHTML) {
   return `
@@ -518,7 +530,22 @@ function changeImage(dir) {
       document.getElementById('cant-stock-info').textContent=`Máx. ${stock} disponibles`;
       document.getElementById('btn-agregar').disabled=false;
       checkEnCarrito();
+      if (producto.precios_por_rango) {
+    const precio = getPrecioParaTalle(producto.precios_por_rango, talle);
+    if (precio) {
+      const displayEl = document.getElementById('precio-display');
+      const senaEl = document.getElementById('sena-display');
+      const prefixEl = displayEl?.previousElementSibling;
+      
+      if (displayEl) displayEl.textContent = precio.toLocaleString('es-AR');
+      if (senaEl) senaEl.textContent = '$' + Math.ceil(precio * 0.5).toLocaleString('es-AR');
+      if (prefixEl) prefixEl.textContent = '$'; // quitar "a partir de"
+      
+      // También actualizar el precio en el objeto para cuando se agrega al carrito
+      talleSeleccionado.precio = precio;
     }
+  }
+}
 
     function checkEnCarrito(){
       if(!talleSeleccionado||!producto)return;
@@ -554,7 +581,7 @@ function changeImage(dir) {
         imagen_url:sliderImages[0]||null,
         talle:talleSeleccionado.talle,
         stock_disponible:talleSeleccionado.stock,
-        precio:producto.precio||0,
+        precio: talleSeleccionado.precio || getPrecioParaTalle(producto.precios_por_rango, talleSeleccionado.talle) || producto.precio || 0,
         cantidad:cantidadSeleccionada
       });
       saveCarrito(carrito);updateCartBadge();
@@ -630,9 +657,11 @@ sliderImages = sliderImages
         </button>`;
       }).join('');
 
-      const precioHTML = p.precio
-        ? `<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`
-        : `<span class="price-consultar">Precio a consultar</span>`;
+      const precioMin = getPrecioMinimo(p.precios_por_rango) || p.precio;
+const precioHTML = precioMin
+  ? `<span class="price-currency" style="font-size:.75rem;color:var(--muted)">a partir de $</span>
+     <span class="price-amount" id="precio-display">${precioMin.toLocaleString('es-AR')}</span>`
+  : `<span class="price-consultar">Precio a consultar</span>`;
 
       document.getElementById('page-content').innerHTML = `
         <div class="product-page">
@@ -641,7 +670,9 @@ sliderImages = sliderImages
             <div class="product-cat">${p.categoria}</div>
             <h1 class="product-name">${p.nombre}</h1>
             <div class="product-price">${precioHTML}</div>
-            ${p.precio ? `<div style="font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:.04em">Seña (50%): <strong style="color:var(--white)">$${Math.ceil(p.precio*0.5).toLocaleString('es-AR')}</strong></div>` : ''}
+            ${precioMin ? `<div style="font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--muted);margin-bottom:1.2rem">
+  Seña (50%): <strong style="color:var(--white)" id="sena-display">$${Math.ceil(precioMin*0.5).toLocaleString('es-AR')}</strong>
+</div>` : ''}
             <span class="stock-badge ${sbCls}"><span class="dot-pulse"></span>${sbTxt}</span>
             <div class="divider"></div>
             ${p.descripcion ? `<p class="product-desc">${p.descripcion}</p>` : ''}
