@@ -584,9 +584,10 @@
       const nombre = document.getElementById('f-nombre').value.trim();
       const email  = document.getElementById('f-email').value.trim();
       const tel    = document.getElementById('f-tel').value.trim();
+      const categoria = document.getElementById('f-categoria').value;
 
       let ok = true;
-      ['f-nombre','f-email','f-tel'].forEach(id => {
+      ['f-nombre','f-email','f-tel','f-categoria'].forEach(id => {
         const el = document.getElementById(id);
         el.classList.remove('error');
         if (!el.value.trim()) { el.classList.add('error'); ok = false; }
