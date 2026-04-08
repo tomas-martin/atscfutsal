@@ -19,6 +19,7 @@
     ::-webkit-scrollbar-track{background:var(--navy-mid);}
     ::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:3px;}
 
+    /* ── HEADER ── */
     header{position:sticky;top:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(9,17,31,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
     .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
     .shield{width:44px;height:44px;flex-shrink:0;object-fit:contain;border-radius:3px;}
@@ -57,23 +58,54 @@
     .nav-links a.active .nav-icon{opacity:1;}
     .nav-drawer-footer{padding:1.2rem 1.5rem;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.15em;color:var(--muted-dim);}
 
+    /* ── BREADCRUMB ── */
     .breadcrumb{max-width:1200px;margin:0 auto;padding:1.2rem 2.5rem .5rem;display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-dim);flex-wrap:wrap;}
     .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
     .breadcrumb a:hover{color:var(--white);}
     .breadcrumb svg{width:10px;height:10px;opacity:.4;flex-shrink:0;}
 
+    /* ── PRODUCT PAGE ── */
     .product-page{max-width:1200px;margin:0 auto;padding:1.5rem 2.5rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+
+    /* ── GALLERY / SLIDER ── */
     .product-gallery{position:sticky;top:84px;}
-    .main-img{width:100%;aspect-ratio:4/3;background:var(--navy-light);border:1px solid var(--border);border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;}
-    .main-img img{width:100%;height:100%;object-fit:cover;}
-    .main-img .placeholder{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted-dim);}
-    .main-img .placeholder img{width:100px;height:100px;object-fit:contain;opacity:.25;}
-    .main-img .placeholder span{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;}
-    .img-badge{position:absolute;top:14px;left:14px;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;padding:4px 12px;border-radius:2px;}
+
+    .slider-wrap{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy-light);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+
+    /* Slides */
+    .slides{display:flex;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,0,.2,1);}
+    .slide{flex:0 0 100%;width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+    .slide img{width:100%;height:100%;object-fit:cover;}
+    .slide .placeholder{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted-dim);}
+    .slide .placeholder img{width:100px;height:100px;object-fit:contain;opacity:.25;}
+    .slide .placeholder span{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;}
+
+    /* Flechas */
+    .slider-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(9,17,31,.7);border:1px solid rgba(255,255,255,.15);color:var(--white);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;}
+    .slider-arrow:hover{background:rgba(29,61,154,.8);border-color:var(--blue);}
+    .slider-arrow.hidden{opacity:0;pointer-events:none;}
+    .slider-arrow svg{width:18px;height:18px;flex-shrink:0;}
+    .arrow-prev{left:12px;}
+    .arrow-next{right:12px;}
+
+    /* Contador */
+    .slider-counter{position:absolute;bottom:12px;right:14px;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.1em;font-weight:700;color:var(--white);background:rgba(9,17,31,.65);padding:4px 10px;border-radius:12px;backdrop-filter:blur(6px);}
+    .slider-counter.hidden{display:none;}
+
+    /* Puntos */
+    .slider-dots{display:flex;justify-content:center;gap:6px;margin-top:.9rem;}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--muted-dim);border:none;cursor:pointer;padding:0;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+    .dot.active{background:var(--white);transform:scale(1.3);}
+    .dot:hover:not(.active){background:var(--muted);}
+    .slider-dots.hidden{display:none;}
+
+    /* Badge sobre imagen */
+    .img-badge{position:absolute;top:14px;left:14px;z-index:5;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;padding:4px 12px;border-radius:2px;}
     .img-badge.nuevo{background:var(--red);color:#fff;}
     .img-badge.ultimas{background:rgba(186,117,23,.9);color:#fff;}
     .img-badge.agotado{background:rgba(0,0,0,.7);color:var(--muted);border:1px solid var(--border);}
 
+    /* ── PRODUCT INFO ── */
     .product-info{display:flex;flex-direction:column;}
     .product-cat{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:.5rem;}
     .product-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,4.5vw,3.6rem);letter-spacing:.05em;line-height:1;color:var(--white);margin-bottom:1rem;}
@@ -84,19 +116,17 @@
     .divider{height:1px;background:var(--border);margin:1.2rem 0;}
     .product-desc{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
     .stock-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:9px 17px;border-radius:2px;margin-bottom:1.5rem;}
-    .stock-badge .dot{width:7px;height:7px;border-radius:50%;}
+    .stock-badge .dot-pulse{width:7px;height:7px;border-radius:50%;}
     .stock-badge.disponible{background:rgba(15,110,86,.15);border:1px solid rgba(15,110,86,.3);color:#1d9e75;}
-    .stock-badge.disponible .dot{background:#1d9e75;}
+    .stock-badge.disponible .dot-pulse{background:#1d9e75;}
     .stock-badge.pocas{background:rgba(186,117,23,.12);border:1px solid rgba(186,117,23,.3);color:#ba7517;}
-    .stock-badge.pocas .dot{background:#ba7517;}
+    .stock-badge.pocas .dot-pulse{background:#ba7517;}
     .stock-badge.agotado{background:rgba(192,25,42,.12);border:1px solid rgba(192,25,42,.3);color:var(--red);}
-    .stock-badge.agotado .dot{background:var(--red);}
+    .stock-badge.agotado .dot-pulse{background:var(--red);}
 
     .talle-label{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between;}
     .talle-label span{color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none;font-size:.82rem;}
     .talle-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.2rem;}
-
-    /* Talles — touch-friendly mínimo 48px */
     .talle-btn{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.06em;font-weight:700;min-width:64px;min-height:52px;padding:13px 16px;text-align:center;border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
     .talle-btn:hover:not(.agotado){border-color:var(--border-h);color:var(--white);}
     .talle-btn.selected{border-color:var(--white);background:rgba(255,255,255,.08);color:var(--white);}
@@ -107,7 +137,6 @@
     .talle-selected-info{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;color:var(--muted);margin-bottom:1.5rem;min-height:1.2rem;}
     .talle-selected-info strong{color:var(--white);}
 
-    /* Cantidad — botones 44×44 mínimo */
     .cant-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;}
     .cant-label{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;}
     .qty-control{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:3px;overflow:hidden;}
@@ -117,7 +146,6 @@
     .qty-val{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--white);min-width:44px;text-align:center;background:var(--navy-card);padding:0 4px;}
     .cant-stock-info{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:var(--muted-dim);}
 
-    /* Botones principales — min-height 52px para touch */
     .btn-agregar{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px;min-height:52px;background:var(--blue);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;transition:all .2s;margin-bottom:10px;-webkit-tap-highlight-color:transparent;}
     .btn-agregar:hover:not(:disabled){background:#2a4fc4;transform:translateY(-1px);}
     .btn-agregar:disabled{background:var(--navy-light);color:var(--muted-dim);cursor:not-allowed;border:1px solid var(--border);}
@@ -132,10 +160,12 @@
     .btn-back:hover{border-color:var(--border-h);color:var(--white);}
     .btn-back svg{width:14px;height:14px;}
 
+    /* ── TOAST ── */
     .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:calc(100vw - 2rem);}
     .toast.show{transform:translateY(0);opacity:1;}
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
 
+    /* ── SKELETON ── */
     .skeleton-page{max-width:1200px;margin:0 auto;padding:1.5rem 2.5rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
     .skeleton-block{background:var(--navy-light);border-radius:6px;animation:pulse 1.4s ease-in-out infinite;}
     .skeleton-img-block{aspect-ratio:4/3;}
@@ -146,10 +176,12 @@
     .error-page h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--white);margin-bottom:.5rem;}
     .error-page p{color:var(--muted);margin-bottom:1.5rem;font-size:.9rem;}
 
+    /* ── FOOTER ── */
     footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
     footer p{font-size:1rem;color:var(--muted-dim);}
     footer .hashtags{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:.12em;color:var(--blue);font-weight:600;}
 
+    /* ── RESPONSIVE ── */
     @media(max-width:860px){
       .product-page{grid-template-columns:1fr;gap:2rem;}
       .product-gallery{position:static;}
@@ -167,25 +199,16 @@
     }
     @media(max-width:600px){
       html{font-size:17px;}
-
-      .product-name  { font-size:2.6rem !important; }
-      .price-amount  { font-size:2.6rem !important; }
-      .product-desc  { font-size:.98rem; }
-      .stock-badge   { font-size:.92rem; padding:8px 14px; }
-
-      /* Talles: 2 por fila en mobile */
-      .talle-grid    { gap:6px; }
-      .talle-btn     { min-width:calc(50% - 3px); flex:1 0 calc(50% - 3px); font-size:1rem; min-height:54px; }
-
-      .talle-selected-info { font-size:.88rem; }
-      .cant-label    { font-size:.88rem; }
-
-      /* Botones full-width touch-friendly */
-      .btn-agregar, .btn-ir-carrito { font-size:1.05rem; padding:17px; }
-      .btn-back      { font-size:.9rem; }
-
-      /* Toast full-width en mobile */
-      .toast { right:1rem; left:1rem; max-width:none; text-align:center; }
+      .product-name{font-size:2.6rem !important;}
+      .price-amount{font-size:2.6rem !important;}
+      .talle-grid{gap:6px;}
+      .talle-btn{min-width:calc(50% - 3px);flex:1 0 calc(50% - 3px);font-size:1rem;min-height:54px;}
+      .btn-agregar,.btn-ir-carrito{font-size:1.05rem;padding:17px;}
+      .btn-back{font-size:.9rem;}
+      .toast{right:1rem;left:1rem;max-width:none;text-align:center;}
+      /* Flechas más chicas en mobile */
+      .slider-arrow{width:38px;height:38px;}
+      .slider-arrow svg{width:15px;height:15px;}
     }
   </style>
 </head>
@@ -282,12 +305,78 @@
     const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
     const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
 
-    let producto=null,talleSeleccionado=null,cantidadSeleccionada=1;
+    let producto=null, talleSeleccionado=null, cantidadSeleccionada=1;
 
+    // ── SLIDER STATE ──
+    let sliderIndex=0, sliderImages=[];
+
+    function goToSlide(idx){
+      const total=sliderImages.length;
+      if(total<=1)return;
+      sliderIndex=Math.max(0,Math.min(idx,total-1));
+      const slides=document.getElementById('slider-slides');
+      if(slides)slides.style.transform=`translateX(-${sliderIndex*100}%)`;
+      // Dots
+      document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
+      // Flechas
+      const prev=document.getElementById('arrow-prev');
+      const next=document.getElementById('arrow-next');
+      if(prev)prev.classList.toggle('hidden',sliderIndex===0);
+      if(next)next.classList.toggle('hidden',sliderIndex===total-1);
+      // Contador
+      const counter=document.getElementById('slider-counter');
+      if(counter)counter.textContent=`${sliderIndex+1} / ${total}`;
+    }
+
+    function buildSlider(images,badgeHTML){
+      const total=images.length;
+      const slidesHTML=images.map(src=>`
+        <div class="slide">
+          <img src="${src}" alt="Foto producto" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\"placeholder\\"><img src=\\"${ESCUDO}\\" /><span>Sin foto</span></div>'" />
+        </div>`).join('');
+
+      const dotsHTML=total>1?images.map((_,i)=>`<button class="dot${i===0?' active':''}" onclick="goToSlide(${i})" aria-label="Foto ${i+1}"></button>`).join(''):'';
+
+      return `
+        <div class="product-gallery">
+          <div class="slider-wrap">
+            ${badgeHTML}
+            <div class="slides" id="slider-slides">${slidesHTML}</div>
+            ${total>1?`
+              <button class="slider-arrow arrow-prev hidden" id="arrow-prev" onclick="goToSlide(sliderIndex-1)" aria-label="Anterior">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="10,3 5,8 10,13"/></svg>
+              </button>
+              <button class="slider-arrow arrow-next" id="arrow-next" onclick="goToSlide(sliderIndex+1)" aria-label="Siguiente">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6,3 11,8 6,13"/></svg>
+              </button>
+              <div class="slider-counter" id="slider-counter">1 / ${total}</div>
+            `:''}
+          </div>
+          ${total>1?`<div class="slider-dots">${dotsHTML}</div>`:''}
+        </div>`;
+    }
+
+    // ── NAV ──
     function toggleNav(){const open=document.getElementById('nav-drawer').classList.toggle('open');document.getElementById('nav-overlay').classList.toggle('open',open);document.getElementById('burger-btn').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
     function closeNav(){document.getElementById('nav-drawer').classList.remove('open');document.getElementById('nav-overlay').classList.remove('open');document.getElementById('burger-btn').classList.remove('open');document.body.style.overflow='';}
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav();});
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape')closeNav();
+      if(e.key==='ArrowLeft')goToSlide(sliderIndex-1);
+      if(e.key==='ArrowRight')goToSlide(sliderIndex+1);
+    });
 
+    // ── SWIPE en mobile ──
+    let touchStartX=0;
+    document.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+    document.addEventListener('touchend',e=>{
+      const diff=touchStartX-e.changedTouches[0].clientX;
+      if(Math.abs(diff)>50){
+        if(diff>0)goToSlide(sliderIndex+1);
+        else goToSlide(sliderIndex-1);
+      }
+    });
+
+    // ── CARRITO ──
     function getCarrito(){try{return JSON.parse(localStorage.getItem('atsc_carrito')||'[]');}catch{return[];}}
     function saveCarrito(c){localStorage.setItem('atsc_carrito',JSON.stringify(c));}
     function updateCartBadge(){const n=getCarrito().reduce((s,i)=>s+(i.cantidad||1),0);const el=document.getElementById('header-cart-count');el.textContent=n;el.classList.toggle('hidden',n===0);}
@@ -308,12 +397,8 @@
       if(nueva<1||nueva>talleSeleccionado.stock)return;
       cantidadSeleccionada=nueva;
       const el=document.getElementById('qty-val');if(el)el.textContent=cantidadSeleccionada;
-      const btnMinus=document.getElementById('qty-minus');
-      const btnPlus=document.getElementById('qty-plus');
-      if(btnMinus)btnMinus.disabled=cantidadSeleccionada<=1;
-      if(btnPlus)btnPlus.disabled=cantidadSeleccionada>=talleSeleccionado.stock;
-      const info=document.getElementById('cant-stock-info');
-      if(info)info.textContent=`Máx. ${talleSeleccionado.stock} disponibles`;
+      document.getElementById('qty-minus').disabled=cantidadSeleccionada<=1;
+      document.getElementById('qty-plus').disabled=cantidadSeleccionada>=talleSeleccionado.stock;
     }
 
     function selectTalle(btn,talle,stock){
@@ -321,10 +406,13 @@
       talleSeleccionado={talle,stock};cantidadSeleccionada=1;
       document.querySelectorAll('.talle-btn').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
-      const info=document.getElementById('talle-info');
-      info.innerHTML=`Talle <strong>${talle}</strong> · <strong>${stock}</strong> disponible${stock!==1?'s':''}`;
+      document.getElementById('talle-info').innerHTML=`Talle <strong>${talle}</strong> · <strong>${stock}</strong> disponible${stock!==1?'s':''}`;
       const qtyRow=document.getElementById('qty-row');
-      if(qtyRow){qtyRow.style.display='flex';document.getElementById('qty-val').textContent=1;document.getElementById('qty-minus').disabled=true;document.getElementById('qty-plus').disabled=stock<=1;document.getElementById('cant-stock-info').textContent=`Máx. ${stock} disponibles`;}
+      qtyRow.style.display='flex';
+      document.getElementById('qty-val').textContent=1;
+      document.getElementById('qty-minus').disabled=true;
+      document.getElementById('qty-plus').disabled=stock<=1;
+      document.getElementById('cant-stock-info').textContent=`Máx. ${stock} disponibles`;
       document.getElementById('btn-agregar').disabled=false;
       checkEnCarrito();
     }
@@ -356,10 +444,10 @@
         existente.cantidad=nuevaCant;saveCarrito(carrito);updateCartBadge();
         showToast(`${nuevaCant} × ${producto.nombre} (${talleSeleccionado.talle}) en carrito`);checkEnCarrito();return;
       }
-      carrito.push({producto_id:producto.id,producto_nombre:producto.nombre,categoria:producto.categoria,imagen_url:producto.imagen_url||null,talle:talleSeleccionado.talle,stock_disponible:talleSeleccionado.stock,precio:producto.precio||0,cantidad:cantidadSeleccionada});
+      carrito.push({producto_id:producto.id,producto_nombre:producto.nombre,categoria:producto.categoria,imagen_url:sliderImages[0]||producto.imagen_url||null,talle:talleSeleccionado.talle,stock_disponible:talleSeleccionado.stock,precio:producto.precio||0,cantidad:cantidadSeleccionada});
       saveCarrito(carrito);updateCartBadge();
-      const txt=cantidadSeleccionada>1?`${cantidadSeleccionada} × ${producto.nombre} (${talleSeleccionado.talle}) agregados`:`¡${producto.nombre} talle ${talleSeleccionado.talle} agregado!`;
-      showToast(txt);checkEnCarrito();
+      showToast(cantidadSeleccionada>1?`${cantidadSeleccionada} × ${producto.nombre} (${talleSeleccionado.talle}) agregados`:`¡${producto.nombre} talle ${talleSeleccionado.talle} agregado!`);
+      checkEnCarrito();
     }
 
     function renderProducto(p){
@@ -367,17 +455,44 @@
       document.title=`${p.nombre} — Andes Talleres Futsal`;
       document.getElementById('breadcrumb-name').textContent=p.nombre;
 
+      // ── Armar array de imágenes ──
+      // Soporta: campo "imagenes" (array JSON) O campo "imagen_url" (string)
+      if(Array.isArray(p.imagenes)&&p.imagenes.length>0){
+        sliderImages=p.imagenes;
+      } else if(p.imagen_url){
+        sliderImages=[p.imagen_url];
+      } else {
+        sliderImages=[];
+      }
+
       let sbCls,sbTxt;
       if(p.stock_total<=0){sbCls='agotado';sbTxt='Sin stock';}
       else if(p.stock_total<=5){sbCls='pocas';sbTxt=`${p.stock_total} unidades disponibles`;}
       else{sbCls='disponible';sbTxt=`${p.stock_total} unidades disponibles`;}
 
-      const imgHTML=p.imagen_url?`<img src="${p.imagen_url}" alt="${p.nombre}" />`:`<div class="placeholder"><img src="${ESCUDO}" alt="Andes Talleres" /><span>Sin foto aún</span></div>`;
-
       let imgBadge='';
       if(p.stock_total<=0)imgBadge=`<span class="img-badge agotado">Sin stock</span>`;
       else if(p.nuevo)imgBadge=`<span class="img-badge nuevo">Nuevo</span>`;
       else if(p.stock_total<=5)imgBadge=`<span class="img-badge ultimas">¡Últimas!</span>`;
+
+      // ── Gallery HTML ──
+      let galleryHTML;
+      if(sliderImages.length>0){
+        galleryHTML=buildSlider(sliderImages,imgBadge);
+      } else {
+        // Sin imagen — placeholder
+        galleryHTML=`
+          <div class="product-gallery">
+            <div class="slider-wrap">
+              ${imgBadge}
+              <div class="slides" id="slider-slides">
+                <div class="slide">
+                  <div class="placeholder"><img src="${ESCUDO}" alt="Andes Talleres" /><span>Sin foto aún</span></div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }
 
       const TALLES_FIJOS=['6','8','10','12','14','16','S','M','L','XL','XXL'];
       const tallesMap=p.tallas||{};
@@ -393,15 +508,13 @@
 
       document.getElementById('page-content').innerHTML=`
         <div class="product-page">
-          <div class="product-gallery">
-            <div class="main-img">${imgHTML}${imgBadge}</div>
-          </div>
+          ${galleryHTML}
           <div class="product-info">
             <div class="product-cat">${p.categoria}</div>
             <h1 class="product-name">${p.nombre}</h1>
             <div class="product-price">${precioHTML}</div>
             ${p.precio?`<div style="font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:.04em">Seña (50%): <strong style="color:var(--white)">$${Math.ceil(p.precio*0.5).toLocaleString('es-AR')}</strong></div>`:''}
-            <span class="stock-badge ${sbCls}"><span class="dot"></span>${sbTxt}</span>
+            <span class="stock-badge ${sbCls}"><span class="dot-pulse"></span>${sbTxt}</span>
             <div class="divider"></div>
             ${p.descripcion?`<p class="product-desc">${p.descripcion}</p>`:''}
             <div class="talle-label">Elegí tu talle <span>Unidades por talle</span></div>
@@ -430,16 +543,36 @@
             </a>
           </div>
         </div>`;
+
+      // Inicializar slider
+      sliderIndex=0;
+      goToSlide(0);
     }
 
-    function renderError(){document.getElementById('page-content').innerHTML=`<div class="error-page"><h2>Producto no encontrado</h2><p>Este producto no existe o fue eliminado del catálogo.</p><a href="catalogo.html" class="btn-back" style="display:inline-flex;width:auto;padding:12px 24px;"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>Volver al catálogo</a></div>`;}
+    function renderError(){
+      document.getElementById('page-content').innerHTML=`
+        <div class="error-page">
+          <h2>Producto no encontrado</h2>
+          <p>Este producto no existe o fue eliminado del catálogo.</p>
+          <a href="catalogo.html" class="btn-back" style="display:inline-flex;width:auto;padding:12px 24px;">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,3 5,8 10,13"/></svg>
+            Volver al catálogo
+          </a>
+        </div>`;
+    }
 
     async function init(){
       updateCartBadge();
       const params=new URLSearchParams(window.location.search);
       const id=params.get('id');
       if(!id){renderError();return;}
-      try{const p=await fetchProducto(id);renderProducto(p);}catch(e){console.error(e);renderError();}
+      try{
+        const p=await fetchProducto(id);
+        renderProducto(p);
+      }catch(e){
+        console.error(e);
+        renderError();
+      }
     }
     init();
   </script>
