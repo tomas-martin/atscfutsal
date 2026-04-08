@@ -16,13 +16,84 @@ async function enviarEmailConfirmacion(pedido: any, pedidoId: number) {
     const saldo = total - pagado;
 
     const html = `
-      <h1>✅ Pedido confirmado</h1>
-      <p>Hola ${pedido.nombre_cliente || "cliente"}</p>
-      <p>Tu pedido #${pedidoId} fue confirmado.</p>
-      <p>Total: $${total}</p>
-      <p>Pagado: $${pagado}</p>
-      <p>Saldo: $${saldo}</p>
-    `;
+  <div style="font-family: Arial, sans-serif; color:#333; max-width:600px; margin:auto;">
+
+    <h1 style="color:#16a34a;">✅ ¡Pago confirmado!</h1>
+
+    <p>Hola <strong>${pedido.nombre_cliente || "cliente"}</strong>,</p>
+
+    <p>
+      Recibimos tu pago correctamente 🙌  
+      Tu pedido ya está confirmado y en proceso.
+    </p>
+
+    <hr style="margin:20px 0;" />
+
+    <h2 style="font-size:18px;">🧾 Detalle del pedido</h2>
+
+    <p><strong>Número de pedido:</strong> #${pedidoId}</p>
+    <p><strong>Fecha:</strong> ${new Date(pedido.created_at).toLocaleString()}</p>
+
+    ${
+      pedido.productos && pedido.productos.length > 0
+        ? `
+        <h3 style="font-size:16px;">🛍️ Productos</h3>
+        <ul>
+          ${pedido.productos
+            .map(
+              (p) => `
+              <li>
+                ${p.nombre}
+                ${p.talle ? ` (Talle: ${p.talle})` : ""}
+                ${p.cantidad ? ` x${p.cantidad}` : ""}
+                - $${p.precio}
+              </li>
+            `
+            )
+            .join("")}
+        </ul>
+      `
+        : ""
+    }
+
+    <hr style="margin:20px 0;" />
+
+    <h2 style="font-size:18px;">💳 Información de pago</h2>
+
+    <p><strong>Total:</strong> $${pedido.precio_total || 0}</p>
+    <p><strong>Pagado:</strong> $${pedido.monto_recibido || pedido.precio_sena || 0}</p>
+    <p>
+      <strong>Saldo pendiente:</strong> 
+      $${Math.max(
+        (pedido.precio_total || 0) -
+        (pedido.monto_recibido || pedido.precio_sena || 0),
+        0
+      )}
+    </p>
+
+    <p><strong>Estado:</strong> ${pedido.estado}</p>
+
+    <hr style="margin:20px 0;" />
+
+    <h2 style="font-size:18px;">📦 ¿Qué sigue?</h2>
+
+    <p>
+      En breve nos vamos a contactar con vos por WhatsApp o email para coordinar 
+      la entrega o el envío de tu pedido.
+    </p>
+
+    <p>
+      Si tenés alguna duda, podés responder directamente a este correo.
+    </p>
+
+    <br />
+
+    <p style="font-size:14px; color:#666;">
+      Gracias por confiar en nosotros 💛
+    </p>
+
+  </div>
+`;
 
     await tranEmailApi.sendTransacEmail({
       sender: {
