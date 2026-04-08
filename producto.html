@@ -19,7 +19,6 @@
     ::-webkit-scrollbar-track{background:var(--navy-mid);}
     ::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:3px;}
 
-    /* ── HEADER ── */
     header{position:sticky;top:0;z-index:200;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(9,17,31,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
     .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
     .shield{width:44px;height:44px;flex-shrink:0;object-fit:contain;border-radius:3px;}
@@ -58,27 +57,81 @@
     .nav-links a.active .nav-icon{opacity:1;}
     .nav-drawer-footer{padding:1.2rem 1.5rem;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.15em;color:var(--muted-dim);}
 
-    /* ── BREADCRUMB ── */
     .breadcrumb{max-width:1200px;margin:0 auto;padding:1.2rem 2.5rem .5rem;display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-dim);flex-wrap:wrap;}
     .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;}
     .breadcrumb a:hover{color:var(--white);}
     .breadcrumb svg{width:10px;height:10px;opacity:.4;flex-shrink:0;}
 
-    /* ── PRODUCT PAGE ── */
     .product-page{max-width:1200px;margin:0 auto;padding:1.5rem 2.5rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
 
-    /* ── GALLERY / SLIDER ── */
+    /* ══════════════════════════════════════════
+       SLIDER — CSS CORREGIDO
+       El truco: slider-wrap tiene overflow:hidden
+       .slides tiene width = 100% * N slides
+       cada .slide tiene width = 100/N %
+       translateX desplaza -index*(100/N)%
+       Pero es más simple: usar translateX(-index*100%)
+       con .slides { width: N*100% } y .slide { width: 100/N% }
+    ══════════════════════════════════════════ */
     .product-gallery{position:sticky;top:84px;}
 
-    .slider-wrap{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy-light);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+    /* El contenedor exterior: controla el tamaño visible */
+    .slider-wrap{
+      position:relative;
+      width:100%;
+      aspect-ratio:4/3;
+      background:var(--navy-light);
+      border:1px solid var(--border);
+      border-radius:6px;
+      overflow:hidden; /* ← CRÍTICO: recorta los slides que están fuera */
+    }
 
-    /* Slides */
-    .slides{display:flex;width:100%;height:100%;transition:transform .4s cubic-bezier(.4,0,.2,1);}
-    .slide{flex:0 0 100%;width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
-    .slide img{width:100%;height:100%;object-fit:cover;}
-    .slide .placeholder{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--muted-dim);}
-    .slide .placeholder img{width:100px;height:100px;object-fit:contain;opacity:.25;}
-    .slide .placeholder span{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;}
+    /* La pista: tan ancha como N slides, se desplaza con transform */
+    .slides{
+      display:flex;
+      flex-direction:row; /* ← slides en fila */
+      height:100%;        /* ← hereda la altura del wrap */
+      /* width se setea dinámicamente por JS */
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+      will-change:transform;
+    }
+
+    /* Cada slide ocupa el 100% del WRAP (no de .slides) */
+    /* width se setea dinámicamente por JS en cada slide */
+    .slide{
+      flex-shrink:0;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .slide img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .slide .placeholder{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      color:var(--muted-dim);
+    }
+    .slide .placeholder img{
+      width:100px;
+      height:100px;
+      object-fit:contain;
+      opacity:.25;
+    }
+    .slide .placeholder span{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.7rem;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
 
     /* Flechas */
     .slider-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(9,17,31,.7);border:1px solid rgba(255,255,255,.15);color:var(--white);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);-webkit-tap-highlight-color:transparent;}
@@ -92,7 +145,7 @@
     .slider-counter{position:absolute;bottom:12px;right:14px;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.1em;font-weight:700;color:var(--white);background:rgba(9,17,31,.65);padding:4px 10px;border-radius:12px;backdrop-filter:blur(6px);}
     .slider-counter.hidden{display:none;}
 
-    /* Puntos */
+    /* Thumbnails / dots */
     .slider-dots{display:flex;justify-content:center;gap:6px;margin-top:.9rem;}
     .dot{width:7px;height:7px;border-radius:50%;background:var(--muted-dim);border:none;cursor:pointer;padding:0;transition:all .2s;-webkit-tap-highlight-color:transparent;}
     .dot.active{background:var(--white);transform:scale(1.3);}
@@ -104,6 +157,15 @@
     .img-badge.nuevo{background:var(--red);color:#fff;}
     .img-badge.ultimas{background:rgba(186,117,23,.9);color:#fff;}
     .img-badge.agotado{background:rgba(0,0,0,.7);color:var(--muted);border:1px solid var(--border);}
+
+    /* Thumbnails strip */
+    .thumb-strip{display:flex;gap:8px;margin-top:.75rem;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--blue-dim) transparent;}
+    .thumb-strip::-webkit-scrollbar{height:3px;}
+    .thumb-strip::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:2px;}
+    .thumb-item{flex-shrink:0;width:64px;height:64px;border-radius:4px;overflow:hidden;border:2px solid var(--border);cursor:pointer;transition:border-color .2s;background:var(--navy-light);}
+    .thumb-item img{width:100%;height:100%;object-fit:cover;display:block;}
+    .thumb-item.active{border-color:var(--white);}
+    .thumb-item:hover:not(.active){border-color:var(--muted);}
 
     /* ── PRODUCT INFO ── */
     .product-info{display:flex;flex-direction:column;}
@@ -150,22 +212,18 @@
     .btn-agregar:hover:not(:disabled){background:#2a4fc4;transform:translateY(-1px);}
     .btn-agregar:disabled{background:var(--navy-light);color:var(--muted-dim);cursor:not-allowed;border:1px solid var(--border);}
     .btn-agregar svg{width:18px;height:18px;flex-shrink:0;}
-
     .btn-ir-carrito{display:none;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px;min-height:52px;background:var(--green);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;text-decoration:none;transition:all .2s;margin-bottom:10px;-webkit-tap-highlight-color:transparent;}
     .btn-ir-carrito:hover{opacity:.9;transform:translateY(-1px);}
     .btn-ir-carrito svg{width:18px;height:18px;flex-shrink:0;}
     .btn-ir-carrito.visible{display:flex;}
-
     .btn-back{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;min-height:48px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all .2s;margin-top:.5rem;-webkit-tap-highlight-color:transparent;}
     .btn-back:hover{border-color:var(--border-h);color:var(--white);}
     .btn-back svg{width:14px;height:14px;}
 
-    /* ── TOAST ── */
     .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:calc(100vw - 2rem);}
     .toast.show{transform:translateY(0);opacity:1;}
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
 
-    /* ── SKELETON ── */
     .skeleton-page{max-width:1200px;margin:0 auto;padding:1.5rem 2.5rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
     .skeleton-block{background:var(--navy-light);border-radius:6px;animation:pulse 1.4s ease-in-out infinite;}
     .skeleton-img-block{aspect-ratio:4/3;}
@@ -176,12 +234,10 @@
     .error-page h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--white);margin-bottom:.5rem;}
     .error-page p{color:var(--muted);margin-bottom:1.5rem;font-size:.9rem;}
 
-    /* ── FOOTER ── */
     footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
     footer p{font-size:1rem;color:var(--muted-dim);}
     footer .hashtags{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:.12em;color:var(--blue);font-weight:600;}
 
-    /* ── RESPONSIVE ── */
     @media(max-width:860px){
       .product-page{grid-template-columns:1fr;gap:2rem;}
       .product-gallery{position:static;}
@@ -206,9 +262,9 @@
       .btn-agregar,.btn-ir-carrito{font-size:1.05rem;padding:17px;}
       .btn-back{font-size:.9rem;}
       .toast{right:1rem;left:1rem;max-width:none;text-align:center;}
-      /* Flechas más chicas en mobile */
       .slider-arrow{width:38px;height:38px;}
       .slider-arrow svg{width:15px;height:15px;}
+      .thumb-item{width:52px;height:52px;}
     }
   </style>
 </head>
@@ -306,43 +362,74 @@
     const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
 
     let producto=null, talleSeleccionado=null, cantidadSeleccionada=1;
-
-    // ── SLIDER STATE ──
     let sliderIndex=0, sliderImages=[];
 
-    function goToSlide(idx){
-      const total=sliderImages.length;
-      if(total<=1)return;
-      sliderIndex=Math.max(0,Math.min(idx,total-1));
-      const slides=document.getElementById('slider-slides');
-      if(slides)slides.style.transform=`translateX(-${sliderIndex*100}%)`;
+    // ══════════════════════════════════════════════════════════
+    // SLIDER — lógica corregida
+    // Técnica: .slides tiene width = N*100%, cada slide = 100/N%
+    // transform: translateX(-index * (100/N) %)
+    // Simplificado con CSS custom property
+    // ══════════════════════════════════════════════════════════
+    function goToSlide(idx) {
+      const total = sliderImages.length;
+      if (total <= 1) return;
+      sliderIndex = Math.max(0, Math.min(idx, total - 1));
+
+      const slidesEl = document.getElementById('slider-slides');
+      if (slidesEl) {
+        // Desplazamos la pista: cada slide ocupa (100/total)% del contenedor
+        // pero lo más robusto es calcular en px o usar la lógica siguiente:
+        // .slides tiene width = total*100% → cada slide ocupa 100%/total del .slides
+        // Para ir al slide N: translateX(-N * (100/total)%)
+        slidesEl.style.transform = `translateX(-${sliderIndex * (100 / total)}%)`;
+      }
+
       // Dots
-      document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===sliderIndex));
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === sliderIndex));
+
+      // Thumbnails
+      document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === sliderIndex));
+
       // Flechas
-      const prev=document.getElementById('arrow-prev');
-      const next=document.getElementById('arrow-next');
-      if(prev)prev.classList.toggle('hidden',sliderIndex===0);
-      if(next)next.classList.toggle('hidden',sliderIndex===total-1);
+      const prev = document.getElementById('arrow-prev');
+      const next = document.getElementById('arrow-next');
+      if (prev) prev.classList.toggle('hidden', sliderIndex === 0);
+      if (next) next.classList.toggle('hidden', sliderIndex === total - 1);
+
       // Contador
-      const counter=document.getElementById('slider-counter');
-      if(counter)counter.textContent=`${sliderIndex+1} / ${total}`;
+      const counter = document.getElementById('slider-counter');
+      if (counter) counter.textContent = `${sliderIndex + 1} / ${total}`;
     }
 
-    function buildSlider(images,badgeHTML){
-      const total=images.length;
-      const slidesHTML=images.map(src=>`
-        <div class="slide">
-          <img src="${src}" alt="Foto producto" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\"placeholder\\"><img src=\\"${ESCUDO}\\" /><span>Sin foto</span></div>'" />
+    function buildSlider(images, badgeHTML) {
+      const total = images.length;
+
+      // Slides: la pista tiene width = total*100%, cada slide = (100/total)%
+      const slidesHTML = images.map(src => `
+        <div class="slide" style="width:${100/total}%">
+          <img src="${src}" alt="Foto producto" loading="lazy"
+               onerror="this.parentElement.innerHTML='<div class=\\"placeholder\\"><img src=\\"${ESCUDO}\\" /><span>Sin foto</span></div>'" />
         </div>`).join('');
 
-      const dotsHTML=total>1?images.map((_,i)=>`<button class="dot${i===0?' active':''}" onclick="goToSlide(${i})" aria-label="Foto ${i+1}"></button>`).join(''):'';
+      const dotsHTML = total > 1
+        ? images.map((_, i) => `<button class="dot${i===0?' active':''}" onclick="goToSlide(${i})" aria-label="Foto ${i+1}"></button>`).join('')
+        : '';
+
+      const thumbsHTML = total > 1
+        ? images.map((src, i) => `
+            <div class="thumb-item${i===0?' active':''}" onclick="goToSlide(${i})">
+              <img src="${src}" alt="Foto ${i+1}" loading="lazy" />
+            </div>`).join('')
+        : '';
 
       return `
         <div class="product-gallery">
           <div class="slider-wrap">
             ${badgeHTML}
-            <div class="slides" id="slider-slides">${slidesHTML}</div>
-            ${total>1?`
+            <div class="slides" id="slider-slides" style="width:${total*100}%">
+              ${slidesHTML}
+            </div>
+            ${total > 1 ? `
               <button class="slider-arrow arrow-prev hidden" id="arrow-prev" onclick="goToSlide(sliderIndex-1)" aria-label="Anterior">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="10,3 5,8 10,13"/></svg>
               </button>
@@ -350,29 +437,31 @@
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6,3 11,8 6,13"/></svg>
               </button>
               <div class="slider-counter" id="slider-counter">1 / ${total}</div>
-            `:''}
+            ` : ''}
           </div>
-          ${total>1?`<div class="slider-dots">${dotsHTML}</div>`:''}
+          ${total > 1 ? `
+            <div class="thumb-strip">${thumbsHTML}</div>
+          ` : ''}
         </div>`;
     }
 
     // ── NAV ──
     function toggleNav(){const open=document.getElementById('nav-drawer').classList.toggle('open');document.getElementById('nav-overlay').classList.toggle('open',open);document.getElementById('burger-btn').classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';}
     function closeNav(){document.getElementById('nav-drawer').classList.remove('open');document.getElementById('nav-overlay').classList.remove('open');document.getElementById('burger-btn').classList.remove('open');document.body.style.overflow='';}
-    document.addEventListener('keydown',e=>{
-      if(e.key==='Escape')closeNav();
-      if(e.key==='ArrowLeft')goToSlide(sliderIndex-1);
-      if(e.key==='ArrowRight')goToSlide(sliderIndex+1);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeNav();
+      if (e.key === 'ArrowLeft') goToSlide(sliderIndex - 1);
+      if (e.key === 'ArrowRight') goToSlide(sliderIndex + 1);
     });
 
-    // ── SWIPE en mobile ──
-    let touchStartX=0;
-    document.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
-    document.addEventListener('touchend',e=>{
-      const diff=touchStartX-e.changedTouches[0].clientX;
-      if(Math.abs(diff)>50){
-        if(diff>0)goToSlide(sliderIndex+1);
-        else goToSlide(sliderIndex-1);
+    // Swipe en mobile
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) goToSlide(sliderIndex + 1);
+        else goToSlide(sliderIndex - 1);
       }
     });
 
@@ -380,7 +469,6 @@
     function getCarrito(){try{return JSON.parse(localStorage.getItem('atsc_carrito')||'[]');}catch{return[];}}
     function saveCarrito(c){localStorage.setItem('atsc_carrito',JSON.stringify(c));}
     function updateCartBadge(){const n=getCarrito().reduce((s,i)=>s+(i.cantidad||1),0);const el=document.getElementById('header-cart-count');el.textContent=n;el.classList.toggle('hidden',n===0);}
-
     function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='toast success show';setTimeout(()=>{t.className='toast success';},3000);}
 
     async function fetchProducto(id){
@@ -401,7 +489,7 @@
       document.getElementById('qty-plus').disabled=cantidadSeleccionada>=talleSeleccionado.stock;
     }
 
-    function selectTalle(btn,talle,stock){
+    function selectTalle(btn, talle, stock){
       if(stock<=0)return;
       talleSeleccionado={talle,stock};cantidadSeleccionada=1;
       document.querySelectorAll('.talle-btn').forEach(b=>b.classList.remove('selected'));
@@ -444,79 +532,100 @@
         existente.cantidad=nuevaCant;saveCarrito(carrito);updateCartBadge();
         showToast(`${nuevaCant} × ${producto.nombre} (${talleSeleccionado.talle}) en carrito`);checkEnCarrito();return;
       }
-      carrito.push({producto_id:producto.id,producto_nombre:producto.nombre,categoria:producto.categoria,imagen_url:sliderImages[0]||producto.imagen_url||null,talle:talleSeleccionado.talle,stock_disponible:talleSeleccionado.stock,precio:producto.precio||0,cantidad:cantidadSeleccionada});
+      carrito.push({
+        producto_id:producto.id,
+        producto_nombre:producto.nombre,
+        categoria:producto.categoria,
+        imagen_url:sliderImages[0]||null,
+        talle:talleSeleccionado.talle,
+        stock_disponible:talleSeleccionado.stock,
+        precio:producto.precio||0,
+        cantidad:cantidadSeleccionada
+      });
       saveCarrito(carrito);updateCartBadge();
       showToast(cantidadSeleccionada>1?`${cantidadSeleccionada} × ${producto.nombre} (${talleSeleccionado.talle}) agregados`:`¡${producto.nombre} talle ${talleSeleccionado.talle} agregado!`);
       checkEnCarrito();
     }
 
-    function renderProducto(p){
-      producto=p;
-      document.title=`${p.nombre} — Andes Talleres Futsal`;
-      document.getElementById('breadcrumb-name').textContent=p.nombre;
+    function renderProducto(p) {
+      producto = p;
+      document.title = `${p.nombre} — Andes Talleres Futsal`;
+      document.getElementById('breadcrumb-name').textContent = p.nombre;
 
-      // ── Armar array de imágenes ──
-      // Soporta: campo "imagenes" (array JSON) O campo "imagen_url" (string)
-      if(Array.isArray(p.imagenes)&&p.imagenes.length>0){
-        sliderImages=p.imagenes;
-      } else if(p.imagen_url){
-        sliderImages=[p.imagen_url];
+      // ── FIX: obtener imágenes (soporta campo imagenes[] y imagen_url) ──
+      if (Array.isArray(p.imagenes) && p.imagenes.length > 0) {
+        sliderImages = p.imagenes;
+      } else if (p.imagen_url) {
+        sliderImages = [p.imagen_url];
       } else {
-        sliderImages=[];
+        sliderImages = [];
       }
 
-      let sbCls,sbTxt;
-      if(p.stock_total<=0){sbCls='agotado';sbTxt='Sin stock';}
-      else if(p.stock_total<=5){sbCls='pocas';sbTxt=`${p.stock_total} unidades disponibles`;}
-      else{sbCls='disponible';sbTxt=`${p.stock_total} unidades disponibles`;}
+      let sbCls, sbTxt;
+      if (p.stock_total <= 0) { sbCls = 'agotado'; sbTxt = 'Sin stock'; }
+      else if (p.stock_total <= 5) { sbCls = 'pocas'; sbTxt = `${p.stock_total} unidades disponibles`; }
+      else { sbCls = 'disponible'; sbTxt = `${p.stock_total} unidades disponibles`; }
 
-      let imgBadge='';
-      if(p.stock_total<=0)imgBadge=`<span class="img-badge agotado">Sin stock</span>`;
-      else if(p.nuevo)imgBadge=`<span class="img-badge nuevo">Nuevo</span>`;
-      else if(p.stock_total<=5)imgBadge=`<span class="img-badge ultimas">¡Últimas!</span>`;
+      let imgBadge = '';
+      if (p.stock_total <= 0) imgBadge = `<span class="img-badge agotado">Sin stock</span>`;
+      else if (p.nuevo) imgBadge = `<span class="img-badge nuevo">Nuevo</span>`;
+      else if (p.stock_total <= 5) imgBadge = `<span class="img-badge ultimas">¡Últimas!</span>`;
 
-      // ── Gallery HTML ──
+      // ── Gallery ──
       let galleryHTML;
-      if(sliderImages.length>0){
-        galleryHTML=buildSlider(sliderImages,imgBadge);
+      if (sliderImages.length > 0) {
+        galleryHTML = buildSlider(sliderImages, imgBadge);
       } else {
-        // Sin imagen — placeholder
-        galleryHTML=`
+        galleryHTML = `
           <div class="product-gallery">
             <div class="slider-wrap">
               ${imgBadge}
-              <div class="slides" id="slider-slides">
-                <div class="slide">
-                  <div class="placeholder"><img src="${ESCUDO}" alt="Andes Talleres" /><span>Sin foto aún</span></div>
+              <div class="slides" id="slider-slides" style="width:100%">
+                <div class="slide" style="width:100%">
+                  <div class="placeholder">
+                    <img src="${ESCUDO}" alt="Andes Talleres" />
+                    <span>Sin foto aún</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>`;
       }
 
-      const TALLES_FIJOS=['6','8','10','12','14','16','S','M','L','XL','XXL'];
-      const tallesMap=p.tallas||{};
-      const tallesHTML=TALLES_FIJOS.map(t=>{
-        const stock=tallesMap.hasOwnProperty(t)?tallesMap[t]:-1;
-        const agotado=stock<=0;
-        return `<button class="talle-btn${agotado?' agotado':''}" onclick="${!agotado?`selectTalle(this,'${t}',${stock})`:''}" ${agotado?'disabled':''}>
-          ${t}<span class="stock-num">${stock>0?stock+' ud.':'sin stock'}</span>
+      // ── Talles ──
+      // FIX: soporta tanto array [{talla,stock}] como objeto {S:5, M:3}
+      const TALLES_FIJOS = ['6','8','10','12','14','16','S','M','L','XL','XXL'];
+      const tallesRaw = p.tallas || {};
+      let tallesMap = {};
+      if (Array.isArray(tallesRaw)) {
+        tallesRaw.forEach(t => { if (t.talla !== undefined) tallesMap[t.talla] = t.stock; });
+      } else {
+        tallesMap = tallesRaw;
+      }
+
+      const tallesHTML = TALLES_FIJOS.map(t => {
+        const stock = tallesMap.hasOwnProperty(t) ? Number(tallesMap[t]) : -1;
+        const agotado = stock <= 0;
+        return `<button class="talle-btn${agotado ? ' agotado' : ''}" onclick="${!agotado ? `selectTalle(this,'${t}',${stock})` : ''}" ${agotado ? 'disabled' : ''}>
+          ${t}<span class="stock-num">${stock > 0 ? stock + ' ud.' : 'sin stock'}</span>
         </button>`;
       }).join('');
 
-      const precioHTML=p.precio?`<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`:`<span class="price-consultar">Precio a consultar</span>`;
+      const precioHTML = p.precio
+        ? `<span class="price-currency">$</span><span class="price-amount">${p.precio.toLocaleString('es-AR')}</span>`
+        : `<span class="price-consultar">Precio a consultar</span>`;
 
-      document.getElementById('page-content').innerHTML=`
+      document.getElementById('page-content').innerHTML = `
         <div class="product-page">
           ${galleryHTML}
           <div class="product-info">
             <div class="product-cat">${p.categoria}</div>
             <h1 class="product-name">${p.nombre}</h1>
             <div class="product-price">${precioHTML}</div>
-            ${p.precio?`<div style="font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:.04em">Seña (50%): <strong style="color:var(--white)">$${Math.ceil(p.precio*0.5).toLocaleString('es-AR')}</strong></div>`:''}
+            ${p.precio ? `<div style="font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:.04em">Seña (50%): <strong style="color:var(--white)">$${Math.ceil(p.precio*0.5).toLocaleString('es-AR')}</strong></div>` : ''}
             <span class="stock-badge ${sbCls}"><span class="dot-pulse"></span>${sbTxt}</span>
             <div class="divider"></div>
-            ${p.descripcion?`<p class="product-desc">${p.descripcion}</p>`:''}
+            ${p.descripcion ? `<p class="product-desc">${p.descripcion}</p>` : ''}
             <div class="talle-label">Elegí tu talle <span>Unidades por talle</span></div>
             <div class="talle-grid">${tallesHTML}</div>
             <div class="talle-selected-info" id="talle-info">Seleccioná un talle para continuar</div>
@@ -545,8 +654,8 @@
         </div>`;
 
       // Inicializar slider
-      sliderIndex=0;
-      goToSlide(0);
+      sliderIndex = 0;
+      if (sliderImages.length > 1) goToSlide(0);
     }
 
     function renderError(){
