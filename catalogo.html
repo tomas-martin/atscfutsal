@@ -632,7 +632,7 @@ if (Array.isArray(tallas)) {
           Object.keys(tallas).forEach(k => tallesSet.add(k));
         }
       });
-      const orden = ['XS','S','M','L','XL','XXL','35-38','39-42','43-46'];
+      const orden = ['XS','S','M','L','XL','XXL','XXXL','XXXXL','35-38','39-42','43-46'];
       const sorted = [...tallesSet].sort((a, b) => {
         const ia = orden.indexOf(a), ib = orden.indexOf(b);
         return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
