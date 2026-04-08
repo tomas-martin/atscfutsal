@@ -11,6 +11,7 @@
       --blue:#1d3d9a;--blue-dim:#152d73;--red:#c0192a;--white:#eef2ff;
       --muted:#8a96b8;--muted-dim:#4f5a76;--border:rgba(255,255,255,0.07);
       --border-h:rgba(255,255,255,0.15);--green:#1d9e75;--yellow:#ba7517;
+      --gold:#d4a017;
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--navy);color:var(--white);font-family:'Barlow',sans-serif;min-height:100vh;font-size:17px;}
@@ -76,9 +77,10 @@
 
     .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
     .stat-card{background:var(--navy-card);border:1px solid var(--border);border-radius:6px;padding:1.3rem 1.5rem;}
+    .stat-card.highlight{border-color:rgba(212,160,23,.3);background:linear-gradient(135deg,var(--navy-card),rgba(212,160,23,.05));}
     .stat-label{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;margin-bottom:.5rem;}
     .stat-value{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.04em;line-height:1;}
-    .stat-value.green{color:var(--green);}.stat-value.yellow{color:var(--yellow);}.stat-value.blue{color:#7fa3e8;}
+    .stat-value.green{color:var(--green);}.stat-value.yellow{color:var(--yellow);}.stat-value.blue{color:#7fa3e8;}.stat-value.gold{color:var(--gold);}
     .stat-sub{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted-dim);margin-top:.3rem;}
 
     .page-header{margin-bottom:1.5rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
@@ -110,6 +112,9 @@
     .pill-confirmada{background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);color:var(--green);}
     .pill-rechazado{background:rgba(192,25,42,.15);border:1px solid rgba(192,25,42,.3);color:var(--red);}
     .pill-entregada{background:rgba(100,120,200,.15);border:1px solid rgba(100,120,200,.3);color:#a0b4f0;}
+
+    /* Pill categoría */
+    .pill-cat{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;background:rgba(29,61,154,.18);border:1px solid rgba(29,61,154,.35);color:#7fa3e8;white-space:nowrap;}
 
     .btn-action{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .2s;}
     .btn-action:hover{border-color:var(--border-h);color:var(--white);}
@@ -145,7 +150,7 @@
     .stock-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
     .si-ok{background:var(--green);}.si-low{background:var(--yellow);}.si-out{background:var(--red);}
 
-    /* ── EDITOR PRECIOS POR RANGO ── */
+    /* EDITOR PRECIOS POR RANGO */
     .rangos-grid{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.7rem;}
     .rango-row{display:flex;align-items:center;gap:.75rem;background:var(--navy-light);border-radius:3px;padding:.65rem 1rem;flex-wrap:wrap;}
     .rango-talles{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.06em;font-weight:700;color:var(--muted);min-width:110px;flex-shrink:0;}
@@ -200,8 +205,20 @@
     .btn-wa-modal:hover{background:rgba(37,211,102,.25);}
     .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);}
     .btn-secondary:hover{border-color:var(--border-h);color:var(--white);}
+    .btn-eliminar{background:rgba(192,25,42,.12);border:1px solid rgba(192,25,42,.3);color:var(--red);}
+    .btn-eliminar:hover{background:rgba(192,25,42,.25);}
 
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+    /* Confirm delete overlay */
+    .confirm-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .2s;}
+    .confirm-overlay.open{opacity:1;pointer-events:all;}
+    .confirm-box{background:var(--navy-mid);border:1px solid rgba(192,25,42,.4);border-radius:8px;padding:2rem;max-width:400px;width:100%;text-align:center;}
+    .confirm-icon{font-size:2.5rem;margin-bottom:1rem;}
+    .confirm-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.05em;color:var(--white);margin-bottom:.5rem;}
+    .confirm-desc{font-size:.95rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
+    .confirm-desc strong{color:var(--white);}
+    .confirm-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+
+    .toast{position:fixed;bottom:2rem;right:2rem;z-index:700;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:13px 20px;border-radius:4px;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;}
     .toast.show{transform:translateY(0);opacity:1;}
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
     .toast.error{background:rgba(192,25,42,.95);color:#fff;border:1px solid rgba(192,25,42,.5);}
@@ -339,6 +356,12 @@
           <button class="btn-refresh" onclick="loadAll()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
         </div>
         <div class="stats-grid">
+          <!-- NUEVO: Plata total recibida (el stat más importante) -->
+          <div class="stat-card highlight">
+            <div class="stat-label">💰 Plata total recibida</div>
+            <div class="stat-value gold" id="stat-total-recibido">—</div>
+            <div class="stat-sub">Señas + pagos completos cobrados</div>
+          </div>
           <div class="stat-card"><div class="stat-label">Señas recibidas</div><div class="stat-value green" id="stat-ingresos">—</div><div class="stat-sub">Monto cobrado confirmado</div></div>
           <div class="stat-card"><div class="stat-label">Confirmadas</div><div class="stat-value blue" id="stat-confirmadas">—</div><div class="stat-sub">Pagos verificados</div></div>
           <div class="stat-card"><div class="stat-label">Entregadas</div><div class="stat-value green" id="stat-entregadas">—</div><div class="stat-sub">Pedidos completados</div></div>
@@ -350,7 +373,7 @@
           <div><h2>Últimas <em>Ventas</em></h2></div>
           <button class="btn-refresh" onclick="showTab('pendientes')" style="background:var(--red);color:#fff;border-color:var(--red)">Ver pendientes →</button>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Productos</th><th>Seña</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Categoría</th><th>Productos</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="dashboard-tbody"></tbody></table></div>
       </div>
 
       <!-- POR CONFIRMAR -->
@@ -362,7 +385,7 @@
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="pend-search" placeholder="Buscar por nombre…" oninput="renderTabla('pendiente')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="pendientes-tbody"></tbody></table></div>
       </div>
 
       <!-- CONFIRMADAS -->
@@ -374,7 +397,7 @@
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="conf-search" placeholder="Buscar por nombre…" oninput="renderTabla('confirmada')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="confirmadas-tbody"></tbody></table></div>
       </div>
 
       <!-- ENTREGADOS -->
@@ -386,7 +409,7 @@
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="entr-search" placeholder="Buscar por nombre…" oninput="renderTabla('entregada')" /></div>
         </div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="entregadas-tbody"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Productos</th><th>Total</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead><tbody id="entregadas-tbody"></tbody></table></div>
       </div>
 
       <!-- STOCK -->
@@ -409,6 +432,7 @@
 
 <div class="sidebar-overlay-mob" id="sidebar-overlay-mob" onclick="closeSidebar()"></div>
 
+<!-- MODAL PEDIDO -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -417,6 +441,19 @@
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Eliminar venta</div>
+    <p class="confirm-desc" id="confirm-desc">¿Seguro que querés eliminar esta venta? Esta acción <strong>no se puede deshacer</strong>.</p>
+    <div class="confirm-actions">
+      <button class="btn-modal btn-eliminar" id="confirm-yes-btn">Sí, eliminar</button>
+      <button class="btn-modal btn-secondary" onclick="closeConfirm()">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -436,10 +473,8 @@
     { id: 3, label: 'XXXL al XXXXL',  talles: ['XXXL','XXXXL'],       precio: 53000 },
   ];
 
-  // Obtener rangos de un producto (usa los de la BD o los default)
   function getRangos(p) {
     if (Array.isArray(p.precios_por_rango) && p.precios_por_rango.length > 0) {
-      // Mezclar con defaults para asegurar que siempre haya 4 rangos
       return RANGOS_DEFAULT.map((def, i) => {
         const saved = p.precios_por_rango[i];
         return { ...def, precio: saved ? (saved.precio || def.precio) : def.precio };
@@ -448,7 +483,6 @@
     return RANGOS_DEFAULT.map(r => ({ ...r }));
   }
 
-  // Precio mínimo para mostrar en el header de la card
   function getPrecioMin(p) {
     const rangos = getRangos(p);
     return Math.min(...rangos.map(r => r.precio));
@@ -466,9 +500,14 @@
     }
     return p.producto_nombre||'—';
   }
-  function getPedidoTalle(p){
-    if(Array.isArray(p.productos)&&p.productos.length>0) return p.productos.map(x=>x.talle||'?').join(', ');
-    return p.talle||'—';
+
+  // ── Label de categoría legible ──
+  function getCatLabel(cat) {
+    const labels = {
+      'c5':'C5','c7':'C7','c9':'C9','c11':'C11','c13':'C13','c15':'C15',
+      'c17':'C17','c20':'C20','primera':'Primera','seniors':'Seniors','veteranos':'Veteranos'
+    };
+    return cat ? (labels[cat] || cat.toUpperCase()) : '—';
   }
 
   document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-password').focus();});
@@ -536,13 +575,13 @@
     const filtered=allPedidos.filter(p=>{
       const matchEstado=p.estado===tipo;
       const productosStr=getPedidoProductosStr(p);
-      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,productosStr].some(v=>v&&String(v).toLowerCase().includes(searchVal));
+      const matchSearch=!searchVal||[p.nombre_cliente,p.email_cliente,productosStr,p.categoria].some(v=>v&&String(v).toLowerCase().includes(searchVal));
       return matchEstado&&matchSearch;
     });
     if(!filtered.length){
       const msgs={pendiente:'Sin pedidos pendientes',confirmada:'Sin ventas confirmadas',entregada:'Sin pedidos entregados'};
       const subs={pendiente:'Los nuevos pedidos aparecen acá.',confirmada:'Confirmá pedidos desde Por confirmar.',entregada:'Los pedidos entregados aparecerán acá.'};
-      tbody.innerHTML=`<tr><td colspan="9"><div class="empty-table"><p>${msgs[tipo]||'Sin resultados'}</p><small>${subs[tipo]||''}</small></div></td></tr>`;
+      tbody.innerHTML=`<tr><td colspan="10"><div class="empty-table"><p>${msgs[tipo]||'Sin resultados'}</p><small>${subs[tipo]||''}</small></div></td></tr>`;
       return;
     }
     const pills={
@@ -561,12 +600,16 @@
       const saldoColor=saldoNum>0?'color:var(--yellow);font-weight:700':'color:var(--green)';
       const pill=pills[p.estado]||pills.pendiente;
       const productosStr=getPedidoProductosStr(p);
+      const catLabel=getCatLabel(p.categoria);
+      const catHTML=p.categoria?`<span class="pill-cat">${catLabel}</span>`:'<span style="color:var(--muted-dim)">—</span>';
+
       if(tipo==='pendiente'){
         return `<tr>
           <td data-label="#">#${p.id}</td>
           <td data-label="Fecha" class="muted">${fecha}</td>
           <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-          <td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
+          <td data-label="Categoría">${catHTML}</td>
+          <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
           <td data-label="Total" style="color:var(--white);font-weight:700">${total}</td>
           <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}</td>
           <td data-label="Estado">${pill}</td>
@@ -578,7 +621,8 @@
           <td data-label="#">#${p.id}</td>
           <td data-label="Fecha" class="muted">${fecha}</td>
           <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-          <td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
+          <td data-label="Categoría">${catHTML}</td>
+          <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
           <td data-label="Total" class="muted">${total}</td>
           <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}</td>
           <td data-label="Saldo" style="${saldoColor}">${saldoStr}</td>
@@ -590,7 +634,8 @@
         <td data-label="#">#${p.id}</td>
         <td data-label="Fecha" class="muted">${fecha}</td>
         <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-        <td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
+        <td data-label="Categoría">${catHTML}</td>
+        <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
         <td data-label="Total" class="muted">${total}</td>
         <td data-label="Cobrado" style="color:var(--green)">${cobradoStr}</td>
         <td data-label="Estado">${pill}</td>
@@ -600,28 +645,44 @@
   }
 
   function updateDashboard(){
-    const confirmadas=allPedidos.filter(p=>p.estado==='confirmada'||p.estado==='entregada');
+    const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
     const entregadas=allPedidos.filter(p=>p.estado==='entregada');
     const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-    const ingresos=confirmadas.reduce((s,p)=>{
+
+    // Señas e ingresos de confirmadas (solo monto_transferido)
+    const ingresosSenas=confirmadas.reduce((s,p)=>{
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
       return s+cobrado;
     },0);
+
+    // Plata total recibida = señas de confirmadas + precio_total completo de entregadas
+    // (porque las entregadas ya fueron cobradas en su totalidad)
+    const totalEntregadas=entregadas.reduce((s,p)=>{
+      return s+Number(p.precio_total||0);
+    },0);
+    const totalRecibido=ingresosSenas+totalEntregadas;
+
+    // Saldo pendiente de confirmadas
     const saldoPendiente=confirmadas.reduce((s,p)=>{
       const total=Number(p.precio_total||0);
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
       return s+(total>cobrado?total-cobrado:0);
     },0);
-    document.getElementById('stat-ingresos').textContent='$'+ingresos.toLocaleString('es-AR');
+
+    const totalRecibidoEl=document.getElementById('stat-total-recibido');
+    if(totalRecibidoEl)totalRecibidoEl.textContent='$'+totalRecibido.toLocaleString('es-AR');
+
+    document.getElementById('stat-ingresos').textContent='$'+ingresosSenas.toLocaleString('es-AR');
     document.getElementById('stat-confirmadas').textContent=confirmadas.length;
     document.getElementById('stat-pendientes').textContent=pendientes.length;
     document.getElementById('stat-entregadas').textContent=entregadas.length;
     document.getElementById('stat-stock').textContent=allProducts.reduce((s,p)=>s+(p.stock_total||0),0);
     const saldoEl=document.getElementById('stat-saldo');
     if(saldoEl)saldoEl.textContent='$'+saldoPendiente.toLocaleString('es-AR');
+
     const dtbody=document.getElementById('dashboard-tbody');
     const ultimas=allPedidos.slice(0,8);
-    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="5"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
+    if(!ultimas.length){dtbody.innerHTML=`<tr><td colspan="6"><div class="empty-table"><p>Sin pedidos aún</p></div></td></tr>`;return;}
     const pills2={confirmada:'<span class="pill pill-confirmada">✓ Confirmada</span>',pendiente:'<span class="pill pill-pendiente">⏳ Pendiente</span>',entregada:'<span class="pill pill-entregada">📦 Entregado</span>',rechazado:'<span class="pill pill-rechazado">✗ Rechazado</span>'};
     dtbody.innerHTML=ultimas.map(p=>{
       const cobrado=Number(p.monto_transferido||p.precio_sena||0);
@@ -629,9 +690,12 @@
       const saldo=total-cobrado;
       const cobradoHTML=cobrado>0?`<div style="color:var(--green)">$${cobrado.toLocaleString('es-AR')}</div><div style="font-size:0.8rem;color:${saldo>0?'orange':'var(--green)'}">${saldo>0?'Falta: $'+saldo.toLocaleString('es-AR'):'✓ Completo'}</div>`:'—';
       const pill=pills2[p.estado]||pills2.pendiente;
+      const catLabel=getCatLabel(p.categoria);
+      const catHTML=p.categoria?`<span class="pill-cat">${catLabel}</span>`:'<span style="color:var(--muted-dim)">—</span>';
       return `<tr>
         <td data-label="Cliente"><strong>${p.nombre_cliente||'—'}</strong></td>
-        <td data-label="Productos" class="muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${getPedidoProductosStr(p)}</td>
+        <td data-label="Categoría">${catHTML}</td>
+        <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${getPedidoProductosStr(p)}</td>
         <td data-label="Cobrado">${cobradoHTML}</td>
         <td data-label="Estado">${pill}</td>
         <td><button class="btn-action" onclick="verPedido(${p.id})">Ver</button></td>
@@ -650,6 +714,8 @@
     const saldoStr=saldoNum>0?'$'+saldoNum.toLocaleString('es-AR'):'✓ Saldado';
     const estadoLabels={confirmada:'✓ Confirmada',pendiente:'⏳ Pendiente',rechazado:'✗ Rechazado',entregada:'📦 Entregado'};
     const estadoLabel=estadoLabels[p.estado]||p.estado;
+    const catLabel=getCatLabel(p.categoria);
+
     let productosHTML='<span style="color:var(--muted-dim)">—</span>';
     if(Array.isArray(p.productos)&&p.productos.length>0){
       productosHTML=`<div class="productos-list">`+p.productos.map(x=>`
@@ -660,6 +726,7 @@
     }else if(p.producto_nombre){
       productosHTML=`<span>${p.producto_nombre} — Talle ${p.talle||'?'}</span>`;
     }
+
     let comprobanteHTML='<span style="color:var(--muted-dim);font-size:.88rem">Sin comprobante adjunto</span>';
     if(p.mp_payment_id){comprobanteHTML=`<div class="mp-comprobante">🔵 Pago MP · Comprobante N° ${p.mp_payment_id}</div>`;}
     if(p.comprobante_b64){
@@ -671,11 +738,13 @@
         comprobanteHTML=`<img style="width:100%;border-radius:4px;border:1px solid var(--border);margin-top:.5rem;max-height:340px;object-fit:contain;background:var(--navy-light);cursor:pointer;" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" title="Click para ampliar" />`;
       }
     }
+
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
     document.getElementById('modal-body').innerHTML=`
       <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
       <div class="detail-row"><span>Estado</span><span>${estadoLabel}</span></div>
       <div class="detail-row"><span>Cliente</span><span>${p.nombre_cliente||'—'}</span></div>
+      <div class="detail-row"><span>Categoría</span><span><span class="pill-cat" style="font-size:.82rem">${catLabel}</span></span></div>
       <div class="detail-row"><span>Email</span><span>${p.email_cliente||'—'}</span></div>
       <div class="detail-row"><span>Teléfono</span><span>${p.telefono_cliente||'—'}</span></div>
       <div class="detail-row" style="flex-direction:column;gap:.5rem"><span>Productos</span>${productosHTML}</div>
@@ -684,9 +753,11 @@
       <div class="detail-row"><span>Saldo a cobrar</span><span style="color:${saldoNum>0?'var(--yellow)':'var(--green)'}">${saldoStr}</span></div>
       <div class="detail-row" style="flex-direction:column;gap:.6rem"><span>Comprobante</span>${comprobanteHTML}</div>
     `;
+
     const waTel=(p.telefono_cliente||'').replace(/\D/g,'');
     const productosResumen=getPedidoProductosStr(p);
     const waMsg=encodeURIComponent(`Hola ${p.nombre_cliente||''}, somos de Andes Talleres Futsal. Tu pedido #${p.id} (${productosResumen}) fue confirmado. ¿Cuándo pasás a retirar?`);
+
     let acciones='';
     if(p.estado==='pendiente'){
       acciones+=`<button class="btn-modal btn-confirmar" onclick="cambiarEstado(${p.id},'confirmada')">✓ Confirmar pago</button>`;
@@ -697,7 +768,9 @@
     }
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="descargarPDF(${p.id})">📄 VER PDF</button>`;
+    acciones+=`<button class="btn-modal btn-eliminar" onclick="confirmarEliminar(${p.id},'${(p.nombre_cliente||'este pedido').replace(/'/g,"\\'")}')">🗑️ Eliminar venta</button>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="closeModal()">Cerrar</button>`;
+
     document.getElementById('modal-actions').innerHTML=acciones;
     document.getElementById('modal-overlay').classList.add('open');
   }
@@ -714,6 +787,36 @@
       const types={confirmada:'success',rechazado:'error',entregada:'success'};
       showToast(msgs[nuevoEstado]||'Estado actualizado',types[nuevoEstado]||'info');
     }catch{showToast('Error al actualizar','error');}
+  }
+
+  // ── ELIMINAR VENTA ──
+  let _deleteId = null;
+
+  function confirmarEliminar(id, nombre) {
+    _deleteId = id;
+    document.getElementById('confirm-desc').innerHTML = `¿Seguro que querés eliminar el pedido de <strong>${nombre}</strong>? Esta acción <strong>no se puede deshacer</strong>.`;
+    document.getElementById('confirm-yes-btn').onclick = () => ejecutarEliminar(_deleteId);
+    closeModal();
+    document.getElementById('confirm-overlay').classList.add('open');
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirm-overlay').classList.remove('open');
+    _deleteId = null;
+  }
+
+  async function ejecutarEliminar(id) {
+    closeConfirm();
+    try {
+      const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      allPedidos = allPedidos.filter(p => p.id !== id);
+      renderTabla('pendiente');renderTabla('confirmada');renderTabla('entregada');
+      updateDashboard();updateBadge();
+      showToast('Venta eliminada', 'info');
+    } catch {
+      showToast('Error al eliminar', 'error');
+    }
   }
 
   function descargarPDF(id){const p=allPedidos.find(x=>x.id===id);if(p)generarPDF(p);}
@@ -744,7 +847,6 @@
       </div>`;
     }).join('');
 
-    // ── Editor rangos de precio ──
     const rangos = getRangos(p);
     const rangosHTML = rangos.map((r, i) => `
       <div class="rango-row">
@@ -774,11 +876,9 @@
         >Guardar</button>
       </div>`).join('');
 
-    // Precio mínimo para mostrar en el header
     const precioMin = getPrecioMin(p);
     const pfDisplay = `desde $${precioMin.toLocaleString('es-AR')}`;
 
-    // Thumbnail
     let thumbSrc = '';
     if (Array.isArray(p.imagenes) && p.imagenes[0]) thumbSrc = p.imagenes[0];
     else if (typeof p.imagenes === 'string') thumbSrc = p.imagenes.split(',')[0]?.trim();
@@ -812,7 +912,6 @@
 
   function toggleRow(id){document.getElementById('product-'+id).classList.toggle('open');}
 
-  // ── Cambio de precio por rango ──
   function markRangoPrecioChange(input) {
     const id = input.dataset.productoRango;
     const idx = input.dataset.rangoIdx;
@@ -826,55 +925,36 @@
     const input = document.querySelector(`input[data-producto-rango="${productId}"][data-rango-idx="${rangoIdx}"]`);
     const btn = document.getElementById(`btn-rango-${productId}-${rangoIdx}`);
     if (!input || !btn) return;
-
     const newPrecio = parseInt(input.value) || 0;
-    btn.disabled = true;
-    btn.textContent = 'Guardando…';
-
+    btn.disabled = true;btn.textContent = 'Guardando…';
     try {
       const product = allProducts.find(p => p.id == productId);
       if (!product) throw new Error('Producto no encontrado');
-
-      // Obtener rangos actuales y actualizar el índice correspondiente
       const rangosActuales = getRangos(product);
       rangosActuales[rangoIdx] = { ...rangosActuales[rangoIdx], precio: newPrecio };
-
-      // Guardar array completo de rangos en Supabase
       const res = await sbFetch('/rest/v1/productos?id=eq.' + productId, {
-        method: 'PATCH',
-        headers: { 'Prefer': 'return=representation' },
+        method: 'PATCH',headers: { 'Prefer': 'return=representation' },
         body: JSON.stringify({ precios_por_rango: rangosActuales }),
       });
       if (!res.ok) throw new Error();
-
-      // Actualizar estado local
       product.precios_por_rango = rangosActuales;
-
-      // Actualizar UI
-      input.dataset.originalRango = newPrecio;
-      input.style.borderColor = '';
+      input.dataset.originalRango = newPrecio;input.style.borderColor = '';
       const actualEl = document.getElementById(`rango-actual-${productId}-${rangoIdx}`);
       if (actualEl) actualEl.textContent = 'Actual: $' + newPrecio.toLocaleString('es-AR');
-
-      // Actualizar "desde $X" en el header de la card
       const headerPrecioEl = document.querySelector(`#product-${productId} .product-stock-total span`);
       if (headerPrecioEl) {
         const nuevoMin = Math.min(...rangosActuales.map(r => r.precio));
         headerPrecioEl.textContent = 'desde $' + nuevoMin.toLocaleString('es-AR');
       }
-
-      btn.textContent = '¡Guardado!';
-      btn.classList.add('saved');
+      btn.textContent = '¡Guardado!';btn.classList.add('saved');
       setTimeout(() => { btn.textContent = 'Guardar'; btn.classList.remove('saved'); }, 2000);
       showToast('Precio actualizado', 'success');
     } catch {
-      btn.disabled = false;
-      btn.textContent = 'Guardar';
+      btn.disabled = false;btn.textContent = 'Guardar';
       showToast('Error al guardar', 'error');
     }
   }
 
-  // ── Cambio de stock ──
   function markChange(input){
     const id=input.dataset.producto,talle=input.dataset.talle;
     const nv=parseInt(input.value)||0,orig=parseInt(input.dataset.original);
@@ -938,16 +1018,13 @@
   async function generarPDF(p){
     const{jsPDF}=window.jspdf;
     const doc=new jsPDF();
-    doc.setFillColor(0,158,227);
-    doc.rect(0,0,210,30,'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(16);
-    doc.text("Comprobante de pago",20,18);
-    doc.setTextColor(0,0,0);
-    doc.setFontSize(12);
+    doc.setFillColor(0,158,227);doc.rect(0,0,210,30,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(16);doc.text("Comprobante de pago",20,18);
+    doc.setTextColor(0,0,0);doc.setFontSize(12);
     let y=50;
     doc.text(`Pedido #${p.id}`,20,y);y+=10;
     doc.text(`Cliente: ${p.nombre_cliente||'-'}`,20,y);y+=10;
+    doc.text(`Categoría: ${getCatLabel(p.categoria)}`,20,y);y+=10;
     doc.text(`Email: ${p.email_cliente||'-'}`,20,y);y+=10;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Argentina/Buenos_Aires'}):'-';
     doc.text(`Fecha: ${fecha}`,20,y);y+=15;
@@ -961,11 +1038,9 @@
     else{doc.setTextColor(0,150,0);doc.text(`✓ Pago completo`,20,y);}
     y+=15;
     if(p.mp_payment_id){doc.setTextColor(0,0,0);doc.text(`ID de operación: "#${p.mp_payment_id}"`,20,y);}
-    y+=15;
-    doc.text("Detalle:",20,y);y+=10;
+    y+=15;doc.text("Detalle:",20,y);y+=10;
     if(Array.isArray(p.productos)){p.productos.forEach(prod=>{doc.text(`- ${prod.producto_nombre} (${prod.talle}) x${prod.cantidad||1}`,20,y);y+=8;});}
-    const url=doc.output('bloburl');
-    window.open(url,'_blank');
+    const url=doc.output('bloburl');window.open(url,'_blank');
   }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
