@@ -659,7 +659,7 @@ sliderImages = sliderImages
 
       const precioMin = getPrecioMinimo(p.precios_por_rango) || p.precio;
 const precioHTML = precioMin
-  ? `<span class="price-currency" style="font-size:.75rem;color:var(--muted)">a partir de $</span>
+  ? `<span class="price-currency" style="font-size:.75rem;color:var(--muted)"> A partir de $</span>
      <span class="price-amount" id="precio-display">${precioMin.toLocaleString('es-AR')}</span>`
   : `<span class="price-consultar">Precio a consultar</span>`;
 
