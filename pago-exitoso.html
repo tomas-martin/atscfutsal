@@ -92,18 +92,24 @@
   <script>
   const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
-
+ 
   async function buscarPedido() {
-    const params = new URLSearchParams(window.location.search);
-    const paymentId = params.get('payment_id');
-
-    if (!paymentId) return;
-
-    // Reintentos: MP puede tardar unos segundos en ejecutar el webhook
-    for (let i = 0; i < 10; i++) {
+    const params      = new URLSearchParams(window.location.search);
+    const externalRef = params.get('external_reference');
+ 
+    if (!externalRef) {
+      document.getElementById('pedido-id').textContent = '—';
+      return;
+    }
+ 
+    document.getElementById('pedido-id').innerHTML =
+      '<span style="color:var(--muted);font-size:.85rem">Procesando…</span>';
+ 
+    // Polling: espera a que el webhook escriba pedido_id en pedidos_temp
+    for (let i = 0; i < 12; i++) {
       try {
         const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/pedidos?mp_payment_id=eq.${encodeURIComponent(paymentId)}&select=id&limit=1`,
+          `${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${encodeURIComponent(externalRef)}&select=pedido_id&limit=1`,
           {
             headers: {
               'apikey': SUPABASE_KEY,
@@ -112,24 +118,27 @@
           }
         );
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          // ✅ Mostramos el id de la tabla pedidos
+ 
+        if (Array.isArray(data) && data.length > 0 && data[0].pedido_id) {
           document.getElementById('pedido-id').innerHTML =
-            `<strong style="color:var(--white);font-size:1.05rem">#${data[0].id}</strong>`;
+            `<strong style="color:var(--white);font-size:1.1rem">#${data[0].pedido_id}</strong>`;
+          localStorage.removeItem('atsc_carrito');
           return;
         }
       } catch (e) {
         console.warn('Reintento', i + 1, e);
       }
-      // Esperar 2.5s entre reintentos
-      await new Promise(r => setTimeout(r, 2500));
+ 
+      await new Promise(r => setTimeout(r, 2000));
     }
-
-    // Si después de todos los reintentos no apareció, mostrar guión
-    document.getElementById('pedido-id').textContent = '—';
+ 
+    document.getElementById('pedido-id').innerHTML =
+      '<span style="color:var(--muted);font-size:.82rem">En proceso — te llegará por email</span>';
+ 
+    localStorage.removeItem('atsc_carrito');
   }
-
+ 
   buscarPedido();
-  </script>
+</script>
 </body>
 </html>

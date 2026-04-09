@@ -207,6 +207,21 @@ serve(async (req) => {
 
     // ID del pedido recién insertado
     const pedidoId = Array.isArray(pedidoData) ? pedidoData[0]?.id : pedidoData?.id;
+    
+    if (pedidoId) {
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/pedidos_temp?id=eq.${pedidoTempId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        apikey: SERVICE_ROLE_KEY!,
+        Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pedido_id: pedidoId }),
+    }
+  );
+}
 
     // ✅ Enviar email de confirmación via Resend
     if (pedidoPayload.email_cliente && pedidoId) {
