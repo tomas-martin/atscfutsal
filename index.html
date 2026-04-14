@@ -28,7 +28,7 @@
     ::-webkit-scrollbar-track { background: var(--navy-mid); }
     ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 3px; }
 
-    /* ── BANNER PREVENTA ── */
+    /* ── BANNER ── */
     .preventa-banner {
       background: linear-gradient(135deg, #0d1f3c 0%, #1a0a0f 50%, #0d1f3c 100%);
       border-bottom: 1px solid rgba(192,25,42,.35);
@@ -63,12 +63,6 @@
     .pb-fire {
       font-size: 1.25rem;
       line-height: 1;
-      animation: flicker 1.8s ease-in-out infinite alternate;
-    }
-    @keyframes flicker {
-      0%   { transform: scale(1)   rotate(-3deg); }
-      50%  { transform: scale(1.1) rotate(2deg);  }
-      100% { transform: scale(.95) rotate(-2deg); }
     }
     .pb-text {
       font-family: 'Barlow Condensed', sans-serif;
@@ -91,58 +85,18 @@
       font-weight: 400;
       margin-top: 2px;
     }
-
-    /* Countdown */
-    .pb-countdown {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      position: relative;
-    }
-    .cd-unit {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(192,25,42,.12);
-      border: 1px solid rgba(192,25,42,.3);
-      border-radius: 4px;
-      padding: .35rem .6rem;
-      min-width: 46px;
-    }
-    .cd-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.55rem;
-      letter-spacing: .04em;
-      line-height: 1;
-      color: var(--white);
-      transition: color .15s;
-    }
-    .cd-num.flash { color: var(--red); }
-    .cd-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: .55rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted-dim);
-      font-weight: 700;
-      margin-top: 2px;
-    }
-    .cd-sep {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      color: rgba(192,25,42,.5);
-      margin-bottom: 12px;
-      line-height: 1;
-    }
-
-    /* Banner finalizado */
-    .pb-finalizado {
+    .pb-proximamente {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: .88rem;
-      letter-spacing: .15em;
+      letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--muted);
       font-weight: 600;
+      color: var(--muted);
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 3px;
+      position: relative;
     }
 
     /* ── HEADER ── */
@@ -276,35 +230,20 @@
       .nav-drawer { width: 100%; border-left: none; }
       .preventa-banner { padding: .65rem 1.2rem; gap: .85rem; }
     }
-
-    @media (max-width: 480px) {
-      .cd-unit { min-width: 40px; padding: .3rem .45rem; }
-      .cd-num { font-size: 1.35rem; }
-      .cd-label { font-size: .5rem; }
-      .pb-text { font-size: .85rem; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- ── BANNER PREVENTA CON CONTADOR ── -->
-  <div class="preventa-banner" id="preventa-banner">
+  <!-- ── BANNER ── -->
+  <div class="preventa-banner">
     <div class="pb-left">
-      <span class="pb-fire">🔥</span>
+      <span class="pb-fire">✨</span>
       <div class="pb-text">
-        <em>Preventa</em> Temporada 2026
-        <small>La preventa cierra el 13 de abril · 23:59 hs</small>
+        <em>Nuevos productos</em> en camino
+        <small>Temporada 2026 · Próximamente disponibles</small>
       </div>
     </div>
-    <div class="pb-countdown" id="pb-countdown">
-      <div class="cd-unit"><span class="cd-num" id="cd-dias">--</span><span class="cd-label">Días</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-horas">--</span><span class="cd-label">Horas</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-min">--</span><span class="cd-label">Min</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-seg">--</span><span class="cd-label">Seg</span></div>
-    </div>
+    <span class="pb-proximamente">Próximamente</span>
   </div>
 
   <!-- HEADER -->
@@ -387,58 +326,6 @@
     const SUPABASE_URL = 'https://qgjocvjmspntldkaghtb.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
 
-    // ── CONTADOR PREVENTA ──
-    // Fecha límite: 13/04/2026 23:59:59 hora Argentina (UTC-3)
-    const FECHA_FIN = new Date('2026-04-14T02:59:59Z'); // 23:59:59 ART = 02:59:59 UTC del día siguiente
-
-    function pad(n) { return String(n).padStart(2, '0'); }
-
-    function tickCountdown() {
-      const ahora = new Date();
-      const diff = FECHA_FIN - ahora;
-
-      if (diff <= 0) {
-        // Preventa terminada: reemplazar countdown por mensaje
-        const cd = document.getElementById('pb-countdown');
-        if (cd) cd.innerHTML = '<span class="pb-finalizado">¡Preventa finalizada!</span>';
-        return;
-      }
-
-      const dias  = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const segs  = Math.floor((diff % (1000 * 60)) / 1000);
-
-      const dEl = document.getElementById('cd-dias');
-      const hEl = document.getElementById('cd-horas');
-      const mEl = document.getElementById('cd-min');
-      const sEl = document.getElementById('cd-seg');
-
-      if (dEl) dEl.textContent = pad(dias);
-      if (hEl) hEl.textContent = pad(horas);
-      if (mEl) mEl.textContent = pad(mins);
-      if (sEl) {
-        // Flash rojo en los segundos cada tick
-        sEl.textContent = pad(segs);
-        sEl.classList.add('flash');
-        setTimeout(() => sEl.classList.remove('flash'), 300);
-      }
-    }
-    // Dado un array de rangos y un talle, devuelve el precio
-function getPrecioParaTalle(rangos, talle) {
-  if (!rangos || !Array.isArray(rangos)) return null;
-  const rango = rangos.find(r => r.talles.includes(talle));
-  return rango ? rango.precio : null;
-}
-
-// Precio mínimo para mostrar "desde $X"
-function getPrecioMinimo(rangos) {
-  if (!rangos || !Array.isArray(rangos)) return null;
-  return Math.min(...rangos.map(r => r.precio));
-}
-    tickCountdown();
-    setInterval(tickCountdown, 1000);
-
     // ── MENÚ NAV ──
     function toggleNav() {
       const open = document.getElementById('nav-drawer').classList.toggle('open');
@@ -474,6 +361,17 @@ function getPrecioMinimo(rangos) {
       return '#1d9e75';
     }
 
+    function getPrecioParaTalle(rangos, talle) {
+      if (!rangos || !Array.isArray(rangos)) return null;
+      const rango = rangos.find(r => r.talles.includes(talle));
+      return rango ? rango.precio : null;
+    }
+
+    function getPrecioMinimo(rangos) {
+      if (!rangos || !Array.isArray(rangos)) return null;
+      return Math.min(...rangos.map(r => r.precio));
+    }
+
     function renderCard(p) {
       const pct     = p.stock_max ? (p.stock_total / p.stock_max) * 100 : 0;
       const soldOut = p.stock_total <= 0;
@@ -493,11 +391,11 @@ function getPrecioMinimo(rangos) {
       const sizesHTML = `<div class="sizes"><span class="size-chip available" style="letter-spacing:.04em">Todos los talles disponibles</span></div>`;
 
       const precioMin = getPrecioMinimo(p.precios_por_rango) || p.precio;
-const precio = precioMin
-  ? `<span class="card-price" style="font-size:1.3rem">
-       <small style="font-size:.65em;color:var(--muted);font-family:'Barlow',sans-serif;font-weight:400">A partir de $</small>${precioMin.toLocaleString('es-AR')}
-     </span>`
-  : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
+      const precio = precioMin
+        ? `<span class="card-price" style="font-size:1.3rem">
+             <small style="font-size:.65em;color:var(--muted);font-family:'Barlow',sans-serif;font-weight:400">A partir de $</small>${precioMin.toLocaleString('es-AR')}
+           </span>`
+        : `<span class="card-price" style="color:var(--muted)">Consultar</span>`;
 
       return `
         <article class="card${soldOut ? ' sold-out' : ''}" data-category="${p.categoria}" onclick="irProducto(this)" data-id="${p.id}">
