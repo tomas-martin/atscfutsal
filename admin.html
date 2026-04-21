@@ -60,6 +60,9 @@
     .nav-item.active{color:var(--white);border-left-color:var(--red);background:rgba(255,255,255,.04);}
     .nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.6;}
     .nav-item.active svg{opacity:1;}
+    .nav-item.nav-cta{color:var(--green);border-left-color:transparent;}
+    .nav-item.nav-cta:hover{color:#fff;background:rgba(29,158,117,.12);border-left-color:var(--green);}
+    .nav-item.nav-cta svg{opacity:.8;color:var(--green);}
     .nav-badge{margin-left:auto;font-size:.7rem;font-weight:700;background:var(--red);color:#fff;padding:2px 8px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;}
     .nav-divider{height:1px;background:var(--border);margin:.5rem 0;}
     .sidebar-footer{margin-top:auto;padding:1.2rem 1.3rem;border-top:1px solid var(--border);}
@@ -113,7 +116,6 @@
     .pill-rechazado{background:rgba(192,25,42,.15);border:1px solid rgba(192,25,42,.3);color:var(--red);}
     .pill-entregada{background:rgba(100,120,200,.15);border:1px solid rgba(100,120,200,.3);color:#a0b4f0;}
 
-    /* Pill categoría */
     .pill-cat{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;background:rgba(29,61,154,.18);border:1px solid rgba(29,61,154,.35);color:#7fa3e8;white-space:nowrap;}
 
     .btn-action{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .2s;}
@@ -208,6 +210,93 @@
     .btn-eliminar{background:rgba(192,25,42,.12);border:1px solid rgba(192,25,42,.3);color:var(--red);}
     .btn-eliminar:hover{background:rgba(192,25,42,.25);}
 
+    /* ── MODAL NUEVA VENTA ── */
+    .nv-overlay{position:fixed;inset:0;z-index:510;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .nv-overlay.open{opacity:1;pointer-events:all;}
+    .nv-modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;width:100%;max-width:660px;max-height:92vh;display:flex;flex-direction:column;}
+    .nv-header{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .nv-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;color:var(--white);}
+    .nv-title em{color:var(--green);font-style:normal;}
+    .nv-close{background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;}
+    .nv-close:hover{color:var(--white);}
+    .nv-close svg{width:20px;height:20px;display:block;}
+    .nv-body{padding:1.4rem 1.6rem;overflow-y:auto;flex:1;}
+    .nv-section{margin-bottom:1.5rem;}
+    .nv-section-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+    .nv-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+    .nv-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;}
+    .nv-field{display:flex;flex-direction:column;gap:.4rem;}
+    .nv-field.full{grid-column:1/-1;}
+    .nv-field label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);}
+    .nv-field input,.nv-field select,.nv-field textarea{background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:11px 14px;color:var(--white);font-family:'Barlow',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;width:100%;}
+    .nv-field input:focus,.nv-field select:focus,.nv-field textarea:focus{border-color:var(--blue);}
+    .nv-field input::placeholder,.nv-field textarea::placeholder{color:var(--muted-dim);}
+    .nv-field input.err,.nv-field select.err{border-color:var(--red);}
+    .nv-field select{appearance:none;cursor:pointer;}
+    .nv-field textarea{resize:vertical;min-height:72px;}
+
+    /* Productos agregados */
+    .nv-productos-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem;}
+    .nv-producto-item{display:flex;align-items:center;gap:.75rem;background:var(--navy-light);border:1px solid var(--border);border-radius:4px;padding:.7rem 1rem;}
+    .nv-producto-info{flex:1;min-width:0;}
+    .nv-producto-info .np-nombre{font-family:'Barlow Condensed',sans-serif;font-size:.98rem;font-weight:700;color:var(--white);}
+    .nv-producto-info .np-sub{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted);margin-top:1px;}
+    .nv-producto-precio{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;color:var(--white);white-space:nowrap;}
+    .nv-producto-remove{background:transparent;border:none;cursor:pointer;color:var(--muted-dim);padding:4px;transition:color .2s;flex-shrink:0;}
+    .nv-producto-remove:hover{color:var(--red);}
+    .nv-producto-remove svg{width:14px;height:14px;display:block;}
+
+    /* Fila agregar producto */
+    .nv-add-row{display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap;}
+    .nv-add-row .nv-field{flex:1;min-width:100px;}
+    .nv-add-row .nv-field.cant{flex:0 0 70px;}
+    .btn-nv-add{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:var(--blue);color:#fff;border:none;padding:11px 16px;border-radius:3px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;align-self:flex-end;}
+    .btn-nv-add:hover{background:#2a4fc4;}
+
+    /* Resumen de totales */
+    .nv-totales{background:var(--navy-card);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;}
+    .nv-total-row{display:flex;justify-content:space-between;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;color:var(--muted);}
+    .nv-total-row strong{color:var(--white);}
+    .nv-total-row.big{font-size:1.15rem;border-top:1px solid var(--border);padding-top:.5rem;margin-top:.2rem;}
+    .nv-total-row.big strong{font-size:1.3rem;color:var(--green);}
+
+    /* Método de pago */
+    .metodo-pago-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+    .metodo-opt{display:flex;align-items:center;gap:.85rem;background:var(--navy-light);border:2px solid var(--border);border-radius:5px;padding:.9rem 1.1rem;cursor:pointer;transition:all .2s;user-select:none;-webkit-tap-highlight-color:transparent;}
+    .metodo-opt:hover{border-color:var(--border-h);}
+    .metodo-opt.selected-efectivo{border-color:var(--green);background:rgba(29,158,117,.08);}
+    .metodo-opt.selected-transferencia{border-color:#7fa3e8;background:rgba(29,61,154,.1);}
+    .metodo-opt.selected-sena{border-color:var(--yellow);background:rgba(186,117,23,.08);}
+    .metodo-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted-dim);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+    .metodo-opt.selected-efectivo .metodo-radio,.metodo-opt.selected-transferencia .metodo-radio,.metodo-opt.selected-sena .metodo-radio{border-color:currentColor;}
+    .metodo-opt.selected-efectivo .metodo-radio::after,.metodo-opt.selected-transferencia .metodo-radio::after,.metodo-opt.selected-sena .metodo-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:currentColor;}
+    .metodo-opt.selected-efectivo{color:var(--green);}
+    .metodo-opt.selected-transferencia{color:#7fa3e8;}
+    .metodo-opt.selected-sena{color:var(--yellow);}
+    .metodo-info .mi-label{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--white);}
+    .metodo-info .mi-desc{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted);margin-top:1px;}
+    .metodo-opt.selected-efectivo .metodo-info .mi-label{color:var(--green);}
+    .metodo-opt.selected-transferencia .metodo-info .mi-label{color:#7fa3e8;}
+    .metodo-opt.selected-sena .metodo-info .mi-label{color:var(--yellow);}
+
+    /* Monto cobrado */
+    .nv-monto-cobrado{background:var(--navy-light);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;margin-top:.8rem;}
+    .nv-monto-cobrado label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
+    .nv-monto-prefix-row{display:flex;align-items:center;gap:.5rem;}
+    .nv-monto-prefix{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--muted-dim);}
+    .nv-monto-cobrado input{background:var(--navy-card);border:1px solid var(--border);border-radius:3px;padding:10px 14px;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;outline:none;transition:border-color .2s;width:180px;-moz-appearance:textfield;}
+    .nv-monto-cobrado input::-webkit-outer-spin-button,.nv-monto-cobrado input::-webkit-inner-spin-button{-webkit-appearance:none;}
+    .nv-monto-cobrado input:focus{border-color:var(--blue);}
+    .nv-monto-hint{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:var(--muted-dim);margin-top:.5rem;}
+    .nv-monto-hint strong{color:var(--yellow);}
+
+    .nv-footer{padding:1rem 1.6rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:.75rem;flex-shrink:0;flex-wrap:wrap;}
+    .btn-nv-guardar{font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--green);color:#fff;border:none;padding:13px 28px;border-radius:3px;cursor:pointer;transition:all .2s;flex:1;min-height:48px;}
+    .btn-nv-guardar:hover{opacity:.9;}
+    .btn-nv-guardar:disabled{background:var(--muted-dim);cursor:not-allowed;}
+    .btn-nv-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
+    .btn-nv-cancel:hover{border-color:var(--border-h);color:var(--white);}
+
     /* Confirm delete overlay */
     .confirm-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .2s;}
     .confirm-overlay.open{opacity:1;pointer-events:all;}
@@ -223,6 +312,11 @@
     .toast.success{background:rgba(29,158,117,.95);color:#fff;border:1px solid rgba(29,158,117,.5);}
     .toast.error{background:rgba(192,25,42,.95);color:#fff;border:1px solid rgba(192,25,42,.5);}
     .toast.info{background:rgba(29,61,154,.95);color:#fff;border:1px solid rgba(29,61,154,.5);}
+
+    /* Badge método pago en tabla */
+    .pill-efectivo{background:rgba(29,158,117,.12);border:1px solid rgba(29,158,117,.3);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
+    .pill-transferencia{background:rgba(29,61,154,.18);border:1px solid rgba(29,61,154,.35);color:#7fa3e8;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
+    .pill-sena{background:rgba(186,117,23,.12);border:1px solid rgba(186,117,23,.3);color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
 
     @media(max-width:900px){
       .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:200;width:260px;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
@@ -240,6 +334,8 @@
       tbody td { display: flex; justify-content: space-between; align-items: flex-start; padding: .35rem 0; border: none; font-size: .95rem; gap: .5rem; }
       tbody td::before { content: attr(data-label); font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; flex-shrink: 0; padding-top: 2px; }
       .table-wrap { overflow-x: unset; }
+      .nv-grid,.nv-grid-3{grid-template-columns:1fr;}
+      .metodo-pago-grid{grid-template-columns:1fr;}
     }
     .modal { display: flex; flex-direction: column; }
     .modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -248,6 +344,7 @@
     @media (max-width: 480px) {
       .stats-grid { grid-template-columns: 1fr !important; }
       .stat-value { font-size: 2.5rem !important; }
+      .nv-modal{max-height:100vh;border-radius:0;}
     }
     @media (max-width: 600px) {
       html { font-size: 17px; }
@@ -264,6 +361,10 @@
       .login-card { padding: 1.8rem 1.4rem; }
       .rango-row { flex-wrap: wrap; gap: .5rem; }
       .rango-talles { min-width: 100%; }
+      .nv-add-row{flex-direction:column;}
+      .nv-add-row .nv-field,.nv-add-row .btn-nv-add{width:100%;}
+      .nv-footer{flex-direction:column;}
+      .btn-nv-guardar,.btn-nv-cancel{width:100%;text-align:center;}
     }
     @media (max-width: 500px) {
       .save-all-bar { flex-direction: column; align-items: stretch; padding: .9rem 1rem; gap: .6rem; }
@@ -321,6 +422,11 @@
       <div class="nav-divider"></div>
       <div class="nav-section">
         <div class="nav-section-label">Ventas</div>
+        <!-- NUEVA VENTA -->
+        <div class="nav-item nav-cta" onclick="abrirNuevaVenta()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+          Nueva Venta
+        </div>
         <div class="nav-item" onclick="showTab('pendientes',this)">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><polyline points="8,4.5 8,8 10.5,10"/></svg>
           Por confirmar
@@ -353,10 +459,15 @@
       <div class="tab-panel active" id="tab-dashboard">
         <div class="page-header">
           <div><h2><em>Dashboard</em></h2><p>Resumen general de la tienda</p></div>
-          <button class="btn-refresh" onclick="loadAll()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <button class="btn-refresh" onclick="abrirNuevaVenta()" style="background:rgba(29,158,117,.15);border-color:rgba(29,158,117,.4);color:var(--green);">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+              Nueva Venta
+            </button>
+            <button class="btn-refresh" onclick="loadAll()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          </div>
         </div>
         <div class="stats-grid">
-          <!-- NUEVO: Plata total recibida (el stat más importante) -->
           <div class="stat-card highlight">
             <div class="stat-label">💰 Plata total recibida</div>
             <div class="stat-value gold" id="stat-total-recibido">—</div>
@@ -380,7 +491,13 @@
       <div class="tab-panel" id="tab-pendientes">
         <div class="page-header">
           <div><h2>Por <em>Confirmar</em></h2><p>Pedidos esperando verificación</p></div>
-          <button class="btn-refresh" onclick="loadPedidos()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <button class="btn-refresh" onclick="abrirNuevaVenta()" style="background:rgba(29,158,117,.15);border-color:rgba(29,158,117,.4);color:var(--green);">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+              Nueva venta
+            </button>
+            <button class="btn-refresh" onclick="loadPedidos()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          </div>
         </div>
         <div class="toolbar">
           <div class="search-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg><input type="text" id="pend-search" placeholder="Buscar por nombre…" oninput="renderTabla('pendiente')" /></div>
@@ -432,7 +549,7 @@
 
 <div class="sidebar-overlay-mob" id="sidebar-overlay-mob" onclick="closeSidebar()"></div>
 
-<!-- MODAL PEDIDO -->
+<!-- MODAL PEDIDO DETALLE -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -441,6 +558,162 @@
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MODAL NUEVA VENTA PRESENCIAL
+     ═══════════════════════════════════════════════════ -->
+<div class="nv-overlay" id="nv-overlay" onclick="nvClickOutside(event)">
+  <div class="nv-modal" onclick="event.stopPropagation()">
+    <div class="nv-header">
+      <span class="nv-title">Nueva <em>Venta</em></span>
+      <button class="nv-close" onclick="cerrarNuevaVenta()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/></svg>
+      </button>
+    </div>
+
+    <div class="nv-body">
+
+      <!-- CLIENTE -->
+      <div class="nv-section">
+        <div class="nv-section-title">Datos del cliente</div>
+        <div class="nv-grid">
+          <div class="nv-field">
+            <label>Nombre *</label>
+            <input type="text" id="nv-nombre" placeholder="Juan Pérez" />
+          </div>
+          <div class="nv-field">
+            <label>Teléfono</label>
+            <input type="tel" id="nv-tel" placeholder="261 123 4567" inputmode="numeric" />
+          </div>
+          <div class="nv-field">
+            <label>Email</label>
+            <input type="email" id="nv-email" placeholder="juan@email.com" />
+          </div>
+          <div class="nv-field">
+            <label>Categoría</label>
+            <select id="nv-categoria">
+              <option value="">Sin categoría</option>
+              <option value="c5">C5</option>
+              <option value="c7">C7</option>
+              <option value="c9">C9</option>
+              <option value="c11">C11</option>
+              <option value="c13">C13</option>
+              <option value="c15">C15</option>
+              <option value="c17">C17</option>
+              <option value="c20">C20</option>
+              <option value="primera">Primera</option>
+              <option value="seniors">Seniors</option>
+              <option value="veteranos">Veteranos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTOS -->
+      <div class="nv-section">
+        <div class="nv-section-title">Productos</div>
+
+        <div class="nv-productos-list" id="nv-productos-list">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;color:var(--muted-dim);text-align:center;padding:.8rem 0;">Ningún producto agregado aún</div>
+        </div>
+
+        <!-- Fila para agregar producto -->
+        <div class="nv-add-row">
+          <div class="nv-field" style="flex:2">
+            <label>Producto</label>
+            <select id="nv-prod-select" onchange="nvProductoChange()">
+              <option value="">Seleccionar producto…</option>
+            </select>
+          </div>
+          <div class="nv-field" style="flex:1">
+            <label>Talle</label>
+            <select id="nv-talle-select" onchange="nvTalleChange()">
+              <option value="">Talle</option>
+            </select>
+          </div>
+          <div class="nv-field cant">
+            <label>Cant.</label>
+            <input type="number" id="nv-cant" min="1" max="99" value="1" style="-moz-appearance:textfield" />
+          </div>
+          <button class="btn-nv-add" onclick="nvAgregarProducto()">+ Agregar</button>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted-dim);margin-top:.5rem;" id="nv-prod-hint"></div>
+      </div>
+
+      <!-- TOTALES -->
+      <div class="nv-section">
+        <div class="nv-section-title">Resumen</div>
+        <div class="nv-totales" id="nv-totales">
+          <div class="nv-total-row"><span>Subtotal</span><strong id="nv-subtotal">$0</strong></div>
+          <div class="nv-total-row big"><span>Total</span><strong id="nv-total">$0</strong></div>
+        </div>
+      </div>
+
+      <!-- MÉTODO DE PAGO -->
+      <div class="nv-section">
+        <div class="nv-section-title">Método de pago</div>
+        <div class="metodo-pago-grid">
+          <div class="metodo-opt selected-efectivo" id="metodo-efectivo" onclick="nvSelectMetodo('efectivo')">
+            <div class="metodo-radio"></div>
+            <div class="metodo-info">
+              <div class="mi-label">💵 Efectivo</div>
+              <div class="mi-desc">Pago en mano, acto seguido</div>
+            </div>
+          </div>
+          <div class="metodo-opt" id="metodo-transferencia" onclick="nvSelectMetodo('transferencia')">
+            <div class="metodo-radio"></div>
+            <div class="metodo-info">
+              <div class="mi-label">🏦 Transferencia</div>
+              <div class="mi-desc">Pago bancario o alias</div>
+            </div>
+          </div>
+          <div class="metodo-opt" id="metodo-sena" onclick="nvSelectMetodo('sena')">
+            <div class="metodo-radio"></div>
+            <div class="metodo-info">
+              <div class="mi-label">📋 Seña (50%)</div>
+              <div class="mi-desc">Reserva con la mitad</div>
+            </div>
+          </div>
+          <div class="metodo-opt" id="metodo-sena-transf" onclick="nvSelectMetodo('sena_transferencia')">
+            <div class="metodo-radio"></div>
+            <div class="metodo-info">
+              <div class="mi-label">🏦 Seña por transf.</div>
+              <div class="mi-desc">Seña por transferencia</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nv-monto-cobrado">
+          <label id="nv-monto-label">Monto cobrado</label>
+          <div class="nv-monto-prefix-row">
+            <span class="nv-monto-prefix">$</span>
+            <input type="number" id="nv-monto-cobrado" min="0" placeholder="0" style="-moz-appearance:textfield" oninput="nvActualizarSaldo()" />
+          </div>
+          <div class="nv-monto-hint" id="nv-monto-hint"></div>
+        </div>
+      </div>
+
+      <!-- ESTADO -->
+      <div class="nv-section">
+        <div class="nv-section-title">Estado inicial</div>
+        <div class="nv-field">
+          <label>Estado</label>
+          <select id="nv-estado">
+            <option value="confirmada">✓ Confirmada (pago verificado)</option>
+            <option value="entregada">📦 Entregada (completada)</option>
+            <option value="pendiente">⏳ Pendiente (sin confirmar)</option>
+          </select>
+        </div>
+      </div>
+
+    </div><!-- /nv-body -->
+
+    <div class="nv-footer">
+      <button class="btn-nv-guardar" id="btn-nv-guardar" onclick="nvGuardar()">✓ Registrar Venta</button>
+      <button class="btn-nv-cancel" onclick="cerrarNuevaVenta()">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -465,7 +738,6 @@
   const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
   let accessToken=null,allPedidos=[],allProducts=[],pendingChanges={};
 
-  // ── Rangos de precio estándar ──
   const RANGOS_DEFAULT = [
     { id: 0, label: 'Talle 6 al 12',  talles: ['6','8','10','12'],    precio: 44000 },
     { id: 1, label: 'Talle 14 al M',  talles: ['14','16','S','M'],    precio: 48000 },
@@ -484,8 +756,13 @@
   }
 
   function getPrecioMin(p) {
+    return Math.min(...getRangos(p).map(r => r.precio));
+  }
+
+  function getPrecioParaTalle(p, talle) {
     const rangos = getRangos(p);
-    return Math.min(...rangos.map(r => r.precio));
+    const rango = rangos.find(r => r.talles.includes(talle));
+    return rango ? rango.precio : getPrecioMin(p);
   }
 
   async function sbFetch(path,opts={}){
@@ -501,15 +778,28 @@
     return p.producto_nombre||'—';
   }
 
-  // ── Label de categoría legible ──
   function getCatLabel(cat) {
-    const labels = {
-      'c5':'C5','c7':'C7','c9':'C9','c11':'C11','c13':'C13','c15':'C15',
-      'c17':'C17','c20':'C20','primera':'Primera','seniors':'Seniors','veteranos':'Veteranos'
-    };
+    const labels = {'c5':'C5','c7':'C7','c9':'C9','c11':'C11','c13':'C13','c15':'C15','c17':'C17','c20':'C20','primera':'Primera','seniors':'Seniors','veteranos':'Veteranos'};
     return cat ? (labels[cat] || cat.toUpperCase()) : '—';
   }
 
+  function getMetodoPagoLabel(p) {
+    const m = p.metodo_pago;
+    if (!m) return null;
+    const labels = { efectivo: '💵 Efectivo', transferencia: '🏦 Transf.', sena: '📋 Seña', sena_transferencia: '🏦 Seña transf.' };
+    return labels[m] || m;
+  }
+
+  function getMetodoPill(p) {
+    const m = p.metodo_pago;
+    if (!m) return '';
+    if (m === 'efectivo') return `<span class="pill-efectivo">💵 Efectivo</span>`;
+    if (m === 'transferencia') return `<span class="pill-transferencia">🏦 Transf.</span>`;
+    if (m === 'sena' || m === 'sena_transferencia') return `<span class="pill-sena">📋 Seña</span>`;
+    return '';
+  }
+
+  // ── Login ──
   document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-password').focus();});
   document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
@@ -562,7 +852,7 @@
   }
   async function loadProducts(){
     const res=await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
-    if(res.ok)allProducts=await res.json();renderProducts();
+    if(res.ok)allProducts=await res.json();renderProducts();nvPopularProductos();
   }
 
   function getSearchId(tipo){return tipo==='pendiente'?'pend-search':tipo==='confirmada'?'conf-search':'entr-search';}
@@ -602,6 +892,7 @@
       const productosStr=getPedidoProductosStr(p);
       const catLabel=getCatLabel(p.categoria);
       const catHTML=p.categoria?`<span class="pill-cat">${catLabel}</span>`:'<span style="color:var(--muted-dim)">—</span>';
+      const metodoPill=getMetodoPill(p);
 
       if(tipo==='pendiente'){
         return `<tr>
@@ -611,7 +902,7 @@
           <td data-label="Categoría">${catHTML}</td>
           <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
           <td data-label="Total" style="color:var(--white);font-weight:700">${total}</td>
-          <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}</td>
+          <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}${metodoPill?'<br>'+metodoPill:''}</td>
           <td data-label="Estado">${pill}</td>
           <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
         </tr>`;
@@ -624,7 +915,7 @@
           <td data-label="Categoría">${catHTML}</td>
           <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
           <td data-label="Total" class="muted">${total}</td>
-          <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}</td>
+          <td data-label="Cobrado" style="color:var(--green);font-weight:700">${cobradoStr}${metodoPill?'<br>'+metodoPill:''}</td>
           <td data-label="Saldo" style="${saldoColor}">${saldoStr}</td>
           <td data-label="Estado">${pill}</td>
           <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
@@ -637,7 +928,7 @@
         <td data-label="Categoría">${catHTML}</td>
         <td data-label="Productos" class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${productosStr}</td>
         <td data-label="Total" class="muted">${total}</td>
-        <td data-label="Cobrado" style="color:var(--green)">${cobradoStr}</td>
+        <td data-label="Cobrado" style="color:var(--green)">${cobradoStr}${metodoPill?'<br>'+metodoPill:''}</td>
         <td data-label="Estado">${pill}</td>
         <td><button class="btn-action" onclick="verPedido(${p.id})">Ver detalle</button></td>
       </tr>`;
@@ -649,20 +940,14 @@
     const entregadas=allPedidos.filter(p=>p.estado==='entregada');
     const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
 
-    // Señas e ingresos de confirmadas (solo monto_transferido)
     const ingresosSenas=confirmadas.reduce((s,p)=>{
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
       return s+cobrado;
     },0);
 
-    // Plata total recibida = señas de confirmadas + precio_total completo de entregadas
-    // (porque las entregadas ya fueron cobradas en su totalidad)
-    const totalEntregadas=entregadas.reduce((s,p)=>{
-      return s+Number(p.precio_total||0);
-    },0);
+    const totalEntregadas=entregadas.reduce((s,p)=>s+Number(p.precio_total||0),0);
     const totalRecibido=ingresosSenas+totalEntregadas;
 
-    // Saldo pendiente de confirmadas
     const saldoPendiente=confirmadas.reduce((s,p)=>{
       const total=Number(p.precio_total||0);
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
@@ -671,7 +956,6 @@
 
     const totalRecibidoEl=document.getElementById('stat-total-recibido');
     if(totalRecibidoEl)totalRecibidoEl.textContent='$'+totalRecibido.toLocaleString('es-AR');
-
     document.getElementById('stat-ingresos').textContent='$'+ingresosSenas.toLocaleString('es-AR');
     document.getElementById('stat-confirmadas').textContent=confirmadas.length;
     document.getElementById('stat-pendientes').textContent=pendientes.length;
@@ -705,7 +989,7 @@
 
   function updateBadge(){const n=allPedidos.filter(p=>p.estado==='pendiente').length;const b=document.getElementById('badge-pendientes');b.textContent=n;b.style.display=n>0?'':'none';}
 
-  // ── MODAL ──
+  // ── MODAL DETALLE ──
   function verPedido(id){
     const p=allPedidos.find(x=>x.id===id);if(!p)return;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Argentina/Buenos_Aires'}):'-';
@@ -713,7 +997,6 @@
     const saldoNum=p.precio_total&&cobrado>0?Number(p.precio_total)-cobrado:0;
     const saldoStr=saldoNum>0?'$'+saldoNum.toLocaleString('es-AR'):'✓ Saldado';
     const estadoLabels={confirmada:'✓ Confirmada',pendiente:'⏳ Pendiente',rechazado:'✗ Rechazado',entregada:'📦 Entregado'};
-    const estadoLabel=estadoLabels[p.estado]||p.estado;
     const catLabel=getCatLabel(p.categoria);
 
     let productosHTML='<span style="color:var(--muted-dim)">—</span>';
@@ -739,16 +1022,24 @@
       }
     }
 
+    // Método de pago
+    const metodoLabels={efectivo:'💵 Efectivo',transferencia:'🏦 Transferencia',sena:'📋 Seña (50%)',sena_transferencia:'🏦 Seña por transferencia'};
+    const metodoStr=p.metodo_pago?(metodoLabels[p.metodo_pago]||p.metodo_pago):'—';
+    // Origen
+    const origenStr=p.origen==='presencial'?'🏪 Presencial':'🌐 Online (MP)';
+
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
     document.getElementById('modal-body').innerHTML=`
       <div class="detail-row"><span>Fecha</span><span>${fecha}</span></div>
-      <div class="detail-row"><span>Estado</span><span>${estadoLabel}</span></div>
+      <div class="detail-row"><span>Estado</span><span>${estadoLabels[p.estado]||p.estado}</span></div>
+      <div class="detail-row"><span>Origen</span><span>${origenStr}</span></div>
       <div class="detail-row"><span>Cliente</span><span>${p.nombre_cliente||'—'}</span></div>
       <div class="detail-row"><span>Categoría</span><span><span class="pill-cat" style="font-size:.82rem">${catLabel}</span></span></div>
       <div class="detail-row"><span>Email</span><span>${p.email_cliente||'—'}</span></div>
       <div class="detail-row"><span>Teléfono</span><span>${p.telefono_cliente||'—'}</span></div>
       <div class="detail-row" style="flex-direction:column;gap:.5rem"><span>Productos</span>${productosHTML}</div>
       <div class="detail-row"><span>Precio total</span><span>$${Number(p.precio_total||0).toLocaleString('es-AR')}</span></div>
+      <div class="detail-row"><span>Método de pago</span><span>${metodoStr}</span></div>
       <div class="detail-row"><span>Cobrado</span><span style="color:var(--green);font-size:1.05rem">$${cobrado.toLocaleString('es-AR')}</span></div>
       <div class="detail-row"><span>Saldo a cobrar</span><span style="color:${saldoNum>0?'var(--yellow)':'var(--green)'}">${saldoStr}</span></div>
       <div class="detail-row" style="flex-direction:column;gap:.6rem"><span>Comprobante</span>${comprobanteHTML}</div>
@@ -779,7 +1070,6 @@
 
   async function cambiarEstado(id, nuevoEstado) {
     try {
-      // Si se marca como entregada, actualizar monto_transferido al total
       const payload = { estado: nuevoEstado };
       if (nuevoEstado === 'entregada') {
         const pedido = allPedidos.find(p => p.id === id);
@@ -787,14 +1077,12 @@
           payload.monto_transferido = Number(pedido.precio_total);
         }
       }
-
       const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, {
         method: 'PATCH',
         headers: { 'Prefer': 'return=representation' },
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error();
-
       const idx = allPedidos.findIndex(p => p.id === id);
       if (idx !== -1) {
         allPedidos[idx].estado = nuevoEstado;
@@ -802,11 +1090,9 @@
           allPedidos[idx].monto_transferido = Number(allPedidos[idx].precio_total);
         }
       }
-
       closeModal();
       renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
       updateDashboard(); updateBadge();
-
       const msgs = { confirmada: '¡Venta confirmada!', rechazado: 'Pedido rechazado', entregada: '✓ Marcado como entregado' };
       const types = { confirmada: 'success', rechazado: 'error', entregada: 'success' };
       showToast(msgs[nuevoEstado] || 'Estado actualizado', types[nuevoEstado] || 'info');
@@ -815,9 +1101,7 @@
     }
   }
 
-  // ── ELIMINAR VENTA ──
   let _deleteId = null;
-
   function confirmarEliminar(id, nombre) {
     _deleteId = id;
     document.getElementById('confirm-desc').innerHTML = `¿Seguro que querés eliminar el pedido de <strong>${nombre}</strong>? Esta acción <strong>no se puede deshacer</strong>.`;
@@ -825,12 +1109,10 @@
     closeModal();
     document.getElementById('confirm-overlay').classList.add('open');
   }
-
   function closeConfirm() {
     document.getElementById('confirm-overlay').classList.remove('open');
     _deleteId = null;
   }
-
   async function ejecutarEliminar(id) {
     closeConfirm();
     try {
@@ -848,7 +1130,284 @@
   function descargarPDF(id){const p=allPedidos.find(x=>x.id===id);if(p)generarPDF(p);}
   function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
 
-  // ── STOCK & PRECIOS ──
+  // ══════════════════════════════════════════════
+  //  NUEVA VENTA PRESENCIAL
+  // ══════════════════════════════════════════════
+  let nvProductos = [];    // [{producto_id, producto_nombre, categoria, talle, precio, cantidad}]
+  let nvMetodo    = 'efectivo';
+
+  function abrirNuevaVenta() {
+    nvProductos = [];
+    nvMetodo = 'efectivo';
+    // Reset form
+    ['nv-nombre','nv-tel','nv-email'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    document.getElementById('nv-categoria').value = '';
+    document.getElementById('nv-estado').value = 'confirmada';
+    document.getElementById('nv-prod-select').value = '';
+    document.getElementById('nv-talle-select').innerHTML = '<option value="">Talle</option>';
+    document.getElementById('nv-cant').value = '1';
+    document.getElementById('nv-monto-cobrado').value = '';
+    document.getElementById('nv-prod-hint').textContent = '';
+    nvSelectMetodo('efectivo');
+    nvRenderProductos();
+    nvActualizarTotales();
+    closeSidebar();
+    document.getElementById('nv-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarNuevaVenta() {
+    document.getElementById('nv-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function nvClickOutside(e) {
+    if (e.target === document.getElementById('nv-overlay')) cerrarNuevaVenta();
+  }
+
+  function nvPopularProductos() {
+    const sel = document.getElementById('nv-prod-select');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Seleccionar producto…</option>';
+    allProducts.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = `${p.nombre} (${p.categoria})`;
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  }
+
+  function nvProductoChange() {
+    const prodId = document.getElementById('nv-prod-select').value;
+    const tallesSel = document.getElementById('nv-talle-select');
+    const hint = document.getElementById('nv-prod-hint');
+    tallesSel.innerHTML = '<option value="">Elegir talle…</option>';
+    hint.textContent = '';
+    if (!prodId) return;
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const TALLES = ['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
+    const tallesRaw = prod.tallas || {};
+    let tallesMap = {};
+    if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla||t.talle] = t.stock; });
+    else tallesMap = tallesRaw;
+    TALLES.forEach(t => {
+      const stock = t in tallesMap ? Number(tallesMap[t]) : 0;
+      const opt = document.createElement('option');
+      opt.value = t;
+      opt.textContent = stock > 0 ? `${t} — ${stock} ud.` : `${t} — sin stock`;
+      opt.disabled = stock <= 0;
+      if (stock > 0) tallesSel.appendChild(opt);
+    });
+    // Si no hay talles con stock
+    if (tallesSel.options.length === 1) {
+      tallesSel.innerHTML = '<option value="">Sin stock disponible</option>';
+    }
+  }
+
+  function nvTalleChange() {
+    const prodId = document.getElementById('nv-prod-select').value;
+    const talle = document.getElementById('nv-talle-select').value;
+    const hint = document.getElementById('nv-prod-hint');
+    hint.textContent = '';
+    if (!prodId || !talle) return;
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const precio = getPrecioParaTalle(prod, talle);
+    hint.innerHTML = `Precio para talle <strong style="color:var(--white)">${talle}</strong>: <strong style="color:var(--green)">$${precio.toLocaleString('es-AR')}</strong>`;
+  }
+
+  function nvAgregarProducto() {
+    const prodId = document.getElementById('nv-prod-select').value;
+    const talle  = document.getElementById('nv-talle-select').value;
+    const cant   = parseInt(document.getElementById('nv-cant').value) || 1;
+    if (!prodId || !talle) { showToast('Seleccioná producto y talle', 'error'); return; }
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const precio = getPrecioParaTalle(prod, talle);
+    // Verificar stock
+    const tallesRaw = prod.tallas || {};
+    let tallesMap = {};
+    if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla||t.talle] = t.stock; });
+    else tallesMap = tallesRaw;
+    const stockDisp = Number(tallesMap[talle] || 0);
+    const yaEnLista = nvProductos.filter(x => x.producto_id == prodId && x.talle === talle).reduce((s,x)=>s+(x.cantidad||1),0);
+    if (cant + yaEnLista > stockDisp) {
+      showToast(`Solo hay ${stockDisp} disponibles en talle ${talle}`, 'error'); return;
+    }
+    // Si ya existe en la lista, sumar cantidad
+    const existente = nvProductos.find(x => x.producto_id == prodId && x.talle === talle);
+    if (existente) {
+      existente.cantidad += cant;
+    } else {
+      nvProductos.push({
+        producto_id: prod.id,
+        producto_nombre: prod.nombre,
+        categoria: prod.categoria,
+        talle,
+        precio,
+        cantidad: cant
+      });
+    }
+    nvRenderProductos();
+    nvActualizarTotales();
+    // Reset selector
+    document.getElementById('nv-prod-select').value = '';
+    document.getElementById('nv-talle-select').innerHTML = '<option value="">Talle</option>';
+    document.getElementById('nv-cant').value = '1';
+    document.getElementById('nv-prod-hint').textContent = '';
+  }
+
+  function nvQuitarProducto(idx) {
+    nvProductos.splice(idx, 1);
+    nvRenderProductos();
+    nvActualizarTotales();
+  }
+
+  function nvRenderProductos() {
+    const container = document.getElementById('nv-productos-list');
+    if (!nvProductos.length) {
+      container.innerHTML = '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:.9rem;color:var(--muted-dim);text-align:center;padding:.8rem 0;">Ningún producto agregado aún</div>';
+      return;
+    }
+    container.innerHTML = nvProductos.map((item, i) => `
+      <div class="nv-producto-item">
+        <div class="nv-producto-info">
+          <div class="np-nombre">${item.producto_nombre}</div>
+          <div class="np-sub">Talle ${item.talle}${item.cantidad > 1 ? ' · x'+item.cantidad : ''} · ${item.categoria}</div>
+        </div>
+        <div class="nv-producto-precio">$${(item.precio * item.cantidad).toLocaleString('es-AR')}</div>
+        <button class="nv-producto-remove" onclick="nvQuitarProducto(${i})" title="Quitar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
+          </svg>
+        </button>
+      </div>`).join('');
+  }
+
+  function nvActualizarTotales() {
+    const total = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+    document.getElementById('nv-subtotal').textContent = '$' + total.toLocaleString('es-AR');
+    document.getElementById('nv-total').textContent    = '$' + total.toLocaleString('es-AR');
+    // Auto-completar monto cobrado según método
+    const montoCobradoEl = document.getElementById('nv-monto-cobrado');
+    if (!montoCobradoEl.value || montoCobradoEl.value == '0') {
+      if (nvMetodo === 'efectivo' || nvMetodo === 'transferencia') {
+        montoCobradoEl.value = total || '';
+      } else if (nvMetodo === 'sena' || nvMetodo === 'sena_transferencia') {
+        montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
+      }
+    }
+    nvActualizarSaldo();
+  }
+
+  function nvSelectMetodo(metodo) {
+    nvMetodo = metodo;
+    // Limpiar todos
+    ['efectivo','transferencia','sena','sena_transf'].forEach(m => {
+      const el = document.getElementById('metodo-' + m);
+      if (el) el.className = 'metodo-opt';
+    });
+    const target = document.getElementById('metodo-' + (metodo === 'sena_transferencia' ? 'sena_transf' : metodo));
+    if (target) target.className = `metodo-opt selected-${metodo === 'sena_transferencia' ? 'sena' : metodo}`;
+
+    const total = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+    const montoCobradoEl = document.getElementById('nv-monto-cobrado');
+    const label = document.getElementById('nv-monto-label');
+
+    if (metodo === 'efectivo') {
+      label.textContent = 'Monto cobrado en efectivo';
+      montoCobradoEl.value = total || '';
+    } else if (metodo === 'transferencia') {
+      label.textContent = 'Monto recibido por transferencia';
+      montoCobradoEl.value = total || '';
+    } else if (metodo === 'sena') {
+      label.textContent = 'Seña cobrada (50% sugerido)';
+      montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
+    } else if (metodo === 'sena_transferencia') {
+      label.textContent = 'Seña recibida por transferencia';
+      montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
+    }
+    nvActualizarSaldo();
+  }
+
+  function nvActualizarSaldo() {
+    const total = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+    const cobrado = parseFloat(document.getElementById('nv-monto-cobrado').value) || 0;
+    const saldo = Math.max(total - cobrado, 0);
+    const hint = document.getElementById('nv-monto-hint');
+    if (total > 0) {
+      if (saldo <= 0) {
+        hint.innerHTML = '<span style="color:var(--green)">✓ Pago completo — sin saldo pendiente</span>';
+      } else {
+        hint.innerHTML = `Saldo restante: <strong>$${saldo.toLocaleString('es-AR')}</strong>`;
+      }
+    } else {
+      hint.textContent = '';
+    }
+  }
+
+  async function nvGuardar() {
+    const nombre = document.getElementById('nv-nombre').value.trim();
+    if (!nombre) { document.getElementById('nv-nombre').classList.add('err'); showToast('El nombre del cliente es obligatorio', 'error'); return; }
+    document.getElementById('nv-nombre').classList.remove('err');
+    if (!nvProductos.length) { showToast('Agregá al menos un producto', 'error'); return; }
+
+    const total     = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+    const cobrado   = parseFloat(document.getElementById('nv-monto-cobrado').value) || total;
+    const sena      = Math.ceil(total * 0.5);
+    const estado    = document.getElementById('nv-estado').value;
+    const categoria = document.getElementById('nv-categoria').value || null;
+    const email     = document.getElementById('nv-email').value.trim() || null;
+    const tel       = document.getElementById('nv-tel').value.trim() || null;
+
+    const btn = document.getElementById('btn-nv-guardar');
+    btn.disabled = true;
+    btn.textContent = 'Guardando…';
+
+    try {
+      const payload = {
+        nombre_cliente:    nombre,
+        email_cliente:     email,
+        telefono_cliente:  tel,
+        categoria:         categoria,
+        productos:         nvProductos,
+        precio_total:      total,
+        precio_sena:       sena,
+        monto_transferido: cobrado,
+        estado:            estado,
+        metodo_pago:       nvMetodo,
+        origen:            'presencial',
+        mp_status:         'approved',
+      };
+
+      const res = await sbFetch('/rest/v1/pedidos', {
+        method: 'POST',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error('Error al guardar');
+      const data = await res.json();
+      const nuevo = Array.isArray(data) ? data[0] : data;
+
+      cerrarNuevaVenta();
+      allPedidos.unshift(nuevo);
+      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+      updateDashboard(); updateBadge();
+      showToast(`✓ Venta #${nuevo.id} registrada`, 'success');
+    } catch (e) {
+      showToast('Error al registrar la venta', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✓ Registrar Venta';
+    }
+  }
+
+  // ══════════════════════════════════════════════
+  //  STOCK & PRECIOS
+  // ══════════════════════════════════════════════
   function renderProducts(){
     const c=document.getElementById('products-list');
     if(!allProducts.length){c.innerHTML='<p style="color:var(--muted);text-align:center;padding:3rem;">No hay productos.</p>';return;}
@@ -1027,6 +1586,7 @@
 
   function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>{t.className='toast '+type;},3500);}
 
+  // ── Session restore ──
   (async function checkSession(){
     const savedToken=localStorage.getItem('atsc_token');
     const savedEmail=localStorage.getItem('atsc_email');
@@ -1053,7 +1613,8 @@
     doc.text(`Categoría: ${getCatLabel(p.categoria)}`,20,y);y+=10;
     doc.text(`Email: ${p.email_cliente||'-'}`,20,y);y+=10;
     const fecha=p.created_at?new Date(p.created_at).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Argentina/Buenos_Aires'}):'-';
-    doc.text(`Fecha: ${fecha}`,20,y);y+=15;
+    doc.text(`Fecha: ${fecha}`,20,y);y+=10;
+    if(p.metodo_pago){const mLabels={efectivo:'Efectivo',transferencia:'Transferencia',sena:'Seña (50%)',sena_transferencia:'Seña por transferencia'};doc.text(`Método de pago: ${mLabels[p.metodo_pago]||p.metodo_pago}`,20,y);y+=10;}
     doc.line(20,y,190,y);y+=10;
     const total=Number(p.precio_total||0);
     const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
@@ -1065,7 +1626,7 @@
     y+=15;
     if(p.mp_payment_id){doc.setTextColor(0,0,0);doc.text(`ID de operación: "#${p.mp_payment_id}"`,20,y);}
     y+=15;doc.text("Detalle:",20,y);y+=10;
-    if(Array.isArray(p.productos)){p.productos.forEach(prod=>{doc.text(`- ${prod.producto_nombre} (${prod.talle}) x${prod.cantidad||1}`,20,y);y+=8;});}
+    if(Array.isArray(p.productos)){p.productos.forEach(prod=>{doc.text(`- ${prod.producto_nombre||prod.nombre||'?'} (${prod.talle}) x${prod.cantidad||1}`,20,y);y+=8;});}
     const url=doc.output('bloburl');window.open(url,'_blank');
   }
 </script>
