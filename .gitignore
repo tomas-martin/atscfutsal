@@ -1,0 +1,42 @@
+# ── Node ──────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Entornos ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.production
+
+# ── Supabase secrets ──────────────────────────
+supabase/.env
+supabase/functions/.env
+
+# ── Build / dist ──────────────────────────────
+dist/
+build/
+.output/
+.vercel/
+
+# ── Editors ───────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── OS ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ──────────────────────────────────────
+logs/
+*.log
+
+# ── Deno cache ────────────────────────────────
+.deno/

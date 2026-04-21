@@ -1114,18 +1114,32 @@
     _deleteId = null;
   }
   async function ejecutarEliminar(id) {
-    closeConfirm();
-    try {
-      const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, { method: 'DELETE' });
-      if (!res.ok) throw new Error();
-      allPedidos = allPedidos.filter(p => p.id !== id);
-      renderTabla('pendiente');renderTabla('confirmada');renderTabla('entregada');
-      updateDashboard();updateBadge();
-      showToast('Venta eliminada', 'info');
-    } catch {
-      showToast('Error al eliminar', 'error');
+  closeConfirm();
+  try {
+    const pedido = allPedidos.find(p => p.id === id);
+ 
+    const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, { method: 'DELETE' });
+    if (!res.ok) throw new Error();
+ 
+    // ✅ Restaurar stock si el pedido tenía productos
+    if (pedido && Array.isArray(pedido.productos) && pedido.productos.length > 0) {
+      await ajustarStock(pedido.productos, +1);
     }
+ 
+    allPedidos = allPedidos.filter(p => p.id !== id);
+    renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+    updateDashboard(); updateBadge();
+ 
+    // Si el panel de stock está abierto, refrescarlo
+    if (document.getElementById('tab-stock').classList.contains('active')) {
+      renderProducts();
+    }
+ 
+    showToast('Venta eliminada — stock restaurado', 'info');
+  } catch {
+    showToast('Error al eliminar', 'error');
   }
+}
 
   function descargarPDF(id){const p=allPedidos.find(x=>x.id===id);if(p)generarPDF(p);}
   function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
@@ -1347,63 +1361,135 @@
       hint.textContent = '';
     }
   }
+  const TALLES_ORDEN = ['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
 
-  async function nvGuardar() {
-    const nombre = document.getElementById('nv-nombre').value.trim();
-    if (!nombre) { document.getElementById('nv-nombre').classList.add('err'); showToast('El nombre del cliente es obligatorio', 'error'); return; }
-    document.getElementById('nv-nombre').classList.remove('err');
-    if (!nvProductos.length) { showToast('Agregá al menos un producto', 'error'); return; }
-
-    const total     = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
-    const cobrado   = parseFloat(document.getElementById('nv-monto-cobrado').value) || total;
-    const sena      = Math.ceil(total * 0.5);
-    const estado    = document.getElementById('nv-estado').value;
-    const categoria = document.getElementById('nv-categoria').value || null;
-    const email     = document.getElementById('nv-email').value.trim() || null;
-    const tel       = document.getElementById('nv-tel').value.trim() || null;
-
-    const btn = document.getElementById('btn-nv-guardar');
-    btn.disabled = true;
-    btn.textContent = 'Guardando…';
-
-    try {
-      const payload = {
-        nombre_cliente:    nombre,
-        email_cliente:     email,
-        telefono_cliente:  tel,
-        categoria:         categoria,
-        productos:         nvProductos,
-        precio_total:      total,
-        precio_sena:       sena,
-        monto_transferido: cobrado,
-        estado:            estado,
-        metodo_pago:       nvMetodo,
-        origen:            'presencial',
-        mp_status:         'approved',
-      };
-
-      const res = await sbFetch('/rest/v1/pedidos', {
-        method: 'POST',
-        headers: { 'Prefer': 'return=representation' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error('Error al guardar');
-      const data = await res.json();
-      const nuevo = Array.isArray(data) ? data[0] : data;
-
-      cerrarNuevaVenta();
-      allPedidos.unshift(nuevo);
-      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
-      updateDashboard(); updateBadge();
-      showToast(`✓ Venta #${nuevo.id} registrada`, 'success');
-    } catch (e) {
-      showToast('Error al registrar la venta', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✓ Registrar Venta';
+  async function ajustarStock(productos, delta = -1) {
+  if (!productos || productos.length === 0) return;
+ 
+  // Agrupar por producto
+  const porProducto = {};
+  for (const item of productos) {
+    const id = String(item.producto_id);
+    if (!porProducto[id]) porProducto[id] = [];
+    porProducto[id].push({ talle: item.talle, cantidad: Number(item.cantidad) || 1 });
+  }
+ 
+  for (const [productoId, items] of Object.entries(porProducto)) {
+    // Obtener producto actual
+    const res = await sbFetch(`/rest/v1/productos?id=eq.${productoId}&select=id,tallas,stock_total`);
+    if (!res.ok) { console.error('Error obteniendo producto', productoId); continue; }
+    const rows = await res.json();
+    if (!rows.length) { console.error('Producto no encontrado', productoId); continue; }
+ 
+    const producto = rows[0];
+    const tallesRaw = producto.tallas || {};
+ 
+    // Normalizar
+    let tallesMap = {};
+    if (Array.isArray(tallesRaw)) {
+      tallesRaw.forEach(t => { tallesMap[t.talla] = Number(t.stock) || 0; });
+    } else {
+      Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
+    }
+ 
+    // Aplicar delta
+    for (const { talle, cantidad } of items) {
+      const actual = tallesMap[talle] ?? 0;
+      tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
+    }
+ 
+    // Reconstruir array
+    const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
+    const nuevoTotal   = nuevosTalles.reduce((s, t) => s + t.stock, 0);
+ 
+    // Guardar en Supabase
+    await sbFetch(`/rest/v1/productos?id=eq.${productoId}`, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ tallas: nuevosTalles, stock_total: nuevoTotal }),
+    });
+ 
+    // Actualizar allProducts en memoria para que el panel de stock refleje cambios
+    const idx = allProducts.findIndex(p => String(p.id) === productoId);
+    if (idx !== -1) {
+      allProducts[idx].tallas     = nuevosTalles;
+      allProducts[idx].stock_total = nuevoTotal;
     }
   }
+}
+ 
+// ──────────────────────────────────────────────
+//  NUEVA VENTA — guarda + descuenta stock
+// ──────────────────────────────────────────────
+async function nvGuardar() {
+  const nombre = document.getElementById('nv-nombre').value.trim();
+  if (!nombre) {
+    document.getElementById('nv-nombre').classList.add('err');
+    showToast('El nombre del cliente es obligatorio', 'error');
+    return;
+  }
+  document.getElementById('nv-nombre').classList.remove('err');
+  if (!nvProductos.length) { showToast('Agregá al menos un producto', 'error'); return; }
+ 
+  const total     = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+  const cobrado   = parseFloat(document.getElementById('nv-monto-cobrado').value) || total;
+  const sena      = Math.ceil(total * 0.5);
+  const estado    = document.getElementById('nv-estado').value;
+  const categoria = document.getElementById('nv-categoria').value || null;
+  const email     = document.getElementById('nv-email').value.trim() || null;
+  const tel       = document.getElementById('nv-tel').value.trim() || null;
+ 
+  const btn = document.getElementById('btn-nv-guardar');
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+ 
+  try {
+    const payload = {
+      nombre_cliente:    nombre,
+      email_cliente:     email,
+      telefono_cliente:  tel,
+      categoria:         categoria,
+      productos:         nvProductos,
+      precio_total:      total,
+      precio_sena:       sena,
+      monto_transferido: cobrado,
+      estado:            estado,
+      metodo_pago:       nvMetodo,
+      origen:            'presencial',
+      mp_status:         'approved',
+    };
+ 
+    const res = await sbFetch('/rest/v1/pedidos', {
+      method: 'POST',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify(payload),
+    });
+ 
+    if (!res.ok) throw new Error('Error al guardar');
+    const data = await res.json();
+    const nuevo = Array.isArray(data) ? data[0] : data;
+ 
+    // ✅ Descontar stock en Supabase
+    await ajustarStock(nvProductos, -1);
+ 
+    cerrarNuevaVenta();
+    allPedidos.unshift(nuevo);
+    renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+    updateDashboard(); updateBadge();
+ 
+    // Si el panel de stock está abierto, refrescarlo
+    if (document.getElementById('tab-stock').classList.contains('active')) {
+      renderProducts();
+    }
+ 
+    showToast(`✓ Venta #${nuevo.id} registrada`, 'success');
+  } catch (e) {
+    showToast('Error al registrar la venta', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✓ Registrar Venta';
+  }
+}
 
   // ══════════════════════════════════════════════
   //  STOCK & PRECIOS
