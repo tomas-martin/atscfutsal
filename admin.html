@@ -168,6 +168,10 @@
     .btn-save-rango.saved{background:var(--green);}
     .precio-divider{height:1px;background:var(--border);margin:.7rem 0 .9rem;}
 
+    /* Botón eliminar producto en fila */
+    .btn-del-product{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;background:rgba(192,25,42,.1);border:1px solid rgba(192,25,42,.3);color:var(--red);padding:6px 12px;border-radius:3px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+    .btn-del-product:hover{background:rgba(192,25,42,.25);}
+
     .save-all-bar{position:sticky;bottom:0;background:rgba(9,17,31,.97);border-top:1px solid var(--border);padding:1rem 1.8rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
     .save-all-info{font-size:.92rem;color:var(--muted);}
     .save-all-info strong{color:var(--white);}
@@ -235,7 +239,6 @@
     .nv-field select{appearance:none;cursor:pointer;}
     .nv-field textarea{resize:vertical;min-height:72px;}
 
-    /* Productos agregados */
     .nv-productos-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem;}
     .nv-producto-item{display:flex;align-items:center;gap:.75rem;background:var(--navy-light);border:1px solid var(--border);border-radius:4px;padding:.7rem 1rem;}
     .nv-producto-info{flex:1;min-width:0;}
@@ -246,21 +249,18 @@
     .nv-producto-remove:hover{color:var(--red);}
     .nv-producto-remove svg{width:14px;height:14px;display:block;}
 
-    /* Fila agregar producto */
     .nv-add-row{display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap;}
     .nv-add-row .nv-field{flex:1;min-width:100px;}
     .nv-add-row .nv-field.cant{flex:0 0 70px;}
     .btn-nv-add{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:var(--blue);color:#fff;border:none;padding:11px 16px;border-radius:3px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;align-self:flex-end;}
     .btn-nv-add:hover{background:#2a4fc4;}
 
-    /* Resumen de totales */
     .nv-totales{background:var(--navy-card);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;}
     .nv-total-row{display:flex;justify-content:space-between;align-items:center;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;color:var(--muted);}
     .nv-total-row strong{color:var(--white);}
     .nv-total-row.big{font-size:1.15rem;border-top:1px solid var(--border);padding-top:.5rem;margin-top:.2rem;}
     .nv-total-row.big strong{font-size:1.3rem;color:var(--green);}
 
-    /* Método de pago */
     .metodo-pago-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
     .metodo-opt{display:flex;align-items:center;gap:.85rem;background:var(--navy-light);border:2px solid var(--border);border-radius:5px;padding:.9rem 1.1rem;cursor:pointer;transition:all .2s;user-select:none;-webkit-tap-highlight-color:transparent;}
     .metodo-opt:hover{border-color:var(--border-h);}
@@ -279,7 +279,6 @@
     .metodo-opt.selected-transferencia .metodo-info .mi-label{color:#7fa3e8;}
     .metodo-opt.selected-sena .metodo-info .mi-label{color:var(--yellow);}
 
-    /* Monto cobrado */
     .nv-monto-cobrado{background:var(--navy-light);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;margin-top:.8rem;}
     .nv-monto-cobrado label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);display:block;margin-bottom:.5rem;}
     .nv-monto-prefix-row{display:flex;align-items:center;gap:.5rem;}
@@ -297,6 +296,68 @@
     .btn-nv-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
     .btn-nv-cancel:hover{border-color:var(--border-h);color:var(--white);}
 
+    /* ═══════════════════════════════════════
+       MODAL NUEVO PRODUCTO
+    ═══════════════════════════════════════ */
+    .np-overlay{position:fixed;inset:0;z-index:520;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .np-overlay.open{opacity:1;pointer-events:all;}
+    .np-modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;width:100%;max-width:700px;max-height:94vh;display:flex;flex-direction:column;}
+    .np-header{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .np-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;color:var(--white);}
+    .np-title em{color:var(--blue);font-style:normal;}
+    .np-close{background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;}
+    .np-close:hover{color:var(--white);}
+    .np-close svg{width:20px;height:20px;display:block;}
+    .np-body{padding:1.4rem 1.6rem;overflow-y:auto;flex:1;}
+    .np-section{margin-bottom:1.6rem;}
+    .np-section-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+    .np-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+    .np-field{display:flex;flex-direction:column;gap:.4rem;}
+    .np-field.full{grid-column:1/-1;}
+    .np-field label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted-dim);}
+    .np-field input,.np-field select,.np-field textarea{background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:11px 14px;color:var(--white);font-family:'Barlow',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;width:100%;}
+    .np-field input:focus,.np-field select:focus,.np-field textarea:focus{border-color:var(--blue);}
+    .np-field input::placeholder,.np-field textarea::placeholder{color:var(--muted-dim);}
+    .np-field input.err,.np-field select.err{border-color:var(--red);}
+    .np-field select{appearance:none;cursor:pointer;}
+    .np-field textarea{resize:vertical;min-height:80px;}
+
+    /* Talles en nuevo producto */
+    .np-talles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;}
+    .np-talle-row{display:flex;align-items:center;gap:.5rem;background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:.5rem .7rem;}
+    .np-talle-name{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.06em;color:var(--muted);width:38px;flex-shrink:0;}
+    .np-talle-input{width:100%;background:transparent;border:none;outline:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-align:center;-moz-appearance:textfield;}
+    .np-talle-input::-webkit-outer-spin-button,.np-talle-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+
+    /* Rangos precios en nuevo producto */
+    .np-rangos-grid{display:flex;flex-direction:column;gap:.5rem;}
+    .np-rango-row{display:flex;align-items:center;gap:.75rem;background:var(--navy-light);border-radius:3px;padding:.6rem 1rem;flex-wrap:wrap;}
+    .np-rango-label{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);min-width:140px;flex-shrink:0;}
+    .np-rango-label strong{display:block;color:var(--white);font-size:.9rem;}
+    .np-rango-prefix{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--muted-dim);}
+    .np-rango-input{width:140px;background:var(--navy-card);border:1px solid var(--border);border-radius:3px;padding:8px 12px;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:600;outline:none;transition:border-color .2s;-moz-appearance:textfield;}
+    .np-rango-input::-webkit-outer-spin-button,.np-rango-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+    .np-rango-input:focus{border-color:var(--blue);}
+
+    /* Imágenes URL */
+    .np-img-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.6rem;}
+    .np-img-row{display:flex;align-items:center;gap:.5rem;}
+    .np-img-row input{flex:1;background:var(--navy-light);border:1px solid var(--border);border-radius:3px;padding:10px 13px;color:var(--white);font-family:'Barlow',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+    .np-img-row input:focus{border-color:var(--blue);}
+    .np-img-row input::placeholder{color:var(--muted-dim);}
+    .btn-np-rm-img{background:transparent;border:1px solid rgba(192,25,42,.3);color:var(--red);width:34px;height:34px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+    .btn-np-rm-img:hover{background:rgba(192,25,42,.15);}
+    .btn-np-rm-img svg{width:13px;height:13px;}
+    .btn-np-add-img{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
+    .btn-np-add-img:hover{border-color:var(--border-h);color:var(--white);}
+
+    .np-footer{padding:1rem 1.6rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:.75rem;flex-shrink:0;flex-wrap:wrap;}
+    .btn-np-guardar{font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--blue);color:#fff;border:none;padding:13px 28px;border-radius:3px;cursor:pointer;transition:all .2s;flex:1;min-height:48px;}
+    .btn-np-guardar:hover{background:#2a4fc4;}
+    .btn-np-guardar:disabled{background:var(--muted-dim);cursor:not-allowed;}
+    .btn-np-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
+    .btn-np-cancel:hover{border-color:var(--border-h);color:var(--white);}
+
     /* Confirm delete overlay */
     .confirm-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .2s;}
     .confirm-overlay.open{opacity:1;pointer-events:all;}
@@ -313,7 +374,6 @@
     .toast.error{background:rgba(192,25,42,.95);color:#fff;border:1px solid rgba(192,25,42,.5);}
     .toast.info{background:rgba(29,61,154,.95);color:#fff;border:1px solid rgba(29,61,154,.5);}
 
-    /* Badge método pago en tabla */
     .pill-efectivo{background:rgba(29,158,117,.12);border:1px solid rgba(29,158,117,.3);color:var(--green);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
     .pill-transferencia{background:rgba(29,61,154,.18);border:1px solid rgba(29,61,154,.35);color:#7fa3e8;font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
     .pill-sena{background:rgba(186,117,23,.12);border:1px solid rgba(186,117,23,.3);color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:2px;white-space:nowrap;}
@@ -334,8 +394,9 @@
       tbody td { display: flex; justify-content: space-between; align-items: flex-start; padding: .35rem 0; border: none; font-size: .95rem; gap: .5rem; }
       tbody td::before { content: attr(data-label); font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted-dim); font-weight: 700; flex-shrink: 0; padding-top: 2px; }
       .table-wrap { overflow-x: unset; }
-      .nv-grid,.nv-grid-3{grid-template-columns:1fr;}
+      .nv-grid,.nv-grid-3,.np-grid{grid-template-columns:1fr;}
       .metodo-pago-grid{grid-template-columns:1fr;}
+      .np-talles-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));}
     }
     .modal { display: flex; flex-direction: column; }
     .modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
@@ -344,7 +405,7 @@
     @media (max-width: 480px) {
       .stats-grid { grid-template-columns: 1fr !important; }
       .stat-value { font-size: 2.5rem !important; }
-      .nv-modal{max-height:100vh;border-radius:0;}
+      .nv-modal,.np-modal{max-height:100vh;border-radius:0;}
     }
     @media (max-width: 600px) {
       html { font-size: 17px; }
@@ -361,10 +422,10 @@
       .login-card { padding: 1.8rem 1.4rem; }
       .rango-row { flex-wrap: wrap; gap: .5rem; }
       .rango-talles { min-width: 100%; }
-      .nv-add-row{flex-direction:column;}
+      .nv-add-row,.np-add-row{flex-direction:column;}
       .nv-add-row .nv-field,.nv-add-row .btn-nv-add{width:100%;}
-      .nv-footer{flex-direction:column;}
-      .btn-nv-guardar,.btn-nv-cancel{width:100%;text-align:center;}
+      .nv-footer,.np-footer{flex-direction:column;}
+      .btn-nv-guardar,.btn-nv-cancel,.btn-np-guardar,.btn-np-cancel{width:100%;text-align:center;}
     }
     @media (max-width: 500px) {
       .save-all-bar { flex-direction: column; align-items: stretch; padding: .9rem 1rem; gap: .6rem; }
@@ -422,7 +483,6 @@
       <div class="nav-divider"></div>
       <div class="nav-section">
         <div class="nav-section-label">Ventas</div>
-        <!-- NUEVA VENTA -->
         <div class="nav-item nav-cta" onclick="abrirNuevaVenta()">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
           Nueva Venta
@@ -444,6 +504,10 @@
       <div class="nav-divider"></div>
       <div class="nav-section">
         <div class="nav-section-label">Inventario</div>
+        <div class="nav-item nav-cta" onclick="abrirNuevoProducto()" style="color:#7fa3e8;" id="nav-nuevo-prod">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+          Nuevo Producto
+        </div>
         <div class="nav-item" onclick="showTab('stock',this)">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3a3 3 0 016 0v1"/></svg>
           Stock & Precios
@@ -533,7 +597,13 @@
       <div class="tab-panel" id="tab-stock">
         <div class="page-header">
           <div><h2>Stock & <em>Precios</em></h2><p>Editá el inventario y precios por rango de talle</p></div>
-          <button class="btn-refresh" onclick="loadProducts()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <button class="btn-refresh" onclick="abrirNuevoProducto()" style="background:rgba(29,61,154,.15);border-color:rgba(29,61,154,.4);color:#7fa3e8;">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+              Nuevo Producto
+            </button>
+            <button class="btn-refresh" onclick="loadProducts()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M13.5 8A5.5 5.5 0 115.5 3.5L8 6"/><polyline points="4,2 8,6 4,10"/></svg>Actualizar</button>
+          </div>
         </div>
         <div id="products-list"><div style="color:var(--muted);text-align:center;padding:3rem;font-size:1rem">Cargando productos…</div></div>
       </div>
@@ -561,9 +631,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MODAL NUEVA VENTA PRESENCIAL
-     ═══════════════════════════════════════════════════ -->
+<!-- MODAL NUEVA VENTA PRESENCIAL -->
 <div class="nv-overlay" id="nv-overlay" onclick="nvClickOutside(event)">
   <div class="nv-modal" onclick="event.stopPropagation()">
     <div class="nv-header">
@@ -572,77 +640,38 @@
         <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/></svg>
       </button>
     </div>
-
     <div class="nv-body">
-
-      <!-- CLIENTE -->
       <div class="nv-section">
         <div class="nv-section-title">Datos del cliente</div>
         <div class="nv-grid">
-          <div class="nv-field">
-            <label>Nombre *</label>
-            <input type="text" id="nv-nombre" placeholder="Juan Pérez" />
-          </div>
-          <div class="nv-field">
-            <label>Teléfono</label>
-            <input type="tel" id="nv-tel" placeholder="261 123 4567" inputmode="numeric" />
-          </div>
-          <div class="nv-field">
-            <label>Email</label>
-            <input type="email" id="nv-email" placeholder="juan@email.com" />
-          </div>
+          <div class="nv-field"><label>Nombre *</label><input type="text" id="nv-nombre" placeholder="Juan Pérez" /></div>
+          <div class="nv-field"><label>Teléfono</label><input type="tel" id="nv-tel" placeholder="261 123 4567" inputmode="numeric" /></div>
+          <div class="nv-field"><label>Email</label><input type="email" id="nv-email" placeholder="juan@email.com" /></div>
           <div class="nv-field">
             <label>Categoría</label>
             <select id="nv-categoria">
               <option value="">Sin categoría</option>
-              <option value="c5">C5</option>
-              <option value="c7">C7</option>
-              <option value="c9">C9</option>
-              <option value="c11">C11</option>
-              <option value="c13">C13</option>
-              <option value="c15">C15</option>
-              <option value="c17">C17</option>
-              <option value="c20">C20</option>
-              <option value="primera">Primera</option>
-              <option value="seniors">Seniors</option>
-              <option value="veteranos">Veteranos</option>
+              <option value="c5">C5</option><option value="c7">C7</option><option value="c9">C9</option>
+              <option value="c11">C11</option><option value="c13">C13</option><option value="c15">C15</option>
+              <option value="c17">C17</option><option value="c20">C20</option><option value="primera">Primera</option>
+              <option value="seniors">Seniors</option><option value="veteranos">Veteranos</option>
             </select>
           </div>
         </div>
       </div>
-
-      <!-- PRODUCTOS -->
       <div class="nv-section">
         <div class="nv-section-title">Productos</div>
-
         <div class="nv-productos-list" id="nv-productos-list">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;color:var(--muted-dim);text-align:center;padding:.8rem 0;">Ningún producto agregado aún</div>
         </div>
-
-        <!-- Fila para agregar producto -->
         <div class="nv-add-row">
-          <div class="nv-field" style="flex:2">
-            <label>Producto</label>
-            <select id="nv-prod-select" onchange="nvProductoChange()">
-              <option value="">Seleccionar producto…</option>
-            </select>
-          </div>
-          <div class="nv-field" style="flex:1">
-            <label>Talle</label>
-            <select id="nv-talle-select" onchange="nvTalleChange()">
-              <option value="">Talle</option>
-            </select>
-          </div>
-          <div class="nv-field cant">
-            <label>Cant.</label>
-            <input type="number" id="nv-cant" min="1" max="99" value="1" style="-moz-appearance:textfield" />
-          </div>
+          <div class="nv-field" style="flex:2"><label>Producto</label><select id="nv-prod-select" onchange="nvProductoChange()"><option value="">Seleccionar producto…</option></select></div>
+          <div class="nv-field" style="flex:1"><label>Talle</label><select id="nv-talle-select" onchange="nvTalleChange()"><option value="">Talle</option></select></div>
+          <div class="nv-field cant"><label>Cant.</label><input type="number" id="nv-cant" min="1" max="99" value="1" style="-moz-appearance:textfield" /></div>
           <button class="btn-nv-add" onclick="nvAgregarProducto()">+ Agregar</button>
         </div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:.78rem;color:var(--muted-dim);margin-top:.5rem;" id="nv-prod-hint"></div>
       </div>
-
-      <!-- TOTALES -->
       <div class="nv-section">
         <div class="nv-section-title">Resumen</div>
         <div class="nv-totales" id="nv-totales">
@@ -650,52 +679,20 @@
           <div class="nv-total-row big"><span>Total</span><strong id="nv-total">$0</strong></div>
         </div>
       </div>
-
-      <!-- MÉTODO DE PAGO -->
       <div class="nv-section">
         <div class="nv-section-title">Método de pago</div>
         <div class="metodo-pago-grid">
-          <div class="metodo-opt selected-efectivo" id="metodo-efectivo" onclick="nvSelectMetodo('efectivo')">
-            <div class="metodo-radio"></div>
-            <div class="metodo-info">
-              <div class="mi-label">💵 Efectivo</div>
-              <div class="mi-desc">Pago en mano, acto seguido</div>
-            </div>
-          </div>
-          <div class="metodo-opt" id="metodo-transferencia" onclick="nvSelectMetodo('transferencia')">
-            <div class="metodo-radio"></div>
-            <div class="metodo-info">
-              <div class="mi-label">🏦 Transferencia</div>
-              <div class="mi-desc">Pago bancario o alias</div>
-            </div>
-          </div>
-          <div class="metodo-opt" id="metodo-sena" onclick="nvSelectMetodo('sena')">
-            <div class="metodo-radio"></div>
-            <div class="metodo-info">
-              <div class="mi-label">📋 Seña (50%)</div>
-              <div class="mi-desc">Reserva con la mitad</div>
-            </div>
-          </div>
-          <div class="metodo-opt" id="metodo-sena-transf" onclick="nvSelectMetodo('sena_transferencia')">
-            <div class="metodo-radio"></div>
-            <div class="metodo-info">
-              <div class="mi-label">🏦 Seña por transf.</div>
-              <div class="mi-desc">Seña por transferencia</div>
-            </div>
-          </div>
+          <div class="metodo-opt selected-efectivo" id="metodo-efectivo" onclick="nvSelectMetodo('efectivo')"><div class="metodo-radio"></div><div class="metodo-info"><div class="mi-label">💵 Efectivo</div><div class="mi-desc">Pago en mano</div></div></div>
+          <div class="metodo-opt" id="metodo-transferencia" onclick="nvSelectMetodo('transferencia')"><div class="metodo-radio"></div><div class="metodo-info"><div class="mi-label">🏦 Transferencia</div><div class="mi-desc">Pago bancario</div></div></div>
+          <div class="metodo-opt" id="metodo-sena" onclick="nvSelectMetodo('sena')"><div class="metodo-radio"></div><div class="metodo-info"><div class="mi-label">📋 Seña (50%)</div><div class="mi-desc">Reserva</div></div></div>
+          <div class="metodo-opt" id="metodo-sena_transf" onclick="nvSelectMetodo('sena_transferencia')"><div class="metodo-radio"></div><div class="metodo-info"><div class="mi-label">🏦 Seña transf.</div><div class="mi-desc">Seña por transferencia</div></div></div>
         </div>
-
         <div class="nv-monto-cobrado">
           <label id="nv-monto-label">Monto cobrado</label>
-          <div class="nv-monto-prefix-row">
-            <span class="nv-monto-prefix">$</span>
-            <input type="number" id="nv-monto-cobrado" min="0" placeholder="0" style="-moz-appearance:textfield" oninput="nvActualizarSaldo()" />
-          </div>
+          <div class="nv-monto-prefix-row"><span class="nv-monto-prefix">$</span><input type="number" id="nv-monto-cobrado" min="0" placeholder="0" style="-moz-appearance:textfield" oninput="nvActualizarSaldo()" /></div>
           <div class="nv-monto-hint" id="nv-monto-hint"></div>
         </div>
       </div>
-
-      <!-- ESTADO -->
       <div class="nv-section">
         <div class="nv-section-title">Estado inicial</div>
         <div class="nv-field">
@@ -707,9 +704,7 @@
           </select>
         </div>
       </div>
-
-    </div><!-- /nv-body -->
-
+    </div>
     <div class="nv-footer">
       <button class="btn-nv-guardar" id="btn-nv-guardar" onclick="nvGuardar()">✓ Registrar Venta</button>
       <button class="btn-nv-cancel" onclick="cerrarNuevaVenta()">Cancelar</button>
@@ -717,11 +712,99 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     MODAL NUEVO PRODUCTO
+     ═══════════════════════════════════════════════════ -->
+<div class="np-overlay" id="np-overlay" onclick="npClickOutside(event)">
+  <div class="np-modal" onclick="event.stopPropagation()">
+    <div class="np-header">
+      <span class="np-title">Nuevo <em>Producto</em></span>
+      <button class="np-close" onclick="cerrarNuevoProducto()">
+        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="15" y2="15"/><line x1="15" y1="3" x2="3" y2="15"/></svg>
+      </button>
+    </div>
+    <div class="np-body">
+
+      <!-- INFO BÁSICA -->
+      <div class="np-section">
+        <div class="np-section-title">Información del producto</div>
+        <div class="np-grid">
+          <div class="np-field">
+            <label>Nombre *</label>
+            <input type="text" id="np-nombre" placeholder="Ej: Camiseta Titular 2026" />
+          </div>
+          <div class="np-field">
+            <label>Categoría *</label>
+            <select id="np-categoria">
+              <option value="">Seleccionar…</option>
+              <option value="remera">Remera</option>
+              <option value="short">Short</option>
+              <option value="buzo">Campera / Buzo</option>
+              <option value="kit">Kit</option>
+              <option value="accesorio">Accesorio</option>
+            </select>
+          </div>
+          <div class="np-field full">
+            <label>Descripción</label>
+            <textarea id="np-descripcion" placeholder="Descripción del producto (opcional)…"></textarea>
+          </div>
+          <div class="np-field">
+            <label>Stock máximo (referencia)</label>
+            <input type="number" id="np-stock-max" min="0" value="30" style="-moz-appearance:textfield" />
+          </div>
+          <div class="np-field" style="display:flex;flex-direction:row;align-items:center;gap:.75rem;padding-top:1.4rem;">
+            <input type="checkbox" id="np-nuevo" style="width:18px;height:18px;cursor:pointer;accent-color:var(--red);" />
+            <label for="np-nuevo" style="letter-spacing:.06em;text-transform:none;font-size:.92rem;color:var(--muted);cursor:pointer;">Marcar como <strong style="color:var(--white)">Nuevo</strong></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRECIOS POR RANGO -->
+      <div class="np-section">
+        <div class="np-section-title">Precios por rango de talle</div>
+        <div class="np-rangos-grid" id="np-rangos-grid">
+          <!-- generado por JS -->
+        </div>
+      </div>
+
+      <!-- STOCK POR TALLE -->
+      <div class="np-section">
+        <div class="np-section-title">Stock inicial por talle</div>
+        <div class="np-talles-grid" id="np-talles-grid">
+          <!-- generado por JS -->
+        </div>
+      </div>
+
+      <!-- IMÁGENES -->
+      <div class="np-section">
+        <div class="np-section-title">Imágenes (URLs)</div>
+        <div class="np-img-list" id="np-img-list">
+          <div class="np-img-row">
+            <input type="url" placeholder="https://…/imagen.jpg" />
+            <button class="btn-np-rm-img" onclick="npQuitarImg(this)" title="Quitar">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="btn-np-add-img" onclick="npAgregarImg()">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+          Agregar otra imagen
+        </button>
+      </div>
+
+    </div>
+    <div class="np-footer">
+      <button class="btn-np-guardar" id="btn-np-guardar" onclick="npGuardar()">+ Crear Producto</button>
+      <button class="btn-np-cancel" onclick="cerrarNuevoProducto()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM DELETE -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
-    <div class="confirm-icon">🗑️</div>
-    <div class="confirm-title">Eliminar venta</div>
+    <div class="confirm-icon" id="confirm-icon">🗑️</div>
+    <div class="confirm-title" id="confirm-title">Eliminar venta</div>
     <p class="confirm-desc" id="confirm-desc">¿Seguro que querés eliminar esta venta? Esta acción <strong>no se puede deshacer</strong>.</p>
     <div class="confirm-actions">
       <button class="btn-modal btn-eliminar" id="confirm-yes-btn">Sí, eliminar</button>
@@ -737,6 +820,8 @@
   const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnam9jdmptc3BudGxka2FnaHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzEzMzksImV4cCI6MjA4OTYwNzMzOX0.AJeJzClPSmMyMsPQv30zTkPYL3w9djjTtp_FKIC96RM';
   const ESCUDO='https://qgjocvjmspntldkaghtb.supabase.co/storage/v1/object/public/productos/Talleres%20Futsal.png';
   let accessToken=null,allPedidos=[],allProducts=[],pendingChanges={};
+
+  const TALLES_ORDEN = ['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
 
   const RANGOS_DEFAULT = [
     { id: 0, label: 'Talle 6 al 12',  talles: ['6','8','10','12'],    precio: 44000 },
@@ -781,13 +866,6 @@
   function getCatLabel(cat) {
     const labels = {'c5':'C5','c7':'C7','c9':'C9','c11':'C11','c13':'C13','c15':'C15','c17':'C17','c20':'C20','primera':'Primera','seniors':'Seniors','veteranos':'Veteranos'};
     return cat ? (labels[cat] || cat.toUpperCase()) : '—';
-  }
-
-  function getMetodoPagoLabel(p) {
-    const m = p.metodo_pago;
-    if (!m) return null;
-    const labels = { efectivo: '💵 Efectivo', transferencia: '🏦 Transf.', sena: '📋 Seña', sena_transferencia: '🏦 Seña transf.' };
-    return labels[m] || m;
   }
 
   function getMetodoPill(p) {
@@ -939,21 +1017,17 @@
     const confirmadas=allPedidos.filter(p=>p.estado==='confirmada');
     const entregadas=allPedidos.filter(p=>p.estado==='entregada');
     const pendientes=allPedidos.filter(p=>p.estado==='pendiente');
-
     const ingresosSenas=confirmadas.reduce((s,p)=>{
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
       return s+cobrado;
     },0);
-
     const totalEntregadas=entregadas.reduce((s,p)=>s+Number(p.precio_total||0),0);
     const totalRecibido=ingresosSenas+totalEntregadas;
-
     const saldoPendiente=confirmadas.reduce((s,p)=>{
       const total=Number(p.precio_total||0);
       const cobrado=Number(p.monto_transferido!==null&&p.monto_transferido!==undefined?p.monto_transferido:p.precio_sena||0);
       return s+(total>cobrado?total-cobrado:0);
     },0);
-
     const totalRecibidoEl=document.getElementById('stat-total-recibido');
     if(totalRecibidoEl)totalRecibidoEl.textContent='$'+totalRecibido.toLocaleString('es-AR');
     document.getElementById('stat-ingresos').textContent='$'+ingresosSenas.toLocaleString('es-AR');
@@ -1018,14 +1092,12 @@
         const url=URL.createObjectURL(blob);
         comprobanteHTML=`<a class="mp-comprobante" href="${url}" target="_blank" style="text-decoration:none">📄 Ver PDF — ${p.comprobante_nombre||'comprobante.pdf'}</a>`;
       }else{
-        comprobanteHTML=`<img style="width:100%;border-radius:4px;border:1px solid var(--border);margin-top:.5rem;max-height:340px;object-fit:contain;background:var(--navy-light);cursor:pointer;" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" title="Click para ampliar" />`;
+        comprobanteHTML=`<img style="width:100%;border-radius:4px;border:1px solid var(--border);margin-top:.5rem;max-height:340px;object-fit:contain;background:var(--navy-light);cursor:pointer;" src="data:${p.comprobante_tipo||'image/jpeg'};base64,${p.comprobante_b64}" alt="Comprobante" onclick="window.open(this.src)" />`;
       }
     }
 
-    // Método de pago
     const metodoLabels={efectivo:'💵 Efectivo',transferencia:'🏦 Transferencia',sena:'📋 Seña (50%)',sena_transferencia:'🏦 Seña por transferencia'};
     const metodoStr=p.metodo_pago?(metodoLabels[p.metodo_pago]||p.metodo_pago):'—';
-    // Origen
     const origenStr=p.origen==='presencial'?'🏪 Presencial':'🌐 Online (MP)';
 
     document.getElementById('modal-title').textContent=`Pedido #${p.id}`;
@@ -1059,7 +1131,7 @@
     }
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="descargarPDF(${p.id})">📄 VER PDF</button>`;
-    acciones+=`<button class="btn-modal btn-eliminar" onclick="confirmarEliminar(${p.id},'${(p.nombre_cliente||'este pedido').replace(/'/g,"\\'")}')">🗑️ Eliminar venta</button>`;
+    acciones+=`<button class="btn-modal btn-eliminar" onclick="confirmarEliminarVenta(${p.id},'${(p.nombre_cliente||'este pedido').replace(/'/g,"\\'")}')">🗑️ Eliminar venta</button>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="closeModal()">Cerrar</button>`;
 
     document.getElementById('modal-actions').innerHTML=acciones;
@@ -1073,9 +1145,7 @@
       const payload = { estado: nuevoEstado };
       if (nuevoEstado === 'entregada') {
         const pedido = allPedidos.find(p => p.id === id);
-        if (pedido && pedido.precio_total) {
-          payload.monto_transferido = Number(pedido.precio_total);
-        }
+        if (pedido && pedido.precio_total) payload.monto_transferido = Number(pedido.precio_total);
       }
       const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, {
         method: 'PATCH',
@@ -1102,44 +1172,65 @@
   }
 
   let _deleteId = null;
-  function confirmarEliminar(id, nombre) {
-    _deleteId = id;
+  let _deleteType = null; // 'venta' | 'producto'
+
+  function confirmarEliminarVenta(id, nombre) {
+    _deleteId = id; _deleteType = 'venta';
+    document.getElementById('confirm-icon').textContent = '🗑️';
+    document.getElementById('confirm-title').textContent = 'Eliminar venta';
     document.getElementById('confirm-desc').innerHTML = `¿Seguro que querés eliminar el pedido de <strong>${nombre}</strong>? Esta acción <strong>no se puede deshacer</strong>.`;
-    document.getElementById('confirm-yes-btn').onclick = () => ejecutarEliminar(_deleteId);
+    document.getElementById('confirm-yes-btn').onclick = () => ejecutarEliminarVenta(_deleteId);
     closeModal();
     document.getElementById('confirm-overlay').classList.add('open');
   }
+
+  function confirmarEliminarProducto(id, nombre) {
+    _deleteId = id; _deleteType = 'producto';
+    document.getElementById('confirm-icon').textContent = '📦';
+    document.getElementById('confirm-title').textContent = 'Eliminar producto';
+    document.getElementById('confirm-desc').innerHTML = `¿Seguro que querés eliminar el producto <strong>${nombre}</strong>? Esta acción <strong>no se puede deshacer</strong>.`;
+    document.getElementById('confirm-yes-btn').onclick = () => ejecutarEliminarProducto(_deleteId);
+    document.getElementById('confirm-overlay').classList.add('open');
+  }
+
   function closeConfirm() {
     document.getElementById('confirm-overlay').classList.remove('open');
-    _deleteId = null;
+    _deleteId = null; _deleteType = null;
   }
-  async function ejecutarEliminar(id) {
-  closeConfirm();
-  try {
-    const pedido = allPedidos.find(p => p.id === id);
- 
-    const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, { method: 'DELETE' });
-    if (!res.ok) throw new Error();
- 
-    // ✅ Restaurar stock si el pedido tenía productos
-    if (pedido && Array.isArray(pedido.productos) && pedido.productos.length > 0) {
-      await ajustarStock(pedido.productos, +1);
+
+  async function ejecutarEliminarVenta(id) {
+    closeConfirm();
+    try {
+      const pedido = allPedidos.find(p => p.id === id);
+      const res = await sbFetch('/rest/v1/pedidos?id=eq.' + id, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      if (pedido && Array.isArray(pedido.productos) && pedido.productos.length > 0) {
+        await ajustarStock(pedido.productos, +1);
+      }
+      allPedidos = allPedidos.filter(p => p.id !== id);
+      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+      updateDashboard(); updateBadge();
+      if (document.getElementById('tab-stock').classList.contains('active')) renderProducts();
+      showToast('Venta eliminada — stock restaurado', 'info');
+    } catch {
+      showToast('Error al eliminar', 'error');
     }
- 
-    allPedidos = allPedidos.filter(p => p.id !== id);
-    renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
-    updateDashboard(); updateBadge();
- 
-    // Si el panel de stock está abierto, refrescarlo
-    if (document.getElementById('tab-stock').classList.contains('active')) {
+  }
+
+  async function ejecutarEliminarProducto(id) {
+    closeConfirm();
+    try {
+      const res = await sbFetch('/rest/v1/productos?id=eq.' + id, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      allProducts = allProducts.filter(p => p.id !== id);
       renderProducts();
+      nvPopularProductos();
+      updateDashboard();
+      showToast('Producto eliminado', 'info');
+    } catch {
+      showToast('Error al eliminar el producto', 'error');
     }
- 
-    showToast('Venta eliminada — stock restaurado', 'info');
-  } catch {
-    showToast('Error al eliminar', 'error');
   }
-}
 
   function descargarPDF(id){const p=allPedidos.find(x=>x.id===id);if(p)generarPDF(p);}
   function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('open');}
@@ -1147,13 +1238,11 @@
   // ══════════════════════════════════════════════
   //  NUEVA VENTA PRESENCIAL
   // ══════════════════════════════════════════════
-  let nvProductos = [];    // [{producto_id, producto_nombre, categoria, talle, precio, cantidad}]
+  let nvProductos = [];
   let nvMetodo    = 'efectivo';
 
   function abrirNuevaVenta() {
-    nvProductos = [];
-    nvMetodo = 'efectivo';
-    // Reset form
+    nvProductos = []; nvMetodo = 'efectivo';
     ['nv-nombre','nv-tel','nv-email'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     document.getElementById('nv-categoria').value = '';
     document.getElementById('nv-estado').value = 'confirmada';
@@ -1201,23 +1290,20 @@
     if (!prodId) return;
     const prod = allProducts.find(p => p.id == prodId);
     if (!prod) return;
-    const TALLES = ['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
     const tallesRaw = prod.tallas || {};
     let tallesMap = {};
     if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla||t.talle] = t.stock; });
     else tallesMap = tallesRaw;
-    TALLES.forEach(t => {
+    TALLES_ORDEN.forEach(t => {
       const stock = t in tallesMap ? Number(tallesMap[t]) : 0;
-      const opt = document.createElement('option');
-      opt.value = t;
-      opt.textContent = stock > 0 ? `${t} — ${stock} ud.` : `${t} — sin stock`;
-      opt.disabled = stock <= 0;
-      if (stock > 0) tallesSel.appendChild(opt);
+      if (stock > 0) {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = `${t} — ${stock} ud.`;
+        tallesSel.appendChild(opt);
+      }
     });
-    // Si no hay talles con stock
-    if (tallesSel.options.length === 1) {
-      tallesSel.innerHTML = '<option value="">Sin stock disponible</option>';
-    }
+    if (tallesSel.options.length === 1) tallesSel.innerHTML = '<option value="">Sin stock disponible</option>';
   }
 
   function nvTalleChange() {
@@ -1240,44 +1326,25 @@
     const prod = allProducts.find(p => p.id == prodId);
     if (!prod) return;
     const precio = getPrecioParaTalle(prod, talle);
-    // Verificar stock
     const tallesRaw = prod.tallas || {};
     let tallesMap = {};
     if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla||t.talle] = t.stock; });
     else tallesMap = tallesRaw;
     const stockDisp = Number(tallesMap[talle] || 0);
     const yaEnLista = nvProductos.filter(x => x.producto_id == prodId && x.talle === talle).reduce((s,x)=>s+(x.cantidad||1),0);
-    if (cant + yaEnLista > stockDisp) {
-      showToast(`Solo hay ${stockDisp} disponibles en talle ${talle}`, 'error'); return;
-    }
-    // Si ya existe en la lista, sumar cantidad
+    if (cant + yaEnLista > stockDisp) { showToast(`Solo hay ${stockDisp} disponibles en talle ${talle}`, 'error'); return; }
     const existente = nvProductos.find(x => x.producto_id == prodId && x.talle === talle);
-    if (existente) {
-      existente.cantidad += cant;
-    } else {
-      nvProductos.push({
-        producto_id: prod.id,
-        producto_nombre: prod.nombre,
-        categoria: prod.categoria,
-        talle,
-        precio,
-        cantidad: cant
-      });
-    }
+    if (existente) { existente.cantidad += cant; }
+    else { nvProductos.push({ producto_id: prod.id, producto_nombre: prod.nombre, categoria: prod.categoria, talle, precio, cantidad: cant }); }
     nvRenderProductos();
     nvActualizarTotales();
-    // Reset selector
     document.getElementById('nv-prod-select').value = '';
     document.getElementById('nv-talle-select').innerHTML = '<option value="">Talle</option>';
     document.getElementById('nv-cant').value = '1';
     document.getElementById('nv-prod-hint').textContent = '';
   }
 
-  function nvQuitarProducto(idx) {
-    nvProductos.splice(idx, 1);
-    nvRenderProductos();
-    nvActualizarTotales();
-  }
+  function nvQuitarProducto(idx) { nvProductos.splice(idx, 1); nvRenderProductos(); nvActualizarTotales(); }
 
   function nvRenderProductos() {
     const container = document.getElementById('nv-productos-list');
@@ -1292,10 +1359,8 @@
           <div class="np-sub">Talle ${item.talle}${item.cantidad > 1 ? ' · x'+item.cantidad : ''} · ${item.categoria}</div>
         </div>
         <div class="nv-producto-precio">$${(item.precio * item.cantidad).toLocaleString('es-AR')}</div>
-        <button class="nv-producto-remove" onclick="nvQuitarProducto(${i})" title="Quitar">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
-          </svg>
+        <button class="nv-producto-remove" onclick="nvQuitarProducto(${i})">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
         </button>
       </div>`).join('');
   }
@@ -1304,45 +1369,30 @@
     const total = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
     document.getElementById('nv-subtotal').textContent = '$' + total.toLocaleString('es-AR');
     document.getElementById('nv-total').textContent    = '$' + total.toLocaleString('es-AR');
-    // Auto-completar monto cobrado según método
     const montoCobradoEl = document.getElementById('nv-monto-cobrado');
     if (!montoCobradoEl.value || montoCobradoEl.value == '0') {
-      if (nvMetodo === 'efectivo' || nvMetodo === 'transferencia') {
-        montoCobradoEl.value = total || '';
-      } else if (nvMetodo === 'sena' || nvMetodo === 'sena_transferencia') {
-        montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
-      }
+      if (nvMetodo === 'efectivo' || nvMetodo === 'transferencia') montoCobradoEl.value = total || '';
+      else if (nvMetodo === 'sena' || nvMetodo === 'sena_transferencia') montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
     }
     nvActualizarSaldo();
   }
 
   function nvSelectMetodo(metodo) {
     nvMetodo = metodo;
-    // Limpiar todos
     ['efectivo','transferencia','sena','sena_transf'].forEach(m => {
       const el = document.getElementById('metodo-' + m);
       if (el) el.className = 'metodo-opt';
     });
-    const target = document.getElementById('metodo-' + (metodo === 'sena_transferencia' ? 'sena_transf' : metodo));
+    const key = metodo === 'sena_transferencia' ? 'sena_transf' : metodo;
+    const target = document.getElementById('metodo-' + key);
     if (target) target.className = `metodo-opt selected-${metodo === 'sena_transferencia' ? 'sena' : metodo}`;
-
     const total = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
     const montoCobradoEl = document.getElementById('nv-monto-cobrado');
     const label = document.getElementById('nv-monto-label');
-
-    if (metodo === 'efectivo') {
-      label.textContent = 'Monto cobrado en efectivo';
-      montoCobradoEl.value = total || '';
-    } else if (metodo === 'transferencia') {
-      label.textContent = 'Monto recibido por transferencia';
-      montoCobradoEl.value = total || '';
-    } else if (metodo === 'sena') {
-      label.textContent = 'Seña cobrada (50% sugerido)';
-      montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
-    } else if (metodo === 'sena_transferencia') {
-      label.textContent = 'Seña recibida por transferencia';
-      montoCobradoEl.value = total ? Math.ceil(total * 0.5) : '';
-    }
+    if (metodo === 'efectivo') { label.textContent = 'Monto cobrado en efectivo'; montoCobradoEl.value = total || ''; }
+    else if (metodo === 'transferencia') { label.textContent = 'Monto recibido por transferencia'; montoCobradoEl.value = total || ''; }
+    else if (metodo === 'sena') { label.textContent = 'Seña cobrada (50% sugerido)'; montoCobradoEl.value = total ? Math.ceil(total * 0.5) : ''; }
+    else if (metodo === 'sena_transferencia') { label.textContent = 'Seña recibida por transferencia'; montoCobradoEl.value = total ? Math.ceil(total * 0.5) : ''; }
     nvActualizarSaldo();
   }
 
@@ -1352,163 +1402,251 @@
     const saldo = Math.max(total - cobrado, 0);
     const hint = document.getElementById('nv-monto-hint');
     if (total > 0) {
-      if (saldo <= 0) {
-        hint.innerHTML = '<span style="color:var(--green)">✓ Pago completo — sin saldo pendiente</span>';
-      } else {
-        hint.innerHTML = `Saldo restante: <strong>$${saldo.toLocaleString('es-AR')}</strong>`;
-      }
-    } else {
-      hint.textContent = '';
-    }
+      if (saldo <= 0) hint.innerHTML = '<span style="color:var(--green)">✓ Pago completo — sin saldo pendiente</span>';
+      else hint.innerHTML = `Saldo restante: <strong>$${saldo.toLocaleString('es-AR')}</strong>`;
+    } else hint.textContent = '';
   }
-  const TALLES_ORDEN = ['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
 
   async function ajustarStock(productos, delta = -1) {
-  if (!productos || productos.length === 0) return;
- 
-  // Agrupar por producto
-  const porProducto = {};
-  for (const item of productos) {
-    const id = String(item.producto_id);
-    if (!porProducto[id]) porProducto[id] = [];
-    porProducto[id].push({ talle: item.talle, cantidad: Number(item.cantidad) || 1 });
-  }
- 
-  for (const [productoId, items] of Object.entries(porProducto)) {
-    // Obtener producto actual
-    const res = await sbFetch(`/rest/v1/productos?id=eq.${productoId}&select=id,tallas,stock_total`);
-    if (!res.ok) { console.error('Error obteniendo producto', productoId); continue; }
-    const rows = await res.json();
-    if (!rows.length) { console.error('Producto no encontrado', productoId); continue; }
- 
-    const producto = rows[0];
-    const tallesRaw = producto.tallas || {};
- 
-    // Normalizar
-    let tallesMap = {};
-    if (Array.isArray(tallesRaw)) {
-      tallesRaw.forEach(t => { tallesMap[t.talla] = Number(t.stock) || 0; });
-    } else {
-      Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
+    if (!productos || productos.length === 0) return;
+    const porProducto = {};
+    for (const item of productos) {
+      const id = String(item.producto_id);
+      if (!porProducto[id]) porProducto[id] = [];
+      porProducto[id].push({ talle: item.talle, cantidad: Number(item.cantidad) || 1 });
     }
- 
-    // Aplicar delta
-    for (const { talle, cantidad } of items) {
-      const actual = tallesMap[talle] ?? 0;
-      tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
-    }
- 
-    // Reconstruir array
-    const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
-    const nuevoTotal   = nuevosTalles.reduce((s, t) => s + t.stock, 0);
- 
-    // Guardar en Supabase
-    await sbFetch(`/rest/v1/productos?id=eq.${productoId}`, {
-      method: 'PATCH',
-      headers: { 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ tallas: nuevosTalles, stock_total: nuevoTotal }),
-    });
- 
-    // Actualizar allProducts en memoria para que el panel de stock refleje cambios
-    const idx = allProducts.findIndex(p => String(p.id) === productoId);
-    if (idx !== -1) {
-      allProducts[idx].tallas     = nuevosTalles;
-      allProducts[idx].stock_total = nuevoTotal;
+    for (const [productoId, items] of Object.entries(porProducto)) {
+      const res = await sbFetch(`/rest/v1/productos?id=eq.${productoId}&select=id,tallas,stock_total`);
+      if (!res.ok) continue;
+      const rows = await res.json();
+      if (!rows.length) continue;
+      const producto = rows[0];
+      const tallesRaw = producto.tallas || {};
+      let tallesMap = {};
+      if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla] = Number(t.stock) || 0; });
+      else Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
+      for (const { talle, cantidad } of items) {
+        const actual = tallesMap[talle] ?? 0;
+        tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
+      }
+      const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
+      const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
+      await sbFetch(`/rest/v1/productos?id=eq.${productoId}`, {
+        method: 'PATCH', headers: { 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ tallas: nuevosTalles, stock_total: nuevoTotal }),
+      });
+      const idx = allProducts.findIndex(p => String(p.id) === productoId);
+      if (idx !== -1) { allProducts[idx].tallas = nuevosTalles; allProducts[idx].stock_total = nuevoTotal; }
     }
   }
-}
- 
-// ──────────────────────────────────────────────
-//  NUEVA VENTA — guarda + descuenta stock
-// ──────────────────────────────────────────────
-async function nvGuardar() {
-  const nombre = document.getElementById('nv-nombre').value.trim();
-  if (!nombre) {
-    document.getElementById('nv-nombre').classList.add('err');
-    showToast('El nombre del cliente es obligatorio', 'error');
-    return;
+
+  async function nvGuardar() {
+    const nombre = document.getElementById('nv-nombre').value.trim();
+    if (!nombre) { document.getElementById('nv-nombre').classList.add('err'); showToast('El nombre del cliente es obligatorio', 'error'); return; }
+    document.getElementById('nv-nombre').classList.remove('err');
+    if (!nvProductos.length) { showToast('Agregá al menos un producto', 'error'); return; }
+    const total     = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
+    const cobrado   = parseFloat(document.getElementById('nv-monto-cobrado').value) || total;
+    const sena      = Math.ceil(total * 0.5);
+    const estado    = document.getElementById('nv-estado').value;
+    const categoria = document.getElementById('nv-categoria').value || null;
+    const email     = document.getElementById('nv-email').value.trim() || null;
+    const tel       = document.getElementById('nv-tel').value.trim() || null;
+    const btn = document.getElementById('btn-nv-guardar');
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    try {
+      const payload = { nombre_cliente: nombre, email_cliente: email, telefono_cliente: tel, categoria, productos: nvProductos, precio_total: total, precio_sena: sena, monto_transferido: cobrado, estado, metodo_pago: nvMetodo, origen: 'presencial', mp_status: 'approved' };
+      const res = await sbFetch('/rest/v1/pedidos', { method: 'POST', headers: { 'Prefer': 'return=representation' }, body: JSON.stringify(payload) });
+      if (!res.ok) throw new Error('Error al guardar');
+      const data = await res.json();
+      const nuevo = Array.isArray(data) ? data[0] : data;
+      await ajustarStock(nvProductos, -1);
+      cerrarNuevaVenta();
+      allPedidos.unshift(nuevo);
+      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+      updateDashboard(); updateBadge();
+      if (document.getElementById('tab-stock').classList.contains('active')) renderProducts();
+      showToast(`✓ Venta #${nuevo.id} registrada`, 'success');
+    } catch (e) {
+      showToast('Error al registrar la venta', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = '✓ Registrar Venta';
+    }
   }
-  document.getElementById('nv-nombre').classList.remove('err');
-  if (!nvProductos.length) { showToast('Agregá al menos un producto', 'error'); return; }
- 
-  const total     = nvProductos.reduce((s, x) => s + x.precio * x.cantidad, 0);
-  const cobrado   = parseFloat(document.getElementById('nv-monto-cobrado').value) || total;
-  const sena      = Math.ceil(total * 0.5);
-  const estado    = document.getElementById('nv-estado').value;
-  const categoria = document.getElementById('nv-categoria').value || null;
-  const email     = document.getElementById('nv-email').value.trim() || null;
-  const tel       = document.getElementById('nv-tel').value.trim() || null;
- 
-  const btn = document.getElementById('btn-nv-guardar');
-  btn.disabled = true;
-  btn.textContent = 'Guardando…';
- 
-  try {
-    const payload = {
-      nombre_cliente:    nombre,
-      email_cliente:     email,
-      telefono_cliente:  tel,
-      categoria:         categoria,
-      productos:         nvProductos,
-      precio_total:      total,
-      precio_sena:       sena,
-      monto_transferido: cobrado,
-      estado:            estado,
-      metodo_pago:       nvMetodo,
-      origen:            'presencial',
-      mp_status:         'approved',
-    };
- 
-    const res = await sbFetch('/rest/v1/pedidos', {
-      method: 'POST',
-      headers: { 'Prefer': 'return=representation' },
-      body: JSON.stringify(payload),
-    });
- 
-    if (!res.ok) throw new Error('Error al guardar');
-    const data = await res.json();
-    const nuevo = Array.isArray(data) ? data[0] : data;
- 
-    // ✅ Descontar stock en Supabase
-    await ajustarStock(nvProductos, -1);
- 
-    cerrarNuevaVenta();
-    allPedidos.unshift(nuevo);
-    renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
-    updateDashboard(); updateBadge();
- 
-    // Si el panel de stock está abierto, refrescarlo
-    if (document.getElementById('tab-stock').classList.contains('active')) {
+
+  // ══════════════════════════════════════════════
+  //  NUEVO PRODUCTO
+  // ══════════════════════════════════════════════
+  function abrirNuevoProducto() {
+    // Reset form
+    document.getElementById('np-nombre').value = '';
+    document.getElementById('np-categoria').value = '';
+    document.getElementById('np-descripcion').value = '';
+    document.getElementById('np-stock-max').value = '30';
+    document.getElementById('np-nuevo').checked = false;
+
+    // Generar rangos de precios
+    document.getElementById('np-rangos-grid').innerHTML = RANGOS_DEFAULT.map((r, i) => `
+      <div class="np-rango-row">
+        <div class="np-rango-label">
+          <strong>${r.label}</strong>
+          ${r.talles.join(' · ')}
+        </div>
+        <span class="np-rango-prefix">$</span>
+        <input type="number" class="np-rango-input" id="np-rango-${i}" min="0" value="${r.precio}" placeholder="0" style="-moz-appearance:textfield" />
+      </div>`).join('');
+
+    // Generar grid de talles
+    document.getElementById('np-talles-grid').innerHTML = TALLES_ORDEN.map(t => `
+      <div class="np-talle-row">
+        <span class="np-talle-name">${t}</span>
+        <input type="number" class="np-talle-input" id="np-talle-${t}" min="0" value="0" placeholder="0" style="-moz-appearance:textfield" />
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;color:var(--muted-dim);">ud.</span>
+      </div>`).join('');
+
+    // Reset imágenes
+    document.getElementById('np-img-list').innerHTML = `
+      <div class="np-img-row">
+        <input type="url" placeholder="https://…/imagen.jpg" />
+        <button class="btn-np-rm-img" onclick="npQuitarImg(this)" title="Quitar">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+        </button>
+      </div>`;
+
+    closeSidebar();
+    document.getElementById('np-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('np-nombre').focus();
+  }
+
+  function cerrarNuevoProducto() {
+    document.getElementById('np-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function npClickOutside(e) {
+    if (e.target === document.getElementById('np-overlay')) cerrarNuevoProducto();
+  }
+
+  function npAgregarImg() {
+    const list = document.getElementById('np-img-list');
+    const div = document.createElement('div');
+    div.className = 'np-img-row';
+    div.innerHTML = `
+      <input type="url" placeholder="https://…/imagen.jpg" />
+      <button class="btn-np-rm-img" onclick="npQuitarImg(this)" title="Quitar">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+      </button>`;
+    list.appendChild(div);
+  }
+
+  function npQuitarImg(btn) {
+    const rows = document.getElementById('np-img-list').querySelectorAll('.np-img-row');
+    if (rows.length > 1) btn.parentElement.remove();
+    else btn.parentElement.querySelector('input').value = '';
+  }
+
+  async function npGuardar() {
+    const nombre = document.getElementById('np-nombre').value.trim();
+    const categoria = document.getElementById('np-categoria').value;
+    if (!nombre) { document.getElementById('np-nombre').classList.add('err'); showToast('El nombre es obligatorio', 'error'); return; }
+    document.getElementById('np-nombre').classList.remove('err');
+    if (!categoria) { document.getElementById('np-categoria').classList.add('err'); showToast('Seleccioná una categoría', 'error'); return; }
+    document.getElementById('np-categoria').classList.remove('err');
+
+    const descripcion = document.getElementById('np-descripcion').value.trim() || null;
+    const stockMax = parseInt(document.getElementById('np-stock-max').value) || 30;
+    const nuevo = document.getElementById('np-nuevo').checked;
+
+    // Recoger talles
+    const tallas = TALLES_ORDEN.map(t => ({
+      talla: t,
+      stock: parseInt(document.getElementById('np-talle-' + t)?.value) || 0
+    }));
+    const stockTotal = tallas.reduce((s, t) => s + t.stock, 0);
+
+    // Recoger precios por rango
+    const preciosPorRango = RANGOS_DEFAULT.map((r, i) => ({
+      ...r,
+      precio: parseInt(document.getElementById('np-rango-' + i)?.value) || r.precio
+    }));
+
+    // Recoger imágenes
+    const imgInputs = document.getElementById('np-img-list').querySelectorAll('input[type="url"]');
+    const imagenes = Array.from(imgInputs).map(i => i.value.trim()).filter(Boolean);
+
+    const btn = document.getElementById('btn-np-guardar');
+    btn.disabled = true; btn.textContent = 'Creando…';
+
+    try {
+      const payload = {
+        nombre,
+        categoria,
+        descripcion,
+        stock_total: stockTotal,
+        stock_max: stockMax,
+        tallas,
+        precios_por_rango: preciosPorRango,
+        imagenes: imagenes.length > 0 ? imagenes : null,
+        nuevo
+      };
+
+      const res = await sbFetch('/rest/v1/productos', {
+        method: 'POST',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || 'Error al crear el producto');
+      }
+
+      const data = await res.json();
+      const prod = Array.isArray(data) ? data[0] : data;
+
+      cerrarNuevoProducto();
+      allProducts.push(prod);
+      allProducts.sort((a,b) => a.categoria.localeCompare(b.categoria) || a.nombre.localeCompare(b.nombre));
       renderProducts();
+      nvPopularProductos();
+      updateDashboard();
+      showToast(`✓ Producto "${prod.nombre}" creado`, 'success');
+
+      // Si no estamos en la pestaña stock, ir ahí
+      if (!document.getElementById('tab-stock').classList.contains('active')) {
+        showTab('stock', document.querySelector('.nav-item[onclick*="stock"]'));
+      }
+    } catch (e) {
+      showToast(e.message || 'Error al crear el producto', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = '+ Crear Producto';
     }
- 
-    showToast(`✓ Venta #${nuevo.id} registrada`, 'success');
-  } catch (e) {
-    showToast('Error al registrar la venta', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '✓ Registrar Venta';
   }
-}
 
   // ══════════════════════════════════════════════
   //  STOCK & PRECIOS
   // ══════════════════════════════════════════════
   function renderProducts(){
     const c=document.getElementById('products-list');
-    if(!allProducts.length){c.innerHTML='<p style="color:var(--muted);text-align:center;padding:3rem;">No hay productos.</p>';return;}
+    if(!allProducts.length){
+      c.innerHTML=`<div style="text-align:center;padding:4rem 2rem;color:var(--muted);">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:.1em;margin-bottom:.5rem;">No hay productos cargados</p>
+        <small style="font-size:.88rem;color:var(--muted-dim);">Usá el botón "Nuevo Producto" para agregar uno</small>
+      </div>`;
+      return;
+    }
     c.innerHTML=allProducts.map(renderProductRow).join('');
   }
 
   function stockIndicator(s){if(s<=0)return'<span class="stock-indicator si-out"></span>';if(s<=5)return'<span class="stock-indicator si-low"></span>';return'<span class="stock-indicator si-ok"></span>';}
 
   function renderProductRow(p){
-    const TALLES=['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
     let tallesMap={};
     if(Array.isArray(p.tallas)){tallesMap=Object.fromEntries(p.tallas.map(t=>[t.talla||t.talle,t.stock]));}
     else if(p.tallas&&typeof p.tallas==='object'){tallesMap=p.tallas;}
 
-    const talleRowsHTML=TALLES.map(talle=>{
+    const talleRowsHTML=TALLES_ORDEN.map(talle=>{
       const stock=talle in tallesMap?tallesMap[talle]:0;
       return `<div class="talle-row" id="row-${p.id}-${talle}">
         <span class="talle-name">${talle}</span>
@@ -1521,30 +1659,11 @@ async function nvGuardar() {
     const rangos = getRangos(p);
     const rangosHTML = rangos.map((r, i) => `
       <div class="rango-row">
-        <div class="rango-talles">
-          <strong>${r.label}</strong>
-          ${r.talles.join(' · ')}
-        </div>
+        <div class="rango-talles"><strong>${r.label}</strong>${r.talles.join(' · ')}</div>
         <span class="rango-prefix">$</span>
-        <input
-          type="number" min="0" max="9999999"
-          value="${r.precio}"
-          data-producto-rango="${p.id}"
-          data-rango-idx="${i}"
-          data-original-rango="${r.precio}"
-          placeholder="0"
-          oninput="markRangoPrecioChange(this)"
-          style="-moz-appearance:textfield"
-        />
-        <span class="rango-actual" id="rango-actual-${p.id}-${i}">
-          Actual: $${r.precio.toLocaleString('es-AR')}
-        </span>
-        <button
-          class="btn-save-rango"
-          id="btn-rango-${p.id}-${i}"
-          onclick="saveRangoPrecio(${p.id},${i})"
-          disabled
-        >Guardar</button>
+        <input type="number" min="0" max="9999999" value="${r.precio}" data-producto-rango="${p.id}" data-rango-idx="${i}" data-original-rango="${r.precio}" placeholder="0" oninput="markRangoPrecioChange(this)" style="-moz-appearance:textfield" />
+        <span class="rango-actual" id="rango-actual-${p.id}-${i}">Actual: $${r.precio.toLocaleString('es-AR')}</span>
+        <button class="btn-save-rango" id="btn-rango-${p.id}-${i}" onclick="saveRangoPrecio(${p.id},${i})" disabled>Guardar</button>
       </div>`).join('');
 
     const precioMin = getPrecioMin(p);
@@ -1554,9 +1673,9 @@ async function nvGuardar() {
     if (Array.isArray(p.imagenes) && p.imagenes[0]) thumbSrc = p.imagenes[0];
     else if (typeof p.imagenes === 'string') thumbSrc = p.imagenes.split(',')[0]?.trim();
     else if (p.imagen_url) thumbSrc = p.imagen_url;
-    const thumb = thumbSrc
-      ? `<img src="${thumbSrc}" alt="${p.nombre}" />`
-      : `<img class="ph" src="${ESCUDO}" alt="" />`;
+    const thumb = thumbSrc ? `<img src="${thumbSrc}" alt="${p.nombre}" />` : `<img class="ph" src="${ESCUDO}" alt="" />`;
+
+    const nombreSafe = (p.nombre||'').replace(/'/g,"\\'");
 
     return `<div class="product-row" id="product-${p.id}">
       <div class="product-row-header" onclick="toggleRow(${p.id})">
@@ -1569,6 +1688,7 @@ async function nvGuardar() {
           <strong>${p.stock_total}</strong>en stock
           <span style="display:block;font-size:.78rem;color:var(--muted);margin-top:2px">${pfDisplay}</span>
         </div>
+        <button class="btn-del-product" onclick="event.stopPropagation();confirmarEliminarProducto(${p.id},'${nombreSafe}')" title="Eliminar producto">🗑️ Eliminar</button>
         <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
       <div class="talle-editor">
@@ -1597,19 +1717,19 @@ async function nvGuardar() {
     const btn = document.getElementById(`btn-rango-${productId}-${rangoIdx}`);
     if (!input || !btn) return;
     const newPrecio = parseInt(input.value) || 0;
-    btn.disabled = true;btn.textContent = 'Guardando…';
+    btn.disabled = true; btn.textContent = 'Guardando…';
     try {
       const product = allProducts.find(p => p.id == productId);
       if (!product) throw new Error('Producto no encontrado');
       const rangosActuales = getRangos(product);
       rangosActuales[rangoIdx] = { ...rangosActuales[rangoIdx], precio: newPrecio };
       const res = await sbFetch('/rest/v1/productos?id=eq.' + productId, {
-        method: 'PATCH',headers: { 'Prefer': 'return=representation' },
+        method: 'PATCH', headers: { 'Prefer': 'return=representation' },
         body: JSON.stringify({ precios_por_rango: rangosActuales }),
       });
       if (!res.ok) throw new Error();
       product.precios_por_rango = rangosActuales;
-      input.dataset.originalRango = newPrecio;input.style.borderColor = '';
+      input.dataset.originalRango = newPrecio; input.style.borderColor = '';
       const actualEl = document.getElementById(`rango-actual-${productId}-${rangoIdx}`);
       if (actualEl) actualEl.textContent = 'Actual: $' + newPrecio.toLocaleString('es-AR');
       const headerPrecioEl = document.querySelector(`#product-${productId} .product-stock-total span`);
@@ -1617,11 +1737,11 @@ async function nvGuardar() {
         const nuevoMin = Math.min(...rangosActuales.map(r => r.precio));
         headerPrecioEl.textContent = 'desde $' + nuevoMin.toLocaleString('es-AR');
       }
-      btn.textContent = '¡Guardado!';btn.classList.add('saved');
+      btn.textContent = '¡Guardado!'; btn.classList.add('saved');
       setTimeout(() => { btn.textContent = 'Guardar'; btn.classList.remove('saved'); }, 2000);
       showToast('Precio actualizado', 'success');
     } catch {
-      btn.disabled = false;btn.textContent = 'Guardar';
+      btn.disabled = false; btn.textContent = 'Guardar';
       showToast('Error al guardar', 'error');
     }
   }
@@ -1639,11 +1759,11 @@ async function nvGuardar() {
 
   async function saveAll(){
     const btn=document.getElementById('btn-save-all');btn.disabled=true;btn.textContent='Guardando…';
-    const TF=['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];let errors=0;
+    let errors=0;
     for(const id of Object.keys(pendingChanges)){
       const product=allProducts.find(p=>p.id==id);if(!product)continue;
       const actual=Object.fromEntries((Array.isArray(product.tallas)?product.tallas:[]).map(t=>[t.talla||t.talle,t.stock]));
-      const newTallas=TF.map(talle=>({talla:talle,stock:(pendingChanges[id]&&pendingChanges[id][talle]!==undefined)?pendingChanges[id][talle]:(talle in actual?actual[talle]:0)}));
+      const newTallas=TALLES_ORDEN.map(talle=>({talla:talle,stock:(pendingChanges[id]&&pendingChanges[id][talle]!==undefined)?pendingChanges[id][talle]:(talle in actual?actual[talle]:0)}));
       const newTotal=newTallas.reduce((s,t)=>s+t.stock,0);
       try{
         const res=await sbFetch('/rest/v1/productos?id=eq.'+id,{method:'PATCH',headers:{'Prefer':'return=representation'},body:JSON.stringify({tallas:newTallas,stock_total:newTotal})});
