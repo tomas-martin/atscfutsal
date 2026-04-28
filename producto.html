@@ -415,7 +415,7 @@
     function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='toast success show';setTimeout(()=>{t.className='toast success';},3000);}
 
     async function fetchProducto(id){
-      const res=await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${id}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${id}&visible=eq.true&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
       if(!res.ok)throw new Error('Error');
       const data=await res.json();
       if(!data.length)throw new Error('No encontrado');

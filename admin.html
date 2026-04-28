@@ -1677,7 +1677,7 @@
 
     const nombreSafe = (p.nombre||'').replace(/'/g,"\\'");
 
-    return `<div class="product-row" id="product-${p.id}">
+    return `<div class="product-row" id="product-${p.id}" style="opacity:${p.visible !== false ? '1' : '0.5'}">
       <div class="product-row-header" onclick="toggleRow(${p.id})">
         <div class="product-thumb">${thumb}</div>
         <div class="product-meta">
@@ -1688,7 +1688,23 @@
           <strong>${p.stock_total}</strong>en stock
           <span style="display:block;font-size:.78rem;color:var(--muted);margin-top:2px">${pfDisplay}</span>
         </div>
-        <button class="btn-del-product" onclick="event.stopPropagation();confirmarEliminarProducto(${p.id},'${nombreSafe}')" title="Eliminar producto">🗑️ Eliminar</button>
+        <button 
+  class="btn-toggle-visible" 
+  id="btn-visible-${p.id}"
+  onclick="event.stopPropagation();toggleVisibilidad(${p.id})"
+  title="${p.visible !== false ? 'Ocultar de la tienda' : 'Mostrar en la tienda'}"
+  style="
+    font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600;padding:6px 12px;border-radius:3px;
+    cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;border:none;
+    background:${p.visible !== false ? 'rgba(29,158,117,.15)' : 'rgba(186,117,23,.15)'};
+    color:${p.visible !== false ? 'var(--green)' : 'var(--yellow)'};
+    border:1px solid ${p.visible !== false ? 'rgba(29,158,117,.3)' : 'rgba(186,117,23,.3)'};
+  "
+>
+  ${p.visible !== false ? '👁 Visible' : '🚫 Oculto'}
+</button>
+<button class="btn-del-product" onclick="event.stopPropagation();confirmarEliminarProducto(${p.id},'${nombreSafe}')" title="Eliminar producto">🗑️ Eliminar</button>
         <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
       <div class="talle-editor">
@@ -1745,6 +1761,43 @@
       showToast('Error al guardar', 'error');
     }
   }
+  async function toggleVisibilidad(productId) {
+  const product = allProducts.find(p => p.id == productId);
+  if (!product) return;
+  
+  const nuevoEstado = product.visible === false ? true : false;
+  
+  try {
+    const res = await sbFetch('/rest/v1/productos?id=eq.' + productId, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify({ visible: nuevoEstado }),
+    });
+    if (!res.ok) throw new Error();
+    
+    product.visible = nuevoEstado;
+    
+    // Actualizar botón sin re-renderizar todo
+    const btn = document.getElementById('btn-visible-' + productId);
+    if (btn) {
+      btn.textContent = nuevoEstado ? '👁 Visible' : '🚫 Oculto';
+      btn.title = nuevoEstado ? 'Ocultar de la tienda' : 'Mostrar en la tienda';
+      btn.style.background = nuevoEstado ? 'rgba(29,158,117,.15)' : 'rgba(186,117,23,.15)';
+      btn.style.color = nuevoEstado ? 'var(--green)' : 'var(--yellow)';
+      btn.style.borderColor = nuevoEstado ? 'rgba(29,158,117,.3)' : 'rgba(186,117,23,.3)';
+    }
+    
+    // Badge visual en el header de la card
+    const row = document.getElementById('product-' + productId);
+    if (row) {
+      row.style.opacity = nuevoEstado ? '1' : '0.5';
+    }
+    
+    showToast(nuevoEstado ? '✓ Producto visible en la tienda' : 'Producto oculto de la tienda', nuevoEstado ? 'success' : 'info');
+  } catch {
+    showToast('Error al cambiar visibilidad', 'error');
+  }
+}
 
   function markChange(input){
     const id=input.dataset.producto,talle=input.dataset.talle;
