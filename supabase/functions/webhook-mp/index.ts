@@ -84,7 +84,7 @@ async function descontarStock(
   if (!productos || productos.length === 0) return;
 
   const TALLES_ORDEN = [
-    "6","8","10","12","14","16","S","M","L","XL","XXL","XXXL","XXXXL",
+    "4","6","8","10","12","14","16","S","M","L","XL","XXL","XXXL","XXXXL",
   ];
 
   // Agrupar por producto_id para hacer un solo PATCH por producto

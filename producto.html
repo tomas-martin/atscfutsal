@@ -539,7 +539,7 @@
           </div>`;
       }
 
-      const TALLES_FIJOS=['6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
+      const TALLES_FIJOS=['4','6','6','8','10','12','14','16','S','M','L','XL','XXL','XXXL','XXXXL'];
       const tallesRaw=p.tallas||{};
       let tallesMap={};
       if(Array.isArray(tallesRaw)){tallesRaw.forEach(t=>{if(t.talla!==undefined)tallesMap[t.talla]=t.stock;});}
