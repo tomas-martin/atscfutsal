@@ -582,7 +582,8 @@
           const producto = rows[0];
           const tallesRaw = producto.tallas || producto.talles || {};
           let tallesMap = {};
-          if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talle] = Number(t.stock) || 0; });
+          // DESPUÉS:
+if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla ?? t.talle] = Number(t.stock) || 0; });
           else Object.entries(tallesRaw).forEach(([k, v]) => {
   const key = String(k).trim().toUpperCase();
   tallesMap[key] = Number(v) || 0;
@@ -604,7 +605,8 @@
   tallesMap[keyReal] = Math.max(actual + (delta * cantidad), 0);
 }
           console.log('Stock después:', tallesMap);
-          const nuevosTalles = TALLES_ORDEN.map(t => ({ talle: t, stock: tallesMap[t] ?? 0 }));
+          // DESPUÉS — usá 'talla' para que coincida con cómo admin guarda:
+const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
           const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
           const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}`, {
             method: 'PATCH',
