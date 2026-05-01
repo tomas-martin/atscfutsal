@@ -649,11 +649,13 @@ const payload = {
           body: JSON.stringify(payload)
         });
 
-const errorText = await res.text();
 if (!res.ok) {
-  console.error("ERROR SUPABASE:", errorText);
-  throw new Error(errorText);
-}        const data = await res.json();
+  const error = await res.json();
+  console.error("ERROR SUPABASE:", error);
+  throw new Error(error.message);
+}
+
+const data = await res.json();
         const pedidoId = Array.isArray(data) ? data[0]?.id : data?.id;
 
         // 2. Descontar stock
