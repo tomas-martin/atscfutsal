@@ -626,20 +626,17 @@
         const total = carrito.reduce((s, i) => s + (i.precio || 0) * (i.cantidad || 1), 0);
 
         // 1. Guardar pedido en Supabase con estado "pendiente"
-        const payload = {
-          nombre_cliente: nombre,
-          email_cliente: email,
-          telefono_cliente: tel,
-          categoria: categoria,
-          productos: carrito,
-          precio_total: total,
-          monto_transferido: 0,
-          precio_sena: 0,
-          estado: 'pendiente',
-          metodo_pago: 'transferencia',
-          origen: 'online',
-          mp_status: 'pending'
-        };
+const payload = {
+  nombre_cliente: nombre,
+  email_cliente: email,
+  telefono_cliente: tel,
+  categoria: categoria,
+  productos: carrito,
+  precio_total: total,
+  estado: 'pendiente',
+  metodo_pago: 'transferencia',
+  origen: 'online'
+};
 
         const res = await fetch(`${SUPABASE_URL}/rest/v1/pedidos`, {
           method: 'POST',
@@ -652,8 +649,11 @@
           body: JSON.stringify(payload)
         });
 
-        if (!res.ok) throw new Error('Error al guardar el pedido');
-        const data = await res.json();
+const errorText = await res.text();
+if (!res.ok) {
+  console.error("ERROR SUPABASE:", errorText);
+  throw new Error(errorText);
+}        const data = await res.json();
         const pedidoId = Array.isArray(data) ? data[0]?.id : data?.id;
 
         // 2. Descontar stock
