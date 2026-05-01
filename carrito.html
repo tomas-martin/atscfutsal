@@ -564,60 +564,60 @@
 
     // ── AJUSTAR STOCK EN SUPABASE ──
     async function ajustarStock(productos, delta = -1) {
-      if (!productos || productos.length === 0) return;
-      const porProducto = {};
-      for (const item of productos) {
-        const id = String(item.producto_id);
-        if (!porProducto[id]) porProducto[id] = [];
-        porProducto[id].push({ talle: item.talle, cantidad: Number(item.cantidad) || 1 });
-      }
-      for (const [productoId, items] of Object.entries(porProducto)) {
-        try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}&select=id,tallas,talles,stock_total`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          });
-          if (!res.ok) { console.error('Error fetch producto:', res.status); continue; }
-          const rows = await res.json();
-          if (!rows.length) { console.warn('Producto no encontrado:', productoId); continue; }
-          const producto = rows[0];
-          const tallesRaw = producto.tallas || producto.talles || {};
-          let tallesMap = {};
-          // DESPUÉS:
-if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla ?? t.talle] = Number(t.stock) || 0; });
-          else Object.entries(tallesRaw).forEach(([k, v]) => {
-  const key = String(k).trim().toUpperCase();
-  tallesMap[key] = Number(v) || 0;
-});
-          console.log('Stock antes:', tallesMap, 'delta:', delta);
-          for (const { talle, cantidad } of items) {
-  const talleKey = String(talle).trim().toUpperCase();
+  if (!productos || productos.length === 0) return;
 
-  // 🔥 BUSCAR EL TALLE REAL QUE COINCIDA
-  const keyReal = Object.keys(tallesMap).find(k => k.toUpperCase() === talleKey);
-
-  if (!keyReal) {
-    console.warn('Talle no encontrado:', talleKey);
-    continue;
+  const porProducto = {};
+  for (const item of productos) {
+    const id = String(item.producto_id);
+    if (!porProducto[id]) porProducto[id] = [];
+    porProducto[id].push({ talle: String(item.talle), cantidad: Number(item.cantidad) || 1 });
   }
 
-  const actual = tallesMap[keyReal] ?? 0;
+  for (const [productoId, items] of Object.entries(porProducto)) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}&select=id,tallas,stock_total`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const rows = await res.json();
+      if (!rows.length) continue;
 
-  tallesMap[keyReal] = Math.max(actual + (delta * cantidad), 0);
-}
-          console.log('Stock después:', tallesMap);
-          // DESPUÉS — usá 'talla' para que coincida con cómo admin guarda:
-const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
-          const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
-          const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}`, {
-            method: 'PATCH',
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-            body: JSON.stringify({ tallas: nuevosTalles, stock_total: nuevoTotal }),
-          });
-          if (!patchRes.ok) console.error('Error al actualizar stock:', patchRes.status, await patchRes.text());
-          else console.log('Stock actualizado exitosamente para producto:', productoId);
-        } catch (e) { console.error('Error ajustando stock:', e); }
+      const producto = rows[0];
+      const tallesRaw = producto.tallas || {};
+
+      // Construir mapa normalizado
+      let tallesMap = {};
+      if (Array.isArray(tallesRaw)) {
+        tallesRaw.forEach(t => { tallesMap[String(t.talla ?? t.talle)] = Number(t.stock) || 0; });
+      } else {
+        Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[String(k)] = Number(v) || 0; });
       }
+
+      // Descontar — comparación directa sin toUpperCase
+      for (const { talle, cantidad } of items) {
+        const actual = tallesMap[talle] ?? 0;
+        tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
+        console.log(`Producto ${productoId} talle ${talle}: ${actual} → ${tallesMap[talle]}`);
+      }
+
+      // Reconstruir array con todas las claves existentes
+      const nuevosTalles = Object.entries(tallesMap).map(([talla, stock]) => ({ talla, stock }));
+      const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
+
+      await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ tallas: nuevosTalles, stock_total: nuevoTotal }),
+      });
+    } catch (e) {
+      console.error('Error ajustando stock:', e);
     }
+  }
+}
 
     // ── CONFIRMAR PEDIDO → GUARDAR EN SUPABASE → REDIRIGIR A WHATSAPP ──
     async function confirmarPedido() {
