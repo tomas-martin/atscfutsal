@@ -582,8 +582,8 @@
           const producto = rows[0];
           const tallesRaw = producto.tallas || producto.talles || {};
           let tallesMap = {};
-if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talle || t.talla] = Number(t.stock) || 0; });          
-else Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
+          if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla] = Number(t.stock) || 0; });
+          else Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
           console.log('Stock antes:', tallesMap, 'delta:', delta);
           for (const { talle, cantidad } of items) {
             const actual = tallesMap[talle] ?? 0;
@@ -682,7 +682,7 @@ const data = await res.json();
           `Hice el pedido #${pedidoId || '?'} en la tienda:\n` +
           `${productosResumen}\n\n` +
           `Total: $${total.toLocaleString('es-AR')}\n\n` +
-          `Acá te adjunto el comprobante de la transferencia 👇`
+          `Acá te adjunto el comprobante de la transferencia`
         );
 
         // 5. Guardar datos y redirigir a confirmación
