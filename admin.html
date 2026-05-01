@@ -1143,7 +1143,7 @@
   async function cambiarEstado(id, nuevoEstado) {
     try {
       const payload = { estado: nuevoEstado };
-      if (nuevoEstado === 'entregada') {
+      if (nuevoEstado === 'confirmada' || nuevoEstado === 'entregada') {
         const pedido = allPedidos.find(p => p.id === id);
         if (pedido && pedido.precio_total) payload.monto_transferido = Number(pedido.precio_total);
       }
@@ -1156,7 +1156,7 @@
       const idx = allPedidos.findIndex(p => p.id === id);
       if (idx !== -1) {
         allPedidos[idx].estado = nuevoEstado;
-        if (nuevoEstado === 'entregada' && allPedidos[idx].precio_total) {
+        if ((nuevoEstado === 'confirmada' || nuevoEstado === 'entregada') && allPedidos[idx].precio_total) {
           allPedidos[idx].monto_transferido = Number(allPedidos[idx].precio_total);
         }
       }

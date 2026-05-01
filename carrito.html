@@ -582,7 +582,7 @@
           const producto = rows[0];
           const tallesRaw = producto.tallas || {};
           let tallesMap = {};
-          if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla] = Number(t.stock) || 0; });
+          if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talle] = Number(t.stock) || 0; });
           else Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
           for (const { talle, cantidad } of items) {
             const actual = tallesMap[talle] ?? 0;
@@ -659,7 +659,11 @@ const data = await res.json();
         const pedidoId = Array.isArray(data) ? data[0]?.id : data?.id;
 
         // 2. Descontar stock
-        await ajustarStock(carrito, -1);
+        try {
+          await ajustarStock(carrito, -1);
+        } catch (e) {
+          console.warn('Error al descontar stock (el pedido se registró):', e);
+        }
 
         // 3. Limpiar carrito
         localStorage.removeItem('atsc_carrito');
@@ -677,8 +681,9 @@ const data = await res.json();
           `Acá te adjunto el comprobante de la transferencia 👇`
         );
 
-        // 5. Redirigir a WhatsApp
-        window.location.href = `https://wa.me/${WA_NUMERO}?text=${mensaje}`;
+        // 5. Guardar datos y redirigir a confirmación
+        localStorage.setItem('ultima_compra', JSON.stringify({ pedidoId, total, mensaje: decodeURIComponent(mensaje) }));
+        window.location.href = `pago-exitoso.html?external_reference=${pedidoId}`;
 
       } catch (e) {
         console.error(e);
