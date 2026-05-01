@@ -583,12 +583,18 @@
           const tallesRaw = producto.tallas || producto.talles || {};
           let tallesMap = {};
           if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talle] = Number(t.stock) || 0; });
-          else Object.entries(tallesRaw).forEach(([k, v]) => { tallesMap[k] = Number(v) || 0; });
+          else Object.entries(tallesRaw).forEach(([k, v]) => {
+  const key = String(k).trim().toUpperCase();
+  tallesMap[key] = Number(v) || 0;
+});
           console.log('Stock antes:', tallesMap, 'delta:', delta);
           for (const { talle, cantidad } of items) {
-            const actual = tallesMap[talle] ?? 0;
-            tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
-          }
+  const talleKey = String(talle).trim().toUpperCase();
+
+  const actual = tallesMap[talleKey] ?? 0;
+
+  tallesMap[talleKey] = Math.max(actual + (delta * cantidad), 0);
+}
           console.log('Stock después:', tallesMap);
           const nuevosTalles = TALLES_ORDEN.map(t => ({ talle: t, stock: tallesMap[t] ?? 0 }));
           const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
