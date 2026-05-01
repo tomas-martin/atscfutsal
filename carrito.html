@@ -588,7 +588,7 @@
             const actual = tallesMap[talle] ?? 0;
             tallesMap[talle] = Math.max(actual + (delta * cantidad), 0);
           }
-          const nuevosTalles = TALLES_ORDEN.map(t => ({ talla: t, stock: tallesMap[t] ?? 0 }));
+          const nuevosTalles = TALLES_ORDEN.map(t => ({ talle: t, stock: tallesMap[t] ?? 0 }));
           const nuevoTotal = nuevosTalles.reduce((s, t) => s + t.stock, 0);
           await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${productoId}`, {
             method: 'PATCH',

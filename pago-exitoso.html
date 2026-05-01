@@ -106,6 +106,13 @@
       return;
     }
  
+    // Si viene del carrito (es un número), mostrar directo
+    if (!isNaN(externalRef)) {
+      document.getElementById('pedido-id').innerHTML =
+        `<strong style="color:var(--white);font-size:1.1rem">#${externalRef}</strong>`;
+      return;
+    }
+  
     document.getElementById('pedido-id').innerHTML =
       '<span style="color:var(--muted);font-size:.85rem">Procesando…</span>';
  
@@ -147,7 +154,7 @@
     if (ultCompra) {
       try {
         const data = JSON.parse(ultCompra);
-        const WA_NUMERO = '5491127777777';
+        const WA_NUMERO = '5492615751033';
         const mensaje = data.mensaje || 'Hola, tengo una consulta sobre mi pedido';
         window.location.href = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(mensaje)}`;
       } catch (e) {
