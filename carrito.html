@@ -591,9 +591,17 @@
           for (const { talle, cantidad } of items) {
   const talleKey = String(talle).trim().toUpperCase();
 
-  const actual = tallesMap[talleKey] ?? 0;
+  // 🔥 BUSCAR EL TALLE REAL QUE COINCIDA
+  const keyReal = Object.keys(tallesMap).find(k => k.toUpperCase() === talleKey);
 
-  tallesMap[talleKey] = Math.max(actual + (delta * cantidad), 0);
+  if (!keyReal) {
+    console.warn('Talle no encontrado:', talleKey);
+    continue;
+  }
+
+  const actual = tallesMap[keyReal] ?? 0;
+
+  tallesMap[keyReal] = Math.max(actual + (delta * cantidad), 0);
 }
           console.log('Stock después:', tallesMap);
           const nuevosTalles = TALLES_ORDEN.map(t => ({ talle: t, stock: tallesMap[t] ?? 0 }));
