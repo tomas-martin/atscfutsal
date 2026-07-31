@@ -296,6 +296,26 @@
     .btn-nv-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
     .btn-nv-cancel:hover{border-color:var(--border-h);color:var(--white);}
 
+    /* ── MODAL EDITAR VENTA ── */
+    .ev-overlay{position:fixed;inset:0;z-index:510;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .ev-overlay.open{opacity:1;pointer-events:all;}
+    .ev-modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:8px;width:100%;max-width:660px;max-height:92vh;display:flex;flex-direction:column;}
+    .ev-header{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .ev-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;color:var(--white);}
+    .ev-title em{color:var(--yellow);font-style:normal;}
+    .ev-close{background:transparent;border:none;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;}
+    .ev-close:hover{color:var(--white);}
+    .ev-close svg{width:20px;height:20px;display:block;}
+    .ev-body{padding:1.4rem 1.6rem;overflow-y:auto;flex:1;}
+    .ev-footer{padding:1rem 1.6rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:.75rem;flex-shrink:0;flex-wrap:wrap;}
+    .btn-ev-guardar{font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;background:var(--yellow);color:#fff;border:none;padding:13px 28px;border-radius:3px;cursor:pointer;transition:all .2s;flex:1;min-height:48px;}
+    .btn-ev-guardar:hover{opacity:.9;}
+    .btn-ev-guardar:disabled{background:var(--muted-dim);cursor:not-allowed;}
+    .btn-ev-cancel{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);padding:13px 20px;border-radius:3px;cursor:pointer;transition:all .2s;}
+    .btn-ev-cancel:hover{border-color:var(--border-h);color:var(--white);}
+    .btn-editar-venta{background:rgba(186,117,23,.15);border:1px solid rgba(186,117,23,.3) !important;color:var(--yellow) !important;}
+    .btn-editar-venta:hover{background:rgba(186,117,23,.28) !important;}
+
     /* ═══════════════════════════════════════
        MODAL NUEVO PRODUCTO
     ═══════════════════════════════════════ */
@@ -808,6 +828,90 @@
   </div>
 </div>
 
+<!-- EDITAR VENTA -->
+<div class="ev-overlay" id="ev-overlay" onclick="evClickOutside(event)">
+  <div class="ev-modal">
+    <div class="ev-header">
+      <div class="ev-title">Editar <em>Venta</em> <span id="ev-pedido-num"></span></div>
+      <button class="ev-close" onclick="cerrarEditarVenta()">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="16" y2="16"/><line x1="16" y1="4" x2="4" y2="16"/></svg>
+      </button>
+    </div>
+    <div class="ev-body">
+      <div class="nv-section">
+        <div class="nv-section-title">Datos del cliente</div>
+        <div class="nv-grid">
+          <div class="nv-field">
+            <label>Nombre *</label>
+            <input type="text" id="ev-nombre" placeholder="Nombre del cliente" />
+          </div>
+          <div class="nv-field">
+            <label>Teléfono</label>
+            <input type="tel" id="ev-tel" placeholder="Teléfono" />
+          </div>
+          <div class="nv-field">
+            <label>Email</label>
+            <input type="email" id="ev-email" placeholder="Email" />
+          </div>
+          <div class="nv-field">
+            <label>Categoría</label>
+            <select id="ev-categoria">
+              <option value="">Sin categoría</option>
+              <option value="c5">C5</option><option value="c7">C7</option>
+              <option value="c9">C9</option><option value="c11">C11</option>
+              <option value="c13">C13</option><option value="c15">C15</option>
+              <option value="c17">C17</option><option value="c20">C20</option>
+              <option value="primera">Primera</option>
+              <option value="seniors">Seniors</option>
+              <option value="veteranos">Veteranos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="nv-section">
+        <div class="nv-section-title">Productos del pedido</div>
+        <div class="nv-productos-list" id="ev-productos-list"></div>
+      </div>
+      <div class="nv-section">
+        <div class="nv-section-title">Agregar producto al pedido</div>
+        <div class="nv-add-row">
+          <div class="nv-field">
+            <label>Producto</label>
+            <select id="ev-prod-select" onchange="evProductoChange()">
+              <option value="">Seleccionar producto…</option>
+            </select>
+          </div>
+          <div class="nv-field">
+            <label>Talle</label>
+            <select id="ev-talle-select" onchange="evTalleChange()">
+              <option value="">Talle</option>
+            </select>
+          </div>
+          <div class="nv-field cant">
+            <label>Cant.</label>
+            <input type="number" id="ev-cant" min="1" max="99" value="1" style="-moz-appearance:textfield" />
+          </div>
+          <button class="btn-nv-add" onclick="evAgregarProducto()">+ Agregar</button>
+        </div>
+        <div id="ev-prod-hint" style="font-family:'Barlow Condensed',sans-serif;font-size:.85rem;color:var(--muted);margin-top:.5rem;"></div>
+      </div>
+      <div class="nv-section">
+        <div class="nv-totales">
+          <div class="nv-total-row"><span>Subtotal</span><strong id="ev-subtotal">$0</strong></div>
+          <div class="nv-total-row big"><span>Total nuevo</span><strong id="ev-total">$0</strong></div>
+        </div>
+        <div style="margin-top:.8rem;padding:.8rem 1rem;background:rgba(186,117,23,.08);border:1px solid rgba(186,117,23,.25);border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;color:var(--yellow);line-height:1.5;">
+          ⚠️ Al guardar, el stock de los productos <strong>originales se devolverá</strong> y el de los <strong>nuevos se descontará</strong> automáticamente.
+        </div>
+      </div>
+    </div>
+    <div class="ev-footer">
+      <button class="btn-ev-guardar" id="btn-ev-guardar" onclick="evGuardar()">✓ Guardar cambios</button>
+      <button class="btn-ev-cancel" onclick="cerrarEditarVenta()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM DELETE -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
@@ -1137,6 +1241,7 @@
     if(p.estado==='confirmada'){
       acciones+=`<button class="btn-modal btn-entregar" onclick="cambiarEstado(${p.id},'entregada')">📦 Marcar como entregado</button>`;
     }
+    acciones+=`<button class="btn-modal btn-editar-venta" onclick="abrirEditarVenta(${p.id})">✏️ Editar venta</button>`;
     if(waTel)acciones+=`<a class="btn-modal btn-wa-modal" href="https://wa.me/549${waTel}?text=${waMsg}" target="_blank">WhatsApp cliente</a>`;
     acciones+=`<button class="btn-modal btn-secondary" onclick="descargarPDF(${p.id})">📄 VER PDF</button>`;
     acciones+=`<button class="btn-modal btn-eliminar" onclick="confirmarEliminarVenta(${p.id},'${(p.nombre_cliente||'este pedido').replace(/'/g,"\\'")}')">🗑️ Eliminar venta</button>`;
@@ -1479,6 +1584,207 @@
       showToast('Error al registrar la venta', 'error');
     } finally {
       btn.disabled = false; btn.textContent = '✓ Registrar Venta';
+    }
+  }
+
+  // ══════════════════════════════════════════════
+  //  EDITAR VENTA EXISTENTE
+  // ══════════════════════════════════════════════
+  let evProductos = [];
+  let evPedidoId  = null;
+  let evProductosOriginales = [];
+
+  function abrirEditarVenta(id) {
+    const p = allPedidos.find(x => x.id === id);
+    if (!p) return;
+    evPedidoId = id;
+    evProductosOriginales = JSON.parse(JSON.stringify(p.productos || []));
+    evProductos = JSON.parse(JSON.stringify(p.productos || []));
+
+    document.getElementById('ev-pedido-num').textContent = '#' + id;
+    document.getElementById('ev-nombre').value    = p.nombre_cliente || '';
+    document.getElementById('ev-tel').value       = p.telefono_cliente || '';
+    document.getElementById('ev-email').value     = p.email_cliente || '';
+    document.getElementById('ev-categoria').value = p.categoria || '';
+
+    const sel = document.getElementById('ev-prod-select');
+    sel.innerHTML = '<option value="">Seleccionar producto…</option>';
+    allProducts.forEach(prod => {
+      const opt = document.createElement('option');
+      opt.value = prod.id;
+      opt.textContent = `${prod.nombre} (${prod.categoria})`;
+      sel.appendChild(opt);
+    });
+    document.getElementById('ev-talle-select').innerHTML = '<option value="">Talle</option>';
+    document.getElementById('ev-cant').value = '1';
+    document.getElementById('ev-prod-hint').textContent = '';
+
+    evRenderProductos();
+    evActualizarTotales();
+    closeModal();
+    document.getElementById('ev-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarEditarVenta() {
+    document.getElementById('ev-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    evPedidoId = null;
+    evProductos = [];
+    evProductosOriginales = [];
+  }
+
+  function evClickOutside(e) {
+    if (e.target === document.getElementById('ev-overlay')) cerrarEditarVenta();
+  }
+
+  function evRenderProductos() {
+    const container = document.getElementById('ev-productos-list');
+    if (!evProductos.length) {
+      container.innerHTML = '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:.9rem;color:var(--muted-dim);text-align:center;padding:.8rem 0;">Ningún producto en este pedido</div>';
+      return;
+    }
+    container.innerHTML = evProductos.map((item, i) => `
+      <div class="nv-producto-item">
+        <div class="nv-producto-info">
+          <div class="np-nombre">${item.producto_nombre || item.nombre || '?'}</div>
+          <div class="np-sub">Talle ${item.talle || '?'}${(item.cantidad || 1) > 1 ? ' · x' + item.cantidad : ''} · ${item.categoria || ''}</div>
+        </div>
+        <div class="nv-producto-precio">$${(Number(item.precio || 0) * Number(item.cantidad || 1)).toLocaleString('es-AR')}</div>
+        <button class="nv-producto-remove" onclick="evQuitarProducto(${i})" title="Quitar">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+        </button>
+      </div>`).join('');
+  }
+
+  function evQuitarProducto(idx) {
+    evProductos.splice(idx, 1);
+    evRenderProductos();
+    evActualizarTotales();
+  }
+
+  function evProductoChange() {
+    const prodId = document.getElementById('ev-prod-select').value;
+    const tallesSel = document.getElementById('ev-talle-select');
+    const hint = document.getElementById('ev-prod-hint');
+    tallesSel.innerHTML = '<option value="">Elegir talle…</option>';
+    hint.textContent = '';
+    if (!prodId) return;
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const tallesRaw = prod.tallas || {};
+    let tallesMap = {};
+    if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla || t.talle] = t.stock; });
+    else tallesMap = tallesRaw;
+    TALLES_ORDEN.forEach(t => {
+      const stock = t in tallesMap ? Number(tallesMap[t]) : 0;
+      if (stock > 0) {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = `${t} — ${stock} ud.`;
+        tallesSel.appendChild(opt);
+      }
+    });
+    if (tallesSel.options.length === 1) tallesSel.innerHTML = '<option value="">Sin stock disponible</option>';
+  }
+
+  function evTalleChange() {
+    const prodId = document.getElementById('ev-prod-select').value;
+    const talle  = document.getElementById('ev-talle-select').value;
+    const hint   = document.getElementById('ev-prod-hint');
+    hint.textContent = '';
+    if (!prodId || !talle) return;
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const precio = getPrecioParaTalle(prod, talle);
+    hint.innerHTML = `Precio para talle <strong style="color:var(--white)">${talle}</strong>: <strong style="color:var(--green)">$${precio.toLocaleString('es-AR')}</strong>`;
+  }
+
+  function evAgregarProducto() {
+    const prodId = document.getElementById('ev-prod-select').value;
+    const talle  = document.getElementById('ev-talle-select').value;
+    const cant   = parseInt(document.getElementById('ev-cant').value) || 1;
+    if (!prodId || !talle) { showToast('Seleccioná producto y talle', 'error'); return; }
+    const prod = allProducts.find(p => p.id == prodId);
+    if (!prod) return;
+    const precio = getPrecioParaTalle(prod, talle);
+    const tallesRaw = prod.tallas || {};
+    let tallesMap = {};
+    if (Array.isArray(tallesRaw)) tallesRaw.forEach(t => { tallesMap[t.talla || t.talle] = t.stock; });
+    else tallesMap = tallesRaw;
+    const stockDisp = Number(tallesMap[talle] || 0);
+    const yaEnLista = evProductos.filter(x => x.producto_id == prodId && x.talle === talle).reduce((s, x) => s + (x.cantidad || 1), 0);
+    if (cant + yaEnLista > stockDisp) { showToast(`Solo hay ${stockDisp} disponibles en talle ${talle}`, 'error'); return; }
+    const existente = evProductos.find(x => x.producto_id == prodId && x.talle === talle);
+    if (existente) { existente.cantidad = (existente.cantidad || 1) + cant; }
+    else { evProductos.push({ producto_id: prod.id, producto_nombre: prod.nombre, categoria: prod.categoria, talle, precio, cantidad: cant }); }
+    evRenderProductos();
+    evActualizarTotales();
+    document.getElementById('ev-prod-select').value = '';
+    document.getElementById('ev-talle-select').innerHTML = '<option value="">Talle</option>';
+    document.getElementById('ev-cant').value = '1';
+    document.getElementById('ev-prod-hint').textContent = '';
+  }
+
+  function evActualizarTotales() {
+    const total = evProductos.reduce((s, x) => s + Number(x.precio || 0) * Number(x.cantidad || 1), 0);
+    document.getElementById('ev-subtotal').textContent = '$' + total.toLocaleString('es-AR');
+    document.getElementById('ev-total').textContent    = '$' + total.toLocaleString('es-AR');
+  }
+
+  async function evGuardar() {
+    const nombre = document.getElementById('ev-nombre').value.trim();
+    if (!nombre) { document.getElementById('ev-nombre').classList.add('err'); showToast('El nombre del cliente es obligatorio', 'error'); return; }
+    document.getElementById('ev-nombre').classList.remove('err');
+    if (!evProductos.length) { showToast('Debe haber al menos un producto en el pedido', 'error'); return; }
+
+    const btn = document.getElementById('btn-ev-guardar');
+    btn.disabled = true; btn.textContent = 'Guardando…';
+
+    try {
+      const total     = evProductos.reduce((s, x) => s + Number(x.precio || 0) * Number(x.cantidad || 1), 0);
+      const email     = document.getElementById('ev-email').value.trim() || null;
+      const tel       = document.getElementById('ev-tel').value.trim() || null;
+      const categoria = document.getElementById('ev-categoria').value || null;
+
+      // 1. Devolver stock de los productos ORIGINALES
+      if (evProductosOriginales.length > 0) {
+        await ajustarStock(evProductosOriginales, +1);
+      }
+      // 2. Descontar stock de los productos NUEVOS
+      await ajustarStock(evProductos, -1);
+
+      // 3. Actualizar el pedido en Supabase
+      const payload = {
+        nombre_cliente:   nombre,
+        email_cliente:    email,
+        telefono_cliente: tel,
+        categoria,
+        productos:        evProductos,
+        precio_total:     total,
+      };
+      const res = await sbFetch('/rest/v1/pedidos?id=eq.' + evPedidoId, {
+        method: 'PATCH',
+        headers: { 'Prefer': 'return=representation' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Error al actualizar el pedido en la base de datos');
+
+      // 4. Actualizar en memoria local
+      const idx = allPedidos.findIndex(p => p.id === evPedidoId);
+      if (idx !== -1) {
+        allPedidos[idx] = { ...allPedidos[idx], ...payload };
+      }
+
+      cerrarEditarVenta();
+      renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada');
+      updateDashboard(); updateBadge();
+      if (document.getElementById('tab-stock').classList.contains('active')) renderProducts();
+      showToast('✓ Venta actualizada — stock ajustado correctamente', 'success');
+    } catch (e) {
+      showToast(e.message || 'Error al guardar los cambios', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = '✓ Guardar cambios';
     }
   }
 
