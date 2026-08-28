@@ -3378,6 +3378,10 @@
               <textarea id="np-descripcion" placeholder="Descripción del producto (opcional)…"></textarea>
             </div>
             <div class="np-field">
+              <label>Orden de aparición (1 = primero)</label>
+              <input type="number" id="np-orden" min="0" value="1" placeholder="Ej: 1" style="-moz-appearance:textfield" />
+            </div>
+            <div class="np-field">
               <label>Stock máximo (referencia)</label>
               <input type="number" id="np-stock-max" min="0" value="30" style="-moz-appearance:textfield" />
             </div>
@@ -3679,9 +3683,27 @@
       try { const res = await sbFetch('/rest/v1/pedidos?select=*&order=created_at.desc'); allPedidos = res.ok ? await res.json() : []; } catch { allPedidos = []; }
       renderTabla('pendiente'); renderTabla('confirmada'); renderTabla('entregada'); updateBadge();
     }
+    function sortProductosAdmin(prods) {
+      if (!Array.isArray(prods)) return [];
+      return prods.sort((a, b) => {
+        const oa = a.orden !== null && a.orden !== undefined ? Number(a.orden) : 9999;
+        const ob = b.orden !== null && b.orden !== undefined ? Number(b.orden) : 9999;
+        if (oa !== ob) return oa - ob;
+        return (a.nombre || '').localeCompare(b.nombre || '');
+      });
+    }
+
     async function loadProducts() {
-      const res = await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
-      if (res.ok) allProducts = await res.json(); renderProducts(); nvPopularProductos();
+      let res = await sbFetch('/rest/v1/productos?select=*&order=orden.asc.nullslast,categoria,nombre');
+      if (!res.ok) {
+        res = await sbFetch('/rest/v1/productos?select=*&order=categoria,nombre');
+      }
+      if (res.ok) {
+        const data = await res.json();
+        allProducts = sortProductosAdmin(data);
+      }
+      renderProducts();
+      nvPopularProductos();
     }
 
     function getSearchId(tipo) { return tipo === 'pendiente' ? 'pend-search' : tipo === 'confirmada' ? 'conf-search' : 'entr-search'; }
@@ -4510,6 +4532,8 @@
       const descripcion = document.getElementById('np-descripcion').value.trim() || null;
       const stockMax = parseInt(document.getElementById('np-stock-max').value) || 30;
       const nuevo = document.getElementById('np-nuevo').checked;
+      const ordenInput = parseInt(document.getElementById('np-orden')?.value);
+      const orden = isNaN(ordenInput) ? 1 : ordenInput;
 
       // Recoger talles
       const tallas = TALLES_ORDEN.map(t => ({
@@ -4541,7 +4565,8 @@
           tallas,
           precios_por_rango: preciosPorRango,
           imagenes: imagenes.length > 0 ? imagenes : null,
-          nuevo
+          nuevo,
+          orden
         };
 
         const res = await sbFetch('/rest/v1/productos', {
@@ -4560,7 +4585,7 @@
 
         cerrarNuevoProducto();
         allProducts.push(prod);
-        allProducts.sort((a, b) => a.categoria.localeCompare(b.categoria) || a.nombre.localeCompare(b.nombre));
+        allProducts = sortProductosAdmin(allProducts);
         renderProducts();
         nvPopularProductos();
         updateDashboard();
@@ -4640,6 +4665,10 @@
         <div class="product-stock-total">
           <strong>${p.stock_total}</strong>en stock
           <span style="display:block;font-size:.78rem;color:var(--muted);margin-top:2px">${pfDisplay}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-right:6px;" onclick="event.stopPropagation()" title="Orden de aparición en la tienda (1 = primero)">
+          <span style="font-size:.72rem;color:var(--muted);text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;font-weight:600;">Orden:</span>
+          <input type="number" id="input-orden-${p.id}" value="${p.orden !== undefined && p.orden !== null ? p.orden : 0}" min="0" style="width:48px;padding:4px 6px;font-size:.85rem;background:var(--bg-input);color:var(--white);border:1px solid var(--border);border-radius:4px;text-align:center;-moz-appearance:textfield;" onchange="saveOrden(${p.id}, this.value)" />
         </div>
         <button 
   class="btn-toggle-visible" 
@@ -4749,6 +4778,37 @@
         showToast(nuevoEstado ? '✓ Producto visible en la tienda' : 'Producto oculto de la tienda', nuevoEstado ? 'success' : 'info');
       } catch {
         showToast('Error al cambiar visibilidad', 'error');
+      }
+    }
+
+    async function saveOrden(productId, newOrdenVal) {
+      const product = allProducts.find(p => p.id == productId);
+      if (!product) return;
+      const newOrden = parseInt(newOrdenVal);
+      const valToSave = isNaN(newOrden) ? 0 : newOrden;
+
+      const inputEl = document.getElementById('input-orden-' + productId);
+      if (inputEl) inputEl.style.borderColor = '#ba7517';
+
+      try {
+        const res = await sbFetch('/rest/v1/productos?id=eq.' + productId, {
+          method: 'PATCH',
+          headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify({ orden: valToSave }),
+        });
+        if (!res.ok) throw new Error();
+
+        product.orden = valToSave;
+        if (inputEl) {
+          inputEl.style.borderColor = 'var(--green)';
+          setTimeout(() => inputEl.style.borderColor = '', 1500);
+        }
+        allProducts = sortProductosAdmin(allProducts);
+        renderProducts();
+        showToast(`✓ Orden de "${product.nombre}" actualizado a ${valToSave}`, 'success');
+      } catch (err) {
+        if (inputEl) inputEl.style.borderColor = 'var(--red)';
+        showToast('Error al guardar el orden. Asegurate de haber creado la columna "orden" en Supabase.', 'error');
       }
     }
 
