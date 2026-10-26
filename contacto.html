@@ -541,6 +541,68 @@
       margin: .4rem 0;
     }
 
+    /* Horarios */
+    .horario-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .horario-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .horario-row:last-child {
+      border-bottom: none;
+    }
+
+    .horario-row.hoy {
+      background: rgba(29, 61, 154, .1);
+      margin: 0 -.4rem;
+      padding: .5rem .4rem;
+      border-radius: 3px;
+      border-bottom: none;
+    }
+
+    .horario-dia {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .95rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .horario-row.hoy .horario-dia {
+      color: var(--white);
+    }
+
+    .hoy-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .58rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: var(--red);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .horario-hrs {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .95rem;
+      color: var(--white);
+      font-weight: 600;
+    }
+
 
     /* Mapa */
     .map-card {
@@ -1109,7 +1171,7 @@
 
   <div class="page-title">
     <h1>Contacto <em>&</em> Ubicación</h1>
-    <p>Encontranos en Godoy Cruz, Mendoza</p>
+    <p>Dorrego, Guaymallén · Mendoza</p>
   </div>
 
   <div class="contact-layout">
@@ -1170,10 +1232,10 @@
       </a>
     </div>
 
-    <!-- DIRECCIÓN Y UBICACIONES -->
+    <!-- UBICACIÓN Y HORARIOS -->
     <div class="contact-card">
       <div class="card-label">Dónde estamos</div>
-      <div class="card-title">Ubicaciones</div>
+      <div class="card-title">Ubicación & Horarios</div>
       <div class="address-block">
         <div class="address-row">
           <div class="address-icon">
@@ -1185,29 +1247,7 @@
             </svg>
           </div>
           <div class="address-info">
-            <div class="ai-label">Dirección</div>
-            <div class="ai-value">Belgrano 1547<br>M5501 Godoy Cruz, Mendoza</div>
-            <a class="map-link" href="https://maps.google.com/?q=Belgrano+1547,Godoy+Cruz,Mendoza,Argentina"
-              target="_blank" rel="noopener">
-              Ver en Google Maps
-              <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <polyline points="3,2 7,5 3,8" />
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="address-row">
-          <div class="address-icon">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-              stroke-linejoin="round">
-              <path
-                d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.5 4.5 8.5 4.5 8.5S12.5 9.5 12.5 6c0-2.485-2.015-4.5-4.5-4.5z" />
-              <circle cx="8" cy="6" r="1.5" />
-            </svg>
-          </div>
-          <div class="address-info">
-            <div class="ai-label">Retiro fuera del club</div>
+            <div class="ai-label">Punto de retiro</div>
             <div class="ai-value">Rosales 1124-1100<br>Dorrego, Guaymallén</div>
             <a class="map-link" href="https://maps.google.com/?q=Rosales+1124,Dorrego,Guaymallen,Mendoza,Argentina"
               target="_blank" rel="noopener">
@@ -1217,6 +1257,20 @@
               </svg>
             </a>
           </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="address-row">
+        <div class="address-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="8" cy="8" r="6.5" />
+            <polyline points="8,4.5 8,8 10.5,10" />
+          </svg>
+        </div>
+        <div class="address-info" style="width:100%">
+          <div class="ai-label">Horarios de atención</div>
+          <div class="horario-grid" id="horario-grid"></div>
         </div>
       </div>
     </div>
@@ -1248,6 +1302,27 @@
       document.body.style.overflow = '';
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
+
+    const HORARIOS = [
+      { dia: 'Lunes', hrs: '9:00 – 19:30' },
+      { dia: 'Martes', hrs: '9:00 – 19:30' },
+      { dia: 'Miércoles', hrs: '9:00 – 19:30' },
+      { dia: 'Jueves', hrs: '9:00 – 19:30' },
+      { dia: 'Viernes', hrs: '9:00 – 19:30' },
+      { dia: 'Sábado', hrs: '9:00 – 14:00' },
+      { dia: 'Domingo', hrs: 'Cerrado' },
+    ];
+
+    const mapDia = { 0: 6, 1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5 };
+    const hoyIdx = mapDia[new Date().getDay()];
+
+    document.getElementById('horario-grid').innerHTML = HORARIOS.map((h, i) => `
+      <div class="horario-row${i === hoyIdx ? ' hoy' : ''}">
+        <span class="horario-dia">
+          ${h.dia}${i === hoyIdx ? '<span class="hoy-badge">Hoy</span>' : ''}
+        </span>
+        <span class="horario-hrs"${h.hrs === 'Cerrado' ? ' style="color:var(--muted)"' : ''}>${h.hrs}</span>
+      </div>`).join('');
 
   </script>
 </body>
